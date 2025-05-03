@@ -1,8 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Login() {
   const navigate = useNavigate();
+
+  const [studentNum, setStudentNum] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post(
+        "http://ec2-13-125-219-87.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/auth/sign-in",
+        {
+          studentNum,
+          password,
+        }
+      );
+
+      const { code, message, token } = response.data;
+
+      if (code === "SU") {
+        console.log("로그인 성공! 토큰:", token);
+        alert("✅ 로그인 성공!");
+        // navigate("/home");
+      } else {
+        alert(`⚠️ ${message}`);
+      }
+    } catch (error) {
+      if (error.response) {
+        const { code, message } = error.response.data;
+        if (code === "VF") {
+          alert("⚠️ 입력값이 유효하지 않습니다.");
+        } else if (code === "SF") {
+          alert("❌ 이메일 또는 비밀번호가 일치하지 않습니다.");
+        } else if (code === "DBE") {
+          alert("🚨 서버 오류가 발생했습니다.");
+        } else {
+          alert(`❗ 오류: ${message}`);
+        }
+      } else {
+        alert("⛔ 네트워크 오류 또는 서버가 응답하지 않습니다.");
+        console.error("Unexpected error:", error);
+      }
+    }
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.textContainer}>
@@ -11,10 +54,22 @@ function Login() {
         비밀번호를 입력해주세요</p>
       </div>
       <div style={styles.buttonContainer}>
-        <input type="email" placeholder="Enter your email" style={styles.input} />
-        <input type="password" placeholder="Enter your password" style={styles.input} />
+        <input
+          type="studentNum"
+          placeholder="Enter your email"
+          style={styles.input}
+          value={studentNum}
+          onChange={(e) => setStudentNum(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Enter your password"
+          style={styles.input}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <button style={styles.forgotPassword}>Forgot Password?</button>
-        <button style={styles.button}>로그인</button>
+        <button style={styles.button} onClick={handleLogin}>로그인</button>
         <button style={styles.button} onClick={() => navigate("/join")}>회원가입</button>
       </div>
     </div>
