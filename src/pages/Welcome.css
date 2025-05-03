@@ -1,0 +1,82 @@
+.welcome-container {
+    width: 100vw;  /* 화면 전체 너비 */
+    height: 100vh; /* 화면 전체 높이 */
+    background-color: white; /* 배경을 흰색으로 설정 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* 📌 PC 화면: 이미지 왼쪽 꽉 차게 */
+  .welcome-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .welcome-image {
+    width: 65vw;  /* PC에서 왼쪽 이미지가 화면을 꽉 채우도록 */
+    height: 100vh; /* 높이도 꽉 채우기 */
+    object-fit: cover; /* 이미지 비율 유지하면서 꽉 차게 */
+  }
+  
+  .welcome-text {
+    width: 35vw; /* 오른쪽 텍스트 영역 */
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .welcome-text h1 {
+    color: #6a5af9; /* 제목 보라색 */
+    font-size: 3rem;
+    font-weight: 900;
+  }
+
+  .welcome-text h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* 시작하기 버튼 */
+  .start-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #6a5af9, #8d72fc);
+    color: white;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    margin-top: 30px;
+  }
+  
+  /* 📌 모바일 화면: 세로 정렬 */
+  @media (max-width: 768px) {
+    .welcome-content {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .welcome-image {
+      width: 100%;  /* 화면 너비를 꽉 채우기 */
+      height: 100vh; /* 화면 높이도 꽉 채우기 */
+      object-fit: cover; /* 이미지 비율 유지하면서 꽉 차게 */
+    }
+  
+    .welcome-text {
+      width: 100%;
+      text-align: center;
+      padding: 3rem;
+    }
+  
+    .start-button {
+      width: 80%;
+    }
+  }
+  
+  
