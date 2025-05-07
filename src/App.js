@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
@@ -81,11 +82,30 @@ function Layout() {
     </>
   );
 }
+=======
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Welcome from "./pages/Welcome";
+import Select from "./pages/Select";
+import Login from "./pages/Login";
+import Join from "./pages/Join";
+import Calendar from "./pages/Calendar";
+>>>>>>> 49df151040dea7fdd4ebc17f18a21d0b30bc7ea5
 
 function App() {
   return (
     <Router>
+<<<<<<< HEAD
       <Layout />
+=======
+      <Routes>
+        <Route path="/" element={<Welcome />} />
+        <Route path="/select" element={<Select />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/join" element={<Join />} />
+        <Route path="/calendar" element={<Calendar />} />
+      </Routes>
+>>>>>>> 49df151040dea7fdd4ebc17f18a21d0b30bc7ea5
     </Router>
   );
 }
