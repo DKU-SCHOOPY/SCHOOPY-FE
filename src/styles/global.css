@@ -1,0 +1,16 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh; /* 뷰포트 높이 100% */
+  max-width: 500px; /* 모바일 기준 */
+  width: 100%;
+  overflow: hidden;
+}
