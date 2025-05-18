@@ -1,7 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Mypage.css';
 
 const Mypage = () => {
+  const navigate = useNavigate();
+  
   return (
     <div className="mypage-container">
       <h2 className="mypage-title">My Page</h2>
@@ -31,7 +34,9 @@ const Mypage = () => {
         </div>
       </div>
 
-      <button className="edit-button">개인정보 수정 요청</button>
+      <button className="edit-button" onClick={() => navigate('/edit')}>
+      개인정보 수정 요청
+    </button>
     </div>
   );
 };
