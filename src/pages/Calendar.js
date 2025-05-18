@@ -14,21 +14,40 @@ import {
   differenceInCalendarDays,
   parseISO,
 } from "date-fns";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Calendar.css";
 
 function Calendar() {
-  const [currentDate, setCurrentDate] = useState(new Date());
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const now = new Date();
+  const [currentDate, setCurrentDate] = useState(now);
   const [events, setEvents] = useState([]);
 
+  // 초기 URL이 없을 경우 현재 날짜로 URL 설정
+  useEffect(() => {
+    const year = searchParams.get("year");
+    const month = searchParams.get("month");
+
+    if (!year || !month) {
+      const curYear = now.getFullYear();
+      const curMonth = now.getMonth() + 1;
+      navigate(`/calendar?year=${curYear}&month=${curMonth}`, { replace: true });
+    } else {
+      const parsed = new Date(Number(year), Number(month) - 1);
+      setCurrentDate(parsed);
+    }
+  }, []);
+
+  // URL 연/월에 맞춰 이벤트 불러오기
   const fetchEvents = useCallback(async (year, month) => {
     try {
       const response = await fetch(
         `http://ec2-13-125-219-87.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/calendar?year=${year}&month=${month}`
       );
 
-      if (!response.ok) {
-        throw new Error("API error");
-      }
+      if (!response.ok) throw new Error("API error");
 
       const data = await response.json();
 
@@ -52,6 +71,14 @@ function Calendar() {
     fetchEvents(year, month);
   }, [currentDate, fetchEvents]);
 
+  // 날짜 상태 변경 + URL 갱신
+  const updateDate = (newDate) => {
+    const year = newDate.getFullYear();
+    const month = newDate.getMonth() + 1;
+    navigate(`/calendar?year=${year}&month=${month}`);
+    setCurrentDate(newDate);
+  };
+
   const renderHeader = () => {
     const month = format(currentDate, "MMMM");
     const year = format(currentDate, "yyyy");
@@ -62,8 +89,8 @@ function Calendar() {
         <div className="nav-compact">
           <span className="month">{month}</span>
           <span className="year">{year}</span>
-          <button onClick={() => setCurrentDate(subMonths(currentDate, 1))} className="nav-button">◀</button>
-          <button onClick={() => setCurrentDate(addMonths(currentDate, 1))} className="nav-button">▶</button>
+          <button onClick={() => updateDate(subMonths(currentDate, 1))} className="nav-button">◀</button>
+          <button onClick={() => updateDate(addMonths(currentDate, 1))} className="nav-button">▶</button>
         </div>
       </div>
     );
@@ -92,6 +119,7 @@ function Calendar() {
 
     while (day <= endDate) {
       const currentRowStart = day;
+
       for (let i = 0; i < 7; i++) {
         const formattedDate = format(day, "d");
         const isCurrentMonth = isSameMonth(day, currentDate);
@@ -117,7 +145,7 @@ function Calendar() {
       }
 
       rows.push(
-        <div key={day} className="week-row">
+        <div key={currentRowStart} className="week-row">
           <div className="week-grid">{days}</div>
           <div className="event-row">
             {events.map((event) => {
@@ -154,6 +182,7 @@ function Calendar() {
       );
       days = [];
     }
+
     return <div className="cells-container">{rows}</div>;
   };
 
