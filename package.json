@@ -3,15 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@stomp/stompjs": "^7.1.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.8.4",
+    "date-fns": "^4.1.0",
+    "dayjs": "^1.11.13",
+    "firebase": "^11.7.3",
+    "lucide-react": "^0.511.0",
     "react": "^19.1.0",
+    "react-datepicker": "^8.3.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.4.1",
     "react-scripts": "5.0.1",
+    "styled-components": "^6.1.18",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -39,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-beautiful-dnd": "^13.1.8",
     "autoprefixer": "^10.4.21",
     "init": "^0.1.2",
     "npx": "^10.2.2",

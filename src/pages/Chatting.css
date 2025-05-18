@@ -1,0 +1,89 @@
+/* Chatting.css */
+.chatting-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-family: sans-serif;
+  }
+  
+  .chatting-header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    font-weight: bold;
+    color: #1a2c51;
+    font-size: 18px;
+  }
+  
+  .back-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  .chatting-title {
+    font-size: 18px;
+  }
+  
+  .chatting-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    overflow-y: auto;
+    background-color: #fff;
+  }
+  
+  .chatting-message {
+    max-width: 70%;
+    padding: 10px 14px;
+    margin: 6px 12px;
+    border-radius: 18px;
+    font-size: 15px;
+    word-break: break-word;
+    display: inline-block;
+  }
+  
+  .me {
+    background-color: #edebfd;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+  }
+  
+  .other {
+    background-color: #f1f1f1;
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+  }
+  
+  
+  
+  .chatting-input-box {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    
+    background: white;
+  }
+  
+  .chatting-input-box input {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 15px;
+    background: #f1f1f1;
+    margin-right: 10px;
+  }
+  
+  .send-button {
+    background: #775ef9;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+    cursor: pointer;
+  }

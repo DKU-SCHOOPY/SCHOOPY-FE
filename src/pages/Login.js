@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Login.css"; // CSS 파일 import
+import "./Login.css";
 
 function Login() {
   const navigate = useNavigate();
@@ -22,27 +22,15 @@ function Login() {
 
       if (code === "SU") {
         console.log("로그인 성공! 토큰:", token);
-        alert("✅ 로그인 성공!");
+        alert(`✅ ${message}`);
         navigate("/calendar");
       } else {
         alert(`⚠️ ${message}`);
       }
     } catch (error) {
-      if (error.response) {
-        const { code, message } = error.response.data;
-        if (code === "VF") {
-          alert("⚠️ 입력값이 유효하지 않습니다.");
-        } else if (code === "SF") {
-          alert("❌ 이메일 또는 비밀번호가 일치하지 않습니다.");
-        } else if (code === "DBE") {
-          alert("🚨 서버 오류가 발생했습니다.");
-        } else {
-          alert(`❗ 오류: ${message}`);
-        }
-      } else {
-        alert("⛔ 네트워크 오류 또는 서버가 응답하지 않습니다.");
-        console.error("Unexpected error:", error);
-      }
+      const message = error?.response?.data?.message || "네트워크 오류";
+      alert(`❗ ${message}`);
+      console.error("Login error:", error);
     }
   };
 
