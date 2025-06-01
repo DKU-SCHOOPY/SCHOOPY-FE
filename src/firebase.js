@@ -16,11 +16,23 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
+
+export const requestPermission = async () => {
+  try {
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') {
+      throw new Error("알림 권한 거부됨");
+    }
+  } catch (err) {
+    console.error("알림 권한 요청 실패", err);
+  }
+};
+
 // 토큰 요청 함수
 export const requestFCMToken = async () => {
   try {
     const token = await getToken(messaging, {
-      vapidKey: "BOH9bBGRA-yCpr7fjseZf9N64ogu79dwcrIyXNVn0QpWZDCuryXZ6Cbv2eTV62cXV7CsmbWdElNXAQ1P0W6CdOE",
+      vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY
     });
     return token;
   } catch (err) {
@@ -31,20 +43,4 @@ export const requestFCMToken = async () => {
 
 export { messaging };
 
-/*
-const token = await getToken(messaging, {
-  vapidKey: process.env.BOH9bBGRA-yCpr7fjseZf9N64ogu79dwcrIyXNVn0QpWZDCuryXZ6Cbv2eTV62cXV7CsmbWdElNXAQ1P0W6CdOE,
-});
-
-requestPermission();
-
-
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-
-
-*/
 

@@ -25,7 +25,14 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+    text-decoration: none;
+    color: inherit;
   }
+
+  .chat-list a {
+  text-decoration: none;
+  color: inherit;
+}
   
   .chat-item {
     display: flex;

@@ -68,7 +68,7 @@ const AddSchedule = () => {
 
     try {
       const response = await axios.post(
-        "http://ec2-13-125-219-87.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/regist-event",
+        "http://ec2-3-37-86-181.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/regist-event",
         submitData,
         {
           headers: {

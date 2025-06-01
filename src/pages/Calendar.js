@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import axios from "axios";
 import {
   startOfMonth,
   endOfMonth,
@@ -13,6 +14,7 @@ import {
   isWithinInterval,
   differenceInCalendarDays,
   parseISO,
+  yearsToDays,
 } from "date-fns";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Calendar.css";
@@ -42,28 +44,40 @@ function Calendar() {
 
   // URL 연/월에 맞춰 이벤트 불러오기
   const fetchEvents = useCallback(async (year, month) => {
-    try {
-      const response = await fetch(
-        `http://ec2-13-125-219-87.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/calendar?year=${year}&month=${month}`
-      );
+  try {
 
-      if (!response.ok) throw new Error("API error");
+    const token = localStorage.getItem("accessToken");
+    console.log("토큰 확인:", token);
 
-      const data = await response.json();
+    const response = await axios.get(
+      `http://ec2-3-37-86-181.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/calendar?year=${year}&month=${month}`,
+      {
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+}
+    );
 
-      setEvents(
-        data.map((event) => ({
-          id: event.eventCode,
-          title: event.title,
-          start: event.start,
-          end: event.end,
-          color: "#edebfd",
-        }))
-      );
-    } catch (err) {
-      console.error("일정 로드 실패:", err.message);
-    }
-  }, []);
+    console.log("응답 전체:", response);
+    console.log("응답 데이터:", response.data);
+
+    const data = response.data;
+    
+    setEvents(
+      data.map((event) => ({
+        id: event.eventCode,
+        title: event.eventName,
+        start: event.start,
+        end: event.end,
+        color: "#edebfd",
+      }))
+    
+    );
+  } catch (err) {
+    console.error("일정 로드 실패:", err.message);
+  }
+}, []);
+
 
   useEffect(() => {
     const year = currentDate.getFullYear();

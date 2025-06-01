@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
-import { requestFCMToken } from "../firebase"; // firebase 설정에서 import
+import { requestPermission, requestFCMToken } from "../firebase"; // firebase 설정에서 import
+import { connectSocket } from "../socket";
 
 function Login() {
   const navigate = useNavigate();
@@ -11,40 +12,39 @@ function Login() {
 
   const handleLogin = async () => {
     try {
+      // 알림 권한 요청
+      await requestPermission();
+      // FCM 토큰 요청
+      
+      const fcmToken = await requestFCMToken();
+      console.log("FCM 토큰:", fcmToken);
+      if (!fcmToken) {
+        alert("FCM 토큰 요청 실패. 알림 권한 확인 필요");
+        return;
+      }
       const response = await axios.post(
-        "http://ec2-13-125-219-87.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/auth/sign-in",
+        "http://ec2-3-37-86-181.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/auth/sign-in",
         {
           studentNum,
           password,
+          fcmToken
         }
       );
 
       const { code, message, token } = response.data;
 
       if (code === "SU") {
-        console.log("로그인 성공! 토큰:", token);
-        alert(`✅ ${message}`);
+        //console.log("로그인 성공!");
+        //alert(`✅ ${message}`);
 
-        // FCM 토큰 요청
-        const fcmToken = await requestFCMToken();
-
-        if (fcmToken) {
-          // FCM 토큰 서버에 전달
-          await axios.post(
-            "http://ec2-13-125-219-87.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/notification/token",
-            {
-            token: fcmToken,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          console.log("FCM 토큰 전송 완료");
+        connectSocket(token);
+        if (token) {
+          localStorage.setItem('accessToken', token);  // ✅ 여기서 저장
+          navigate('/calendar'); // 로그인 후 이동
+        } else {
+          console.error("토큰 없음");
         }
-
-        navigate("/calendar");
+        
       } else {
         alert(`⚠️ ${message}`);
       }

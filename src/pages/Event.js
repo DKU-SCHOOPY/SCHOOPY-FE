@@ -31,7 +31,7 @@ export default function EventApplicants() {
   const handleApprove = async (applicationId, isAccept) => {
     try {
       await axios.post(
-        "http://ec2-13-125-219-87.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/approve",
+        "http://ec2-3-37-86-181.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/approve",
         {
             applicationId: Number(applicationId), // 반드시 숫자!
             choice: Boolean(isAccept)

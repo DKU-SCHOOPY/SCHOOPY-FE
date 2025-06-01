@@ -13,13 +13,14 @@ import Form from "./pages/Form"
 import Chat from "./pages/Chat";
 import Chatting from "./pages/Chatting";
 import Mypage from "./pages/Mypage";
+import Edit from './pages/Edit';
 import Navbar from "./components/Navbar";
 
 import CreatePost from "./pages/CreatePost";
 import CreateForm from "./pages/CreateForm";
 import AddSchedule from "./pages/AddSchedule";
 
-import { messaging } from './firebase-messaging-sw';
+import { messaging } from './firebase';
 import { getToken } from 'firebase/messaging';
 import axios from 'axios';
 
@@ -33,7 +34,7 @@ function Layout() {
     /^\/select$/,       // /select
     /^\/login$/,        // /login
     /^\/join$/,         // /join
-    /^\/chat\/[^/]+$/   // /chat/:id
+    /^\/chat\/room\/[^/]+$/   // /chat/room/:id
   ];
 
   const shouldHideUI = hidePaths.some((pattern) => pattern.test(location.pathname));
@@ -51,8 +52,9 @@ function Layout() {
         <Route path="/form" element={<Form />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/chat" element={<Chat />} />
-        <Route path="/chat/:id" element={<Chatting />} />
+        <Route path="/chat/room/:roomId" element={<Chatting />} />
         <Route path="/mypage" element={<Mypage />} />
+        <Route path="/edit" element={<Edit />} />
 
         <Route path="/create-post" element={<CreatePost />} />
         <Route path="/createform" element={<CreateForm />} />
@@ -64,7 +66,7 @@ function Layout() {
   );
 }
 
-// 채팅 토큰 전송
+/*// 채팅 토큰 전송
 const getFcmTokenAndSend = async () => {
   try {
     const token = await getToken(messaging, {
@@ -85,14 +87,15 @@ const getFcmTokenAndSend = async () => {
     console.error('토큰 요청 실패', err);
   }
 };
-
+*/
 // 예: 컴포넌트 마운트 시 실행
 
 export default function App() {
+  /*
   useEffect(() => {
     getFcmTokenAndSend();
   }, []);
-
+  */
   return (
     <Router>
       <Layout />
