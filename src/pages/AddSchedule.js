@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { API_BASE_URL } from '../config';
 
 const AddSchedule = () => {
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ const AddSchedule = () => {
 
     try {
       const response = await axios.post(
-        "http://ec2-13-125-219-87.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/regist-event",
+        `${API_BASE_URL}/event/regist-event`,
         submitData,
         {
           headers: {
@@ -88,25 +89,6 @@ const AddSchedule = () => {
     <Container>
       <Header>일정 추가</Header>
       <FormSection onSubmit={handleSubmit}>
-        <Label>행사 이름</Label>
-        <Input
-          type="text"
-          name="eventName"
-          placeholder="행사 이름"
-          value={formData.eventName}
-          onChange={handleInputChange}
-          required
-        />
-
-        <Label>학과</Label>
-        <Input
-          type="text"
-          name="department"
-          placeholder="학과"
-          value={formData.department}
-          onChange={handleInputChange}
-          required
-        />
 
         <Row>
           <Col>
@@ -161,25 +143,6 @@ const AddSchedule = () => {
           placeholder="최대 수용 인원"
           value={formData.maxParticipants}
           onChange={handleInputChange}
-          required
-        />
-
-        <Label>행사 설명</Label>
-        <TextArea
-          name="eventDescription"
-          placeholder="행사 설명을 입력하세요"
-          value={formData.eventDescription}
-          onChange={handleInputChange}
-          required
-        />
-
-        <Label>행사 이미지</Label>
-        <Input
-          type="file"
-          name="eventImages"
-          onChange={handleImageChange}
-          multiple
-          accept="image/*"
           required
         />
 

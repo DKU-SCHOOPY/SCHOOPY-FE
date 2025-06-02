@@ -1,227 +1,298 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
-export default function FormApplicants() {
+const Form = () => {
   const navigate = useNavigate();
-  const { eventCode } = useParams(); // URL에서 행사코드 추출 (예: /form-applicants/:eventCode)
-  const [studentNum, setStudentNum] = useState("");
-  const [department, setDepartment] = useState("소프트웨어학과");
-  const [birth, setBirth] = useState({ year: "", month: "", day: "" });
-  const [isStudent, setIsStudent] = useState(true);
-  const [councilFeePaid, setCouncilFeePaid] = useState(false);
-  const [isPaymentCompleted, setIsPaymentCompleted] = useState(false);
+  const { eventCode } = useParams();
 
-  // 신청하기
-  const handleSubmit = async () => {
-    try {
-      const res = await axios.post(
-        "http://ec2-13-125-219-87.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/submit-survey",
-        {
-          studentNum,
-          eventCode: Number(eventCode),
-          isStudent,
-          councilFeePaid,
-          isPaymentCompleted
-        },
-        { headers: { "Content-Type": "application/json" } }
-      );
-      alert("QR코드 페이지로 이동합니다.");
-      // QR코드 URL로 리디렉션
-      if (res.data.qrUrl) {
-        window.location.href = res.data.qrUrl;
+  console.log("Current URL params:", useParams()); // 전체 URL 파라미터 확인
+  console.log("URL eventCode:", eventCode); // eventCode 값 확인
+
+  const [formData, setFormData] = useState({
+    isStudent: false,
+    councilFeePaid: false,
+    isPaymentCompleted: false
+  });
+
+  const [eventData, setEventData] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [studentNum] = useState("32203027"); // 하드코딩된 studentNum
+
+  useEffect(() => {
+    // 행사 정보 조회
+    const fetchEventData = async () => {
+      if (!eventCode) {
+        console.error("No eventCode found in URL");
+        return;
       }
-    } catch (e) {
-      alert("신청 실패: " + e.message);
+
+      try {
+        console.log("Fetching event data for code:", eventCode);
+        const response = await axios.get(
+          `http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/${eventCode}`
+        );
+        if (response.data.statusCode === "OK") {
+          console.log("Event Data:", response.data.data);
+          setEventData(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching event data:", error);
+      }
+    };
+
+    fetchEventData();
+  }, [eventCode]);
+
+  const handleInputChange = (e) => {
+    const { name, type, checked, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value
+    }));
+    // 에러 메시지 초기화
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ""
+      }));
     }
+  };
+
+  const handlePayment = async (remitType) => {
+    try {
+      // remitType을 대문자로 변환
+      const formattedRemitType = remitType === "toss" ? "TOSS" : "KAKAO";
+
+      const requestData = {
+        studentNum: studentNum,
+        eventCode: parseInt(eventCode),
+        remitType: formattedRemitType
+      };
+
+      console.log("Payment Request Data:", requestData); // 요청 데이터 로깅
+
+      const response = await axios.post(
+        "http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/remit-redirect",
+        requestData
+      );
+
+      console.log("Payment Response:", response.data);
+
+      if (response.data.statusCode === "OK" && response.data.body.url) {
+        const paymentUrl = response.data.body.url;
+
+        // 토스든 카카오페이든 API에서 받은 URL을 새 탭에서 엽니다.
+        // API 응답 URL이 웹/앱 환경을 모두 처리하도록 설계되어 있어야 합니다.
+        window.open(paymentUrl, '_blank');
+
+        // 딥링크 처리는 API 응답 URL 자체에 포함되어 있거나
+        // API 호출 전에 환경을 판단하여 다른 API를 호출하는 방식으로 구현될 수 있습니다.
+        // 현재는 API 응답 URL을 직접 엽니다.
+
+        setFormData(prev => ({
+          ...prev,
+          councilFeePaid: true
+        }));
+      } else {
+        console.error("Invalid response format:", response.data);
+        alert("송금 URL을 가져오는데 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("Error getting payment URL:", error.response || error);
+      alert("송금 URL을 가져오는데 실패했습니다: " + (error.response?.data?.message || error.message));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/application",
+        {
+          studentNum: studentNum,
+          eventCode: parseInt(eventCode),
+          isStudent: formData.isStudent,
+          councilFeePaid: false,
+          isPaymentCompleted: false
+        }
+      );
+
+      if (response.data.statusCode === "OK") {
+        alert("신청이 완료되었습니다!");
+        navigate("/formlist");
+      } else {
+        alert("신청에 실패했습니다: " + response.data.message);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("신청 중 오류가 발생했습니다: " + error.message);
+    }
+  };
+
+  // QR 코드가 있는지 확인하는 함수
+  const hasQrCode = () => {
+    if (!eventData) return false;
+    return eventData.qr_toss_x || eventData.qr_kakaopay_x;
   };
 
   return (
     <Container>
-      <TopBar>
-        <BackBtn onClick={() => navigate(-1)}>&larr;</BackBtn>
-        <Title>새내기배움터</Title>
-        <RightSpace />
-      </TopBar>
-      <BoardBtn>관련 게시판 보러가기</BoardBtn>
-      <Notice>
-        <span role="img" aria-label="heart">💗</span> 새내기 여러분의 설레는 첫 발걸음 <br />
-        4년의 학교생활 중 단연코! 최고의 추억이 될 <br />
-        새내기 배움터에 SW융합대학 학우 여러분을 초대합니다.
-      </Notice>
-      <Label>학번</Label>
-      <Input
-        value={studentNum}
-        onChange={e => setStudentNum(e.target.value)}
-        placeholder="학번을 입력하세요"
-      />
-      <Label>학과</Label>
-      <Select value={department} onChange={e => setDepartment(e.target.value)}>
-        <option value="소프트웨어학과">소프트웨어학과</option>
-        <option value="컴퓨터공학과">컴퓨터공학과</option>
-        <option value="정보통계학과">정보통계학과</option>
-        <option value="사이버보안학과">사이버보안학과</option>
-      </Select>
-      <Label>생년월일</Label>
-      <BirthRow>
-        <BirthInput
-          type="text"
-          placeholder="2006"
-          value={birth.year}
-          onChange={e => setBirth({ ...birth, year: e.target.value })}
-        />
-        <span>년</span>
-        <BirthInput
-          type="text"
-          placeholder="06"
-          value={birth.month}
-          onChange={e => setBirth({ ...birth, month: e.target.value })}
-        />
-        <span>월</span>
-        <BirthInput
-          type="text"
-          placeholder="27"
-          value={birth.day}
-          onChange={e => setBirth({ ...birth, day: e.target.value })}
-        />
-        <span>일</span>
-      </BirthRow>
-      <PayRow>
-        <PayBtn>토스로 송금하기</PayBtn>
-        <PayBtn>카카오로 송금하기</PayBtn>
-      </PayRow>
-      <SubmitBtn onClick={handleSubmit}>신청하기</SubmitBtn>
+      <FormContainer onSubmit={handleSubmit}>
+        <Header>행사 신청</Header>
+        <Description>아래 항목을 작성하여 신청해 주세요.</Description>
+
+        <CheckboxContainer>
+          <Label>
+            <input
+              type="checkbox"
+              name="isStudent"
+              checked={formData.isStudent}
+              onChange={handleInputChange}
+            />
+            재학생입니다
+          </Label>
+        </CheckboxContainer>
+
+        <PaymentSection>
+          <PaymentButton
+            type="button"
+            onClick={() => handlePayment("toss")}
+            primary
+            disabled={formData.councilFeePaid}
+          >
+            {formData.councilFeePaid ? "송금 완료" : "토스로 송금하기"}
+          </PaymentButton>
+          <PaymentButton
+            type="button"
+            onClick={() => handlePayment("kakaopay")}
+            disabled={formData.councilFeePaid}
+          >
+            {formData.councilFeePaid ? "송금 완료" : "카카오페이로 송금하기"}
+          </PaymentButton>
+        </PaymentSection>
+
+        <SubmitButton
+          type="submit"
+          disabled={!formData.councilFeePaid}
+        >
+          {formData.councilFeePaid ? "신청하기" : "송금 후 신청 가능"}
+        </SubmitButton>
+      </FormContainer>
     </Container>
   );
-}
+};
 
-// 스타일
+export default Form;
+
+// 스타일 컴포넌트
 const Container = styled.div`
-  padding: 0 16px 32px 16px;
-  background: #fff;
-  min-height: 100vh;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
 `;
-const TopBar = styled.div`
+
+const FormContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+const Header = styled.h1`
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+`;
+
+const Description = styled.p`
+  font-size: 16px;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 20px;
+`;
+
+const CheckboxContainer = styled.div`
+  margin: 10px 0;
+`;
+
+const Label = styled.label`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 28px 0 18px 0;
-`;
-const BackBtn = styled.button`
-  background: none;
-  border: none;
-  font-size: 22px;
-  color: #888;
+  gap: 8px;
+  font-size: 16px;
   cursor: pointer;
-  width: 32px;
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+  }
 `;
-const Title = styled.h2`
-  font-size: 18px;
-  font-weight: 600;
-  color: #222;
-  margin: 0;
-  flex: 1;
-  text-align: center;
+
+const InputContainer = styled.div`
+  margin: 10px 0;
 `;
-const RightSpace = styled.div`
-  width: 32px;
-`;
-const BoardBtn = styled.button`
-  width: 100%;
-  background: #f5f5f5;
-  border: none;
-  border-radius: 12px;
-  padding: 12px;
-  color: #444;
-  font-size: 15px;
-  margin-bottom: 18px;
-  cursor: pointer;
-`;
-const Notice = styled.div`
-  background: #fafbfc;
-  border-radius: 10px;
-  padding: 16px;
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 18px;
-  text-align: left;
-  line-height: 1.6;
-`;
-const Label = styled.div`
-  font-size: 14px;
-  color: #888;
-  margin-bottom: 6px;
-  margin-top: 18px;
-`;
+
 const Input = styled.input`
   width: 100%;
-  padding: 12px 16px;
-  border: 1.5px solid #e5e5e5;
-  border-radius: 12px;
-  font-size: 16px;
-  background: #fafbfc;
-  margin-bottom: 0;
-  box-sizing: border-box;
-  outline: none;
-  &:focus {
-    border-color: #a48cf0;
-    background: #fff;
-  }
-`;
-const Select = styled.select`
-  width: 100%;
-  padding: 12px 16px;
-  border: 1.5px solid #e5e5e5;
-  border-radius: 12px;
-  font-size: 16px;
-  background: #fafbfc;
-  margin-bottom: 0;
-  box-sizing: border-box;
-  outline: none;
-  &:focus {
-    border-color: #a48cf0;
-    background: #fff;
-  }
-`;
-const BirthRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 18px;
-`;
-const BirthInput = styled.input`
-  width: 60px;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  text-align: center;
-  font-size: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-top: 5px;
+
+  &:focus {
+    outline: none;
+    border-color: #6c5ce7;
+  }
 `;
-const PayRow = styled.div`
+
+const SubmitButton = styled.button`
+  background: ${props => props.disabled ? '#E0E0E0' : '#6c5ce7'};
+  color: ${props => props.disabled ? '#666666' : 'white'};
+  border: none;
+  padding: 12px 24px;
+  border-radius: 4px;
+  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
+  font-size: 16px;
+  margin-top: 20px;
+
+  &:hover {
+    background: ${props => props.disabled ? '#E0E0E0' : '#5b4bc4'};
+  }
+`;
+
+const PaymentSection = styled.div`
   display: flex;
   gap: 10px;
-  margin-bottom: 18px;
+  margin: 20px 0;
 `;
-const PayBtn = styled.button`
+
+const PaymentButton = styled.button`
   flex: 1;
-  background: #f5f5f5;
+  padding: 12px 24px;
   border: none;
-  border-radius: 12px;
-  padding: 12px 0;
-  color: #444;
-  font-size: 15px;
+  border-radius: 4px;
   cursor: pointer;
-`;
-const SubmitBtn = styled.button`
-  width: 100%;
-  background: linear-gradient(90deg, #a48cf0 0%, #6c5ce7 100%);
-  color: #fff;
-  border: none;
-  border-radius: 12px;
-  padding: 16px 0;
-  font-size: 17px;
-  font-weight: 600;
-  margin-top: 18px;
-  cursor: pointer;
+  font-size: 16px;
+  background: ${props => {
+    if (props.disabled) return '#E0E0E0';
+    return props.primary ? '#0064FF' : '#FEE500';
+  }};
+  color: ${props => {
+    if (props.disabled) return '#666666';
+    return props.primary ? 'white' : '#000000';
+  }};
+
+  &:hover {
+    background: ${props => {
+    if (props.disabled) return '#E0E0E0';
+    return props.primary ? '#0052CC' : '#F4DC00';
+  }};
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;

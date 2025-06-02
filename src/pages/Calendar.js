@@ -15,6 +15,7 @@ import {
   parseISO,
 } from "date-fns";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { API_BASE_URL } from '../config';
 import "./Calendar.css";
 
 function Calendar() {
@@ -44,7 +45,7 @@ function Calendar() {
   const fetchEvents = useCallback(async (year, month) => {
     try {
       const response = await fetch(
-        `http://ec2-13-125-219-87.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/calendar?year=${year}&month=${month}`
+        `${API_BASE_URL}/event/calendar?year=${year}&month=${month}`
       );
 
       if (!response.ok) throw new Error("API error");

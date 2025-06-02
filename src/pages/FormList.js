@@ -1,41 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const FILTERS = [
   "전체", "SW융합대학 학생회", "소프트웨어", "컴퓨터공학", "통계", "사이버보안"
 ];
 
-const DUMMY_EVENTS = [
-  {
-    id: 1,
-    name: "새내기배움터",
-    department: "SW융합대학 학생회",
-    startDate: "2025-03-14",
-    endDate: "2025-03-16",
-    total: 5,
-    current: 3,
-    participants: [
-      { id: 1, avatar: "https://randomuser.me/api/portraits/men/1.jpg" },
-      { id: 2, avatar: "https://randomuser.me/api/portraits/women/2.jpg" }
-    ]
-  },
-  {
-    id: 2,
-    name: "SW합창제전",
-    department: "SW융합대학 학생회",
-    startDate: "2025-03-30",
-    endDate: "2025-04-07",
-    total: 25,
-    current: 3,
-    participants: [
-      { id: 3, avatar: "https://randomuser.me/api/portraits/men/3.jpg" },
-      { id: 4, avatar: "https://randomuser.me/api/portraits/women/4.jpg" }
-    ]
-  }
-];
-
 function formatDate(dateStr) {
+  if (!dateStr) return "";
   const d = new Date(dateStr);
   return `${d.getMonth() + 1}월 ${d.getDate()}일`;
 }
@@ -43,12 +16,62 @@ function formatDate(dateStr) {
 const FormList = () => {
   const [filter, setFilter] = useState("전체");
   const [search, setSearch] = useState("");
+  const [events, setEvents] = useState([]);
   const navigate = useNavigate();
 
-  const filteredEvents = DUMMY_EVENTS.filter(ev =>
+  useEffect(() => {
+    async function fetchEvents() {
+      try {
+        console.log("Fetching events...");
+        const res = await axios.get(
+          "http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/get-active"
+        );
+        console.log("Raw API Response:", res.data);
+
+        if (!res.data || !Array.isArray(res.data)) {
+          console.error("Invalid API response format:", res.data);
+          return;
+        }
+
+        const mapped = res.data.map(ev => {
+          console.log("Processing event:", ev);
+          const mappedEvent = {
+            id: ev.eventCode,
+            name: ev.eventName,
+            department: ev.department,
+            startDate: ev.eventStartDate,
+            endDate: ev.eventEndDate,
+            surveyStartDate: ev.surveyStartDate,
+            surveyEndDate: ev.surveyEndDate,
+            total: parseInt(ev.maxParticipants) || 0,
+            current: parseInt(ev.currentParticipants) || 0,
+            description: ev.eventDescription,
+            eventImages: ev.eventImages || [],
+            qrCodeImages: ev.qrCodeImages || []
+          };
+          console.log("Mapped event:", mappedEvent);
+          return mappedEvent;
+        });
+
+        console.log("All mapped events:", mapped);
+        setEvents(mapped);
+      } catch (err) {
+        console.error("이벤트 데이터를 불러오는 데 실패했습니다:", err);
+        console.error("Error details:", err.response?.data || err.message);
+      }
+    }
+
+    fetchEvents();
+  }, []);
+
+  const filteredEvents = events.filter(ev =>
     (filter === "전체" || ev.department === filter) &&
-    ev.name.includes(search)
+    ev.name.toLowerCase().includes(search.toLowerCase())
   );
+
+  console.log("Current filter:", filter);
+  console.log("Current search:", search);
+  console.log("Filtered events:", filteredEvents);
 
   return (
     <Container>
@@ -72,25 +95,27 @@ const FormList = () => {
         ))}
       </FilterBar>
       <EventList>
-        {filteredEvents.map(ev => (
-          <EventCard onClick={() => navigate(`/event/${ev.id}`)}> 
-            <EventTitle>{ev.name}</EventTitle>
-            <EventPeriod>
-              {formatDate(ev.startDate)} ~ {formatDate(ev.endDate)}
-            </EventPeriod>
-            <ProgressRow>
-              <ProgressText>{ev.current}/{ev.total}</ProgressText>
-              <ProgressBar>
-                <ProgressFill width={ev.current / ev.total * 100} color={ev.id === 1 ? '#7ed957' : '#ffd36e'} />
-              </ProgressBar>
-            </ProgressRow>
-            <AvatarRow>
-              {ev.participants.map(p => (
-                <Avatar key={p.id} src={p.avatar} />
-              ))}
-            </AvatarRow>
-          </EventCard>
-        ))}
+        {filteredEvents.length === 0 ? (
+          <NoEventsMessage>등록된 이벤트가 없습니다.</NoEventsMessage>
+        ) : (
+          filteredEvents.map(ev => (
+            <EventCard key={ev.id} onClick={() => navigate(`/form/${ev.id}`)}>
+              <EventTitle>{ev.name}</EventTitle>
+              <EventPeriod>
+                {formatDate(ev.startDate)} ~ {formatDate(ev.endDate)}
+              </EventPeriod>
+              <ProgressRow>
+                <ProgressText>{ev.current}/{ev.total}</ProgressText>
+                <ProgressBar>
+                  <ProgressFill
+                    width={(ev.current / ev.total) * 100}
+                    color={ev.id % 2 === 0 ? '#ffd36e' : '#7ed957'}
+                  />
+                </ProgressBar>
+              </ProgressRow>
+            </EventCard>
+          ))
+        )}
       </EventList>
     </Container>
   );
@@ -98,12 +123,13 @@ const FormList = () => {
 
 export default FormList;
 
-// 스타일
+// 스타일 컴포넌트들
 const Container = styled.div`
   padding: 0 16px 16px 16px;
   background: #fff;
   min-height: 100vh;
 `;
+
 const Header = styled.h2`
   text-align: center;
   margin: 24px 0 16px 0;
@@ -111,9 +137,11 @@ const Header = styled.h2`
   font-weight: 600;
   color: #222;
 `;
+
 const SearchBox = styled.div`
   margin-bottom: 12px;
 `;
+
 const SearchInput = styled.input`
   width: 100%;
   padding: 12px 16px;
@@ -128,12 +156,14 @@ const SearchInput = styled.input`
     background: #fff;
   }
 `;
+
 const FilterBar = styled.div`
   display: flex;
   gap: 8px;
   margin-bottom: 18px;
   overflow-x: auto;
 `;
+
 const FilterButton = styled.button`
   padding: 8px 16px;
   border-radius: 20px;
@@ -144,11 +174,13 @@ const FilterButton = styled.button`
   font-size: 15px;
   cursor: pointer;
 `;
+
 const EventList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 18px;
 `;
+
 const EventCard = styled.div`
   background: #fff;
   border-radius: 16px;
@@ -163,27 +195,32 @@ const EventCard = styled.div`
     box-shadow: 0 4px 16px rgba(108,92,231,0.13);
   }
 `;
+
 const EventTitle = styled.div`
   font-size: 16px;
   font-weight: 600;
   color: #222;
 `;
+
 const EventPeriod = styled.div`
   font-size: 13px;
   color: #888;
   margin-bottom: 4px;
 `;
+
 const ProgressRow = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
 `;
+
 const ProgressText = styled.div`
   font-size: 13px;
   color: #6c5ce7;
   font-weight: 600;
   min-width: 38px;
 `;
+
 const ProgressBar = styled.div`
   flex: 1;
   height: 7px;
@@ -191,6 +228,7 @@ const ProgressBar = styled.div`
   border-radius: 6px;
   overflow: hidden;
 `;
+
 const ProgressFill = styled.div`
   height: 100%;
   width: ${({ width }) => width + "%"};
@@ -198,15 +236,10 @@ const ProgressFill = styled.div`
   border-radius: 6px;
   transition: width 0.3s;
 `;
-const AvatarRow = styled.div`
-  display: flex;
-  margin-top: 6px;
-`;
-const Avatar = styled.img`
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2px solid #fff;
-  margin-right: -8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+
+const NoEventsMessage = styled.div`
+  text-align: center;
+  padding: 20px;
+  color: #888;
+  font-size: 16px;
 `;

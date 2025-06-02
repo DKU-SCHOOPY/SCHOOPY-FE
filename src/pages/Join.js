@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Join.css";
+import { API_BASE_URL } from '../config';
 
 function Join() {
   const navigate = useNavigate();
-  
+
   const [studentNum, setStudentNum] = useState("");
   const [certificationNumber, setCertificationNumber] = useState("");
   const [password, setPassword] = useState("");
@@ -16,66 +17,66 @@ function Join() {
   const [phoneNum, setPhoneNum] = useState("");
 
   const handleEmailCheck = async () => {
-  try {
-    const response = await axios.post(
-      "http://ec2-13-125-219-87.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/auth/email-certification",
-      { studentNum }
-    );
-    alert(`✅ ${response.data.message}`);
-  } catch (error) {
-    const message = error?.response?.data?.message || "네트워크 오류";
-    alert(`❗ ${message}`);
-  }
-};
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/auth/email-certification`,
+        { studentNum }
+      );
+      alert(`✅ ${response.data.message}`);
+    } catch (error) {
+      const message = error?.response?.data?.message || "네트워크 오류";
+      alert(`❗ ${message}`);
+    }
+  };
 
   const handleSendCertificationCode = async () => {
-  try {
-    const response = await axios.post(
-      "http://ec2-13-125-219-87.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/auth/email-certification",
-      { studentNum }
-    );
-    alert(`✅ ${response.data.message}`);
-  } catch (error) {
-    const message = error?.response?.data?.message || "네트워크 오류";
-    alert(`❗ ${message}`);
-  }
-};
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/auth/email-certification`,
+        { studentNum }
+      );
+      alert(`✅ ${response.data.message}`);
+    } catch (error) {
+      const message = error?.response?.data?.message || "네트워크 오류";
+      alert(`❗ ${message}`);
+    }
+  };
 
   const handleCertificationCheck = async () => {
-  try {
-    const response = await axios.post(
-      "http://ec2-13-125-219-87.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/auth/check-certification",
-      { studentNum, certificationNumber }
-    );
-    alert(`✅ ${response.data.message}`);
-    navigate("/login");
-  } catch (error) {
-    const message = error?.response?.data?.message || "네트워크 오류";
-    alert(`❗ ${message}`);
-  }
-};
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/auth/check-certification`,
+        { studentNum, certificationNumber }
+      );
+      alert(`✅ ${response.data.message}`);
+      navigate("/login");
+    } catch (error) {
+      const message = error?.response?.data?.message || "네트워크 오류";
+      alert(`❗ ${message}`);
+    }
+  };
 
   const handleJoin = async () => {
-  try {
-    const response = await axios.post(
-      "http://ec2-13-125-219-87.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/auth/sign-up",
-      {
-        studentNum,
-        password,
-        name,
-        certificationNumber,
-        department,
-        gender,
-        birthDay,
-        phoneNum,
-      }
-    );
-    alert(`✅ ${response.data.message}`);
-  } catch (error) {
-    const message = error?.response?.data?.message || "네트워크 오류";
-    alert(`❗ ${message}`);
-  }
-};
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/auth/sign-up`,
+        {
+          studentNum,
+          password,
+          name,
+          certificationNumber,
+          department,
+          gender,
+          birthDay,
+          phoneNum,
+        }
+      );
+      alert(`✅ ${response.data.message}`);
+    } catch (error) {
+      const message = error?.response?.data?.message || "네트워크 오류";
+      alert(`❗ ${message}`);
+    }
+  };
 
   return (
     <div className="join-container">

@@ -1,76 +1,144 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 
-// 더미 행사 데이터
-const DUMMY_EVENTS = [
-  {
-    id: 1,
-    name: "새내기배움터",
-    participants: [
-      {
-        id: 1,
-        name: "홍길동",
-        major: "소웨 25",
-        avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-        status: "Active now"
-      },
-      // ...생략
-    ]
-  },
-  // ...다른 행사
-];
-
 export default function EventApplicants() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const event = DUMMY_EVENTS.find(ev => ev.id === Number(id));
-  const [participants, setParticipants] = useState(event?.participants || []);
+  const [eventData, setEventData] = useState(null);
+  const [participants, setParticipants] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEventData = async () => {
+      try {
+        console.log("Fetching event data for ID:", id);
+        // 행사 정보 조회
+        const eventResponse = await axios.get(
+          `http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/${id}`
+        );
+
+        console.log("Event Response:", eventResponse.data);
+        if (eventResponse.data.statusCode === "OK") {
+          setEventData(eventResponse.data.data);
+        }
+
+        console.log("Fetching applications for event ID:", id);
+        // 신청자 목록 조회
+        const applicationsResponse = await axios.get(
+          `http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/applications/${id}`
+        );
+
+        console.log("Applications Response:", applicationsResponse.data);
+        if (applicationsResponse.data.statusCode === "OK") {
+          const mappedParticipants = applicationsResponse.data.data.map(app => ({
+            id: app.applicationId,
+            name: app.studentNum.name,
+            major: app.studentNum.department,
+            status: app.isPaymentCompleted ? "입금완료" : "대기중",
+            isStudent: app.isStudent,
+            councilFeePaid: app.councilFeePaid
+          }));
+          console.log("Mapped Participants:", mappedParticipants);
+          setParticipants(mappedParticipants);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        if (error.response) {
+          console.error("Error Response Data:", error.response.data);
+          console.error("Error Response Status:", error.response.status);
+          alert(`데이터를 불러오는데 실패했습니다: ${error.response.data.message || error.response.statusText}`);
+        } else if (error.request) {
+          console.error("Error Request:", error.request);
+          alert("서버로부터 응답을 받지 못했습니다. 네트워크 연결을 확인해주세요.");
+        } else {
+          console.error("Error Message:", error.message);
+          alert("요청 처리 중 오류가 발생했습니다: " + error.message);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchEventData();
+    } else {
+      console.error("No event ID provided");
+      setLoading(false);
+    }
+  }, [id]);
 
   const handleApprove = async (applicationId, isAccept) => {
     try {
-      await axios.post(
-        "http://ec2-13-125-219-87.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/approve",
+      console.log("Sending approve request:", {
+        applicationId: Number(applicationId),
+        choice: isAccept ? "True" : "False"
+      });
+
+      const response = await axios.post(
+        "http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/approve",
         {
-            applicationId: Number(applicationId), // 반드시 숫자!
-            choice: Boolean(isAccept)
-        },
-        { headers: { "Content-Type": "application/json" } }
+          applicationId: Number(applicationId),
+          choice: isAccept ? "True" : "False"
+        }
       );
-      if (isAccept) {
-        alert("신청이 승인되었습니다!");
-        // 승인 시에는 상태만 바꿀 수도 있고, 그대로 둘 수도 있음
+
+      console.log("Approve response:", response.data);
+
+      if (response.data.updatedStatus) {
+        if (isAccept) {
+          alert("신청이 승인되었습니다!");
+          setParticipants(prev => prev.map(p =>
+            p.id === applicationId ? { ...p, status: "승인됨" } : p
+          ));
+        } else {
+          alert("신청이 반려되었습니다.");
+          setParticipants(prev => prev.filter(p => p.id !== applicationId));
+        }
       } else {
-        // 거절 시 리스트에서 제거
-        setParticipants(prev => prev.filter(p => p.id !== applicationId));
+        console.error("Update status failed:", response.data);
+        alert("처리에 실패했습니다.");
       }
     } catch (e) {
-      alert("처리 실패: " + e.message);
+      console.error("API Error:", e);
+      console.error("Error Response:", e.response?.data);
+      console.error("Error Status:", e.response?.status);
+      alert("처리 중 오류가 발생했습니다: " + (e.response?.data?.message || e.message));
     }
   };
+
+  if (loading) return <Container>로딩 중...</Container>;
+  if (!eventData) return <Container>행사 정보를 찾을 수 없습니다.</Container>;
 
   return (
     <Container>
       <TopBar>
         <BackBtn onClick={() => navigate(-1)}>&larr;</BackBtn>
-        <EventTitle>{event?.name}</EventTitle>
+        <EventTitle>{eventData.eventName}</EventTitle>
         <RightSpace />
       </TopBar>
       <UserList>
-        {event?.participants.map(user => (
-          <UserRow key={user.id}>
-            <Avatar src={user.avatar} />
-            <UserInfo>
-              <UserName>{user.major} {user.name}</UserName>
-              <UserStatus>{user.status}</UserStatus>
-            </UserInfo>
-            <ActionButtons>
+        {participants.length === 0 ? (
+          <NoApplicantsMessage>신청자가 없습니다.</NoApplicantsMessage>
+        ) : (
+          participants.map(user => (
+            <UserRow key={user.id}>
+              <UserInfo>
+                <UserName>{user.major} {user.name}</UserName>
+                {/* <UserStatus>
+                  {user.isStudent ? "재학생" : "휴학생"} |
+                  {user.councilFeePaid ? " 학생회비 납부" : " 학생회비 미납"} |
+                  {user.status}
+                </UserStatus> */}
+              </UserInfo>
+              <ActionButtons>
                 <AcceptBtn onClick={() => handleApprove(user.id, true)}>수락</AcceptBtn>
                 <RejectBtn onClick={() => handleApprove(user.id, false)}>거절</RejectBtn>
-            </ActionButtons>
-          </UserRow>
-        ))}
+              </ActionButtons>
+            </UserRow>
+          ))
+        )}
       </UserList>
     </Container>
   );
@@ -117,14 +185,6 @@ const UserRow = styled.div`
   padding: 18px 0 12px 0;
   border-bottom: 1px solid #f2f2f2;
 `;
-const Avatar = styled.img`
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  margin-right: 14px;
-  object-fit: cover;
-  border: 2px solid #f5f5f5;
-`;
 const UserInfo = styled.div`
   flex: 1;
   display: flex;
@@ -163,4 +223,10 @@ const RejectBtn = styled.button`
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
+`;
+const NoApplicantsMessage = styled.div`
+  text-align: center;
+  padding: 20px;
+  color: #888;
+  font-size: 16px;
 `;
