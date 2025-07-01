@@ -22,7 +22,7 @@ export default function Navbar() {
       </NavItem>
 
       {/* 👉 수정된 부분: /form으로 이동 */}
-      <PostButton onClick={() => navigate("/create-post")}>+</PostButton>
+      <PostButton onClick={() => navigate("/createpost")}>+</PostButton>
 
       <NavItem onClick={() => navigate("/mypage")}>
         <User size={24} />
@@ -57,6 +57,7 @@ const NavItem = styled.button`
   border: none;
   cursor: pointer;
   padding: 10px;
+  color: black;
 
   @media (max-width: 600px) {
     padding: 6px;

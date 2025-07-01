@@ -10,16 +10,19 @@ function ChatRoomList() {
   const [chats, setChats] = useState([]);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
-  const currentUser = { userId: "32203027" }; // 임시 userId, 실제론 useSelector 사용
+  const currentUser = { userId: localStorage.getItem("studentNum") }; // 임시 userId, 실제론 useSelector 사용
 
   useEffect(() => {
     if (!currentUser || !currentUser.userId) return;
     const studentId = parseInt(currentUser.userId);
 
-    axios.get(`http://ec2-3-37-86-181.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/chat/rooms/${studentId}`)
+    axios.get(`http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/chat/rooms/${studentId}`)
       .then((res) => {
         const data = res.data.map((room) => {
           const otherUser = room.userA === studentId ? room.userB : room.userA;
+          
+          
+
           return {
             id: room.id,
             name: `${otherUser}`,
@@ -36,15 +39,18 @@ function ChatRoomList() {
   );
 
   return (
-    <div className="chat-container">
-      <h2 className="chat-title">Chat</h2>
-      <input
-        type="text"
-        placeholder="Search"
-        className="chat-search"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+    <div className="container">
+      <h2 className="page-title">채팅</h2>
+
+      <div className="searchbox">
+        <input
+          className="searchinput"
+          placeholder="Search"
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+      </div>
+
       <div className="chat-list">
         {filteredChats.map(chat => (
           <Link
@@ -52,10 +58,12 @@ function ChatRoomList() {
             to={`/chat/room/${chat.id}`}
             state={{ otherUserId: chat.name }} // chat.name = 실제 상대방 ID여야 함
           >
+            
       <div className="chat-item">
         <FaUserCircle className="chat-avatar" />
         <div className="chat-info">
-          <div className="chat-name">{chat.name}</div>
+          <div className="chat-name"></div>
+            {chat.name === "32203027" ? "SW융합대학 학생회" : chat.name}
           <div className="chat-status">{chat.status}</div>
         </div>
       </div>

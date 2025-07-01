@@ -1,8 +1,9 @@
-// Chatting.js
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from '../config';
 import "./Chatting.css";
+import { connectSocket, getSocket, closeSocket } from "../socket"; // socket 모듈 import
 
 function Chatting() {
   const location = useLocation();
@@ -12,13 +13,11 @@ function Chatting() {
   const [message, setMessage] = useState("");
   const [customerId, setCustomerId] = useState(location.state?.otherUserId || null);
 
-  const currentUser = { userId: "32203027" }; // 실제론 useSelector 등으로 유저 정보 가져오기
+  const currentUser = { userId: localStorage.getItem("studentNum") }; // 실제론 useSelector 등으로 유저 정보 가져오기
 
   const fetchMessages = async () => {
     try {
-      const res = await axios.get(
-        `http://ec2-3-37-86-181.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/chat/room/${roomId}`
-      );
+      const res = await axios.get(`${API_BASE_URL}/chat/room/${roomId}`);
       setMessages(res.data);
 
       if (res.data.length > 0 && !customerId) {
@@ -34,44 +33,76 @@ function Chatting() {
     }
   };
 
-  const sendMessage = async () => {
-    if (!message || !customerId) return;
+  const sendMessage = () => {
+  if (!message || !customerId) return;
 
-    try {
-      await axios.post(
-        "http://ec2-3-37-86-181.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/chat/message",
-        {
-          senderId: currentUser.userId,
-          receiverId: customerId,
-          message,
-        }
-      );
-      setMessage("");
-      fetchMessages(); // 전송 후 즉시 새로고침
-    } catch (err) {
-      console.error("메시지 전송 실패", err);
-    }
-  };
+  let socket = getSocket();
 
-  // 채팅방 입장 시 메시지 로딩 + 3초마다 새로고침
+  // 연결 안 돼있으면 연결
+  if (!socket || socket.readyState !== WebSocket.OPEN) {
+    socket = connectSocket(currentUser.userId, customerId);
+    console.log("웹소켓 재연결 시도 중...");
+    socket.onopen = () => {
+      console.log("웹소켓 재연결 완료");
+      socket.send(JSON.stringify({ message, receiverId: customerId }));
+      fetchMessages(); // 전송 후 새로고침
+    };
+    return;
+  }
+
+  // 정상 연결 상태
+  socket.send(JSON.stringify({ message, receiverId: customerId }));
+  setMessage("");
+  fetchMessages();
+};
+
+
   useEffect(() => {
     fetchMessages();
-    const interval = setInterval(fetchMessages, 3000); // 3초마다 새 메시지 확인
+    const interval = setInterval(fetchMessages, 3000);
     return () => clearInterval(interval);
   }, [roomId]);
 
-  // 스크롤 자동 아래로
+  useEffect(() => {
+    if (!customerId) return;
+
+    const ws = connectSocket(currentUser.userId, customerId);
+    ws.onopen = () => {
+      console.log("웹소켓 연결됨");
+    };
+    ws.onmessage = (e) => {
+  console.log("받은 메시지:", e.data);
+  const newMessage = JSON.parse(e.data);
+
+  // 메시지 내용이 유효할 경우에만 추가
+  if (newMessage && newMessage.message) {
+    setMessages(prev => [...prev, {
+      senderId: newMessage.senderId,
+      receiverId: newMessage.receiverId,
+      content: newMessage.message
+    }]);
+  }
+};
+
+    ws.onclose = () => {
+      console.log("웹소켓 연결 종료");
+    };
+
+    return () => closeSocket();
+  }, [customerId]);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  
+
   return (
     <div className="chatting-container">
       <div className="chatting-header">
-        <button onClick={() => window.history.back()} className="back-button">
-          ←
-        </button>
-        <span className="chatting-title">{customerId}</span>
+        <button onClick={() => window.history.back()} className="back-button">←</button>
+        <span className="chatting-title"></span>
+          {customerId === "32203027" ? "SW융합대학 학생회" : customerId}
       </div>
 
       <div className="chatting-body">
@@ -96,9 +127,7 @@ function Chatting() {
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
         />
-        <button className="send-button" onClick={sendMessage}>
-          ✈
-        </button>
+        <button className="send-button" onClick={sendMessage}>✈</button>
       </div>
     </div>
   );

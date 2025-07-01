@@ -17,6 +17,7 @@ import {
   yearsToDays,
 } from "date-fns";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { API_BASE_URL } from '../config';
 import "./Calendar.css";
 
 function Calendar() {
@@ -50,12 +51,12 @@ function Calendar() {
     console.log("토큰 확인:", token);
 
     const response = await axios.get(
-      `http://ec2-3-37-86-181.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/calendar?year=${year}&month=${month}`,
-      {
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-}
+       `${API_BASE_URL}/event/calendar?year=${year}&month=${month}`,
+  //     {
+  // headers: {
+  //   Authorization: `Bearer ${token}`
+  // }
+// }
     );
 
     console.log("응답 전체:", response);
@@ -66,7 +67,7 @@ function Calendar() {
     setEvents(
       data.map((event) => ({
         id: event.eventCode,
-        title: event.eventName,
+        title: event.title,
         start: event.start,
         end: event.end,
         color: "#edebfd",
@@ -184,6 +185,7 @@ function Calendar() {
                       gridColumnStart: dayOffset + 1,
                       gridColumnEnd: `span ${span}`,
                     }}
+                    title={event.title}      // 마우스 오버 시 툴팁으로 제목 보여줌
                   >
                     {event.title}
                   </div>

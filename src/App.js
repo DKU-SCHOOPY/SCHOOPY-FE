@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation  } from "react-router-dom";
 import { useEffect } from 'react';
+import './App.css';
+
 import Welcome from "./pages/Welcome";
 import Select from "./pages/Select";
 import Login from "./pages/Login";
@@ -15,6 +17,7 @@ import Chatting from "./pages/Chatting";
 import Mypage from "./pages/Mypage";
 import Edit from './pages/Edit';
 import Navbar from "./components/Navbar";
+import Alarm from "./pages/Alarm";
 
 import CreatePost from "./pages/CreatePost";
 import CreateForm from "./pages/CreateForm";
@@ -34,7 +37,9 @@ function Layout() {
     /^\/select$/,       // /select
     /^\/login$/,        // /login
     /^\/join$/,         // /join
-    /^\/chat\/room\/[^/]+$/   // /chat/room/:id
+    /^\/chat\/room\/[^/]+$/,   // /chat/room/:id
+    /^\/createpost$/, // /createpost 경로 추가More actions
+    /^\/createform$/ // /createform 경로 추가
   ];
 
   const shouldHideUI = hidePaths.some((pattern) => pattern.test(location.pathname));
@@ -49,16 +54,16 @@ function Layout() {
         <Route path="/home" element={<Home />} />
         <Route path="/formlist" element={<FormList />} />
         <Route path="/event/:id" element={<Event />} />
-        <Route path="/form" element={<Form />} />
+        <Route path="/form/:eventCode" element={<Form />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/chat/room/:roomId" element={<Chatting />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/edit" element={<Edit />} />
-
-        <Route path="/create-post" element={<CreatePost />} />
+        <Route path="/alarm" element={<Alarm />} />
         <Route path="/createform" element={<CreateForm />} />
         <Route path="/addschedule" element={<AddSchedule />} />
+        <Route path="/createpost" element={<CreatePost />} />
       </Routes>
 
       {!shouldHideUI && <Navbar />}

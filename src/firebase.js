@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken } from 'firebase/messaging';
+// import { getMessaging, getToken } from 'firebase/messaging';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAGML3WGxYeTrvCVs6Llw6h46YeFOnSoRg",
@@ -14,33 +14,35 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+// const messaging = getMessaging(app);
 
 
 export const requestPermission = async () => {
-  try {
-    const permission = await Notification.requestPermission();
-    if (permission !== 'granted') {
-      throw new Error("알림 권한 거부됨");
-    }
-  } catch (err) {
-    console.error("알림 권한 요청 실패", err);
-  }
+  // try {
+  //   const permission = await Notification.requestPermission();
+  //   if (permission !== 'granted') {
+  //     throw new Error("알림 권한 거부됨");
+  //   }
+  // } catch (err) {
+  //   console.error("알림 권한 요청 실패", err);
+  // }
+  return;
 };
 
 // 토큰 요청 함수
 export const requestFCMToken = async () => {
-  try {
-    const token = await getToken(messaging, {
-      vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY
-    });
-    return token;
-  } catch (err) {
-    console.error("FCM 토큰 요청 실패", err);
-    return null;
-  }
+  // try {
+  //   const token = await getToken(messaging, {
+  //     vapidKey: process.env.REACT_APP_FIREBASE_VAPID_KEY
+  //   });
+  //   return token;
+  // } catch (err) {
+  //   console.error("FCM 토큰 요청 실패", err);
+  //   return null;
+  // }
+  return null;
 };
 
-export { messaging };
+// export { messaging };
 
 

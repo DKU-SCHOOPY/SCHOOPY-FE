@@ -1,0 +1,91 @@
+/* EventApplicants.css */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 550;
+  margin: 0px 0 25px 0;
+  font-size: 20px;
+  color: #222;
+  flex-shrink: 0;
+}
+.backbtn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #888;
+  cursor: pointer;
+  width: 32px;
+}
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #222;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}
+.rightspace {
+  width: 32px;
+}
+.userlist {
+  margin: 0 12px;
+}
+.userrow {
+  display: flex;
+  align-items: center;
+  padding: 18px 0 12px 0;
+  border-bottom: 1px solid #f2f2f2;
+}
+.userinfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.username {
+  font-size: 16px;
+  font-weight: 500;
+  color: #222;
+}
+.userstatus {
+  font-size: 13px;
+  color: #7c7c7c;
+  margin-top: 2px;
+}
+.actionbuttons {
+  display: flex;
+  gap: 8px;
+}
+.acceptbtn {
+  background: #7ed957;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.rejectbtn {
+  background: #ffd36e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.noapplicants {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+  font-size: 16px;
+}
+.approvedtext {
+  font-size: 14px;
+  font-weight: 500;
+  color: #7ed957;
+  padding: 7px 14px;
+}

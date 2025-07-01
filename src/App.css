@@ -1,12 +1,131 @@
-* {
-  margin: 0;
-  padding: 0;
+/* 공통 스타일 */
+
+/* 화면 틀 */
+.container {
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    padding-left: 5%;
+    padding-right: 5%;
+    font-family: sans-serif;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+/* 페이지 상단 제목 */
+.page-title {
+  font-weight: 550;
+  margin: 0px 0 25px 0;
+  text-align: center;
+  justify-content: center; /* 가운데 정렬 기본 */
+  position: relative; /* 아이콘을 오른쪽에 배치하기 위해 기준 설정 */
+  font-size: 20px;
+  color: #222;
+  flex-shrink: 0;
+}
+
+/* 라벨 (input위) */
+.label {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+/* 텍스트 입력 칸 */
+.longtext,
+.textarea {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
   box-sizing: border-box;
 }
 
-body {
-  font-family: "Arial", sans-serif;
-  background-color: #f5f5f5;
+/* 긴 텍스트 입력 */
+.longtext {
+  resize: none;
+  height: 150px;
+  font-family: sans-serif;
+}
+
+/* 입력 중 색 변경 */
+.searchinput:focus,
+.longtext:focus,
+.textarea:focus {
+  border-color: #a48cf0;
+  background-color: #fff;
+  box-shadow: 0 0 0 2px rgba(106, 90, 249, 0.2);
+}
+
+/* 검색창 */
+
+.searchbox {
+  margin-bottom: 16px;
+}
+
+.searchinput {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #e5e5e5;
+  border-radius: 12px;
+  font-size: 14px;
+  background: #fafbfc;
+  box-sizing: border-box;
+  outline: none;
+}
+
+/* 버튼 */
+.big-button {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  background-color: #6a5af9;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(106, 90, 249, 0.25);
+  transition: background-color 0.2s;
+}
+
+/*필터바*/
+.filter-bar {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-bottom: 4px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE/Edge */
+}
+
+.filter-bar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.filter-button {
+  flex: 0 0 auto;
+  padding: 6px 12px;
+  border-radius: 16px;
+  border: none;
+  background: #f5f5f5;
+  color: #888;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.filter-button.selected {
+  background: #eae6fd;
+  color: #6c5ce7;
 }
 
 .app {

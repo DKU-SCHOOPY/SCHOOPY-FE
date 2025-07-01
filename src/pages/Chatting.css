@@ -4,15 +4,24 @@
     flex-direction: column;
     height: 100vh;
     font-family: sans-serif;
+    position: relative;
+    padding-left: 5%;
+    padding-right: 5%;
   }
   
   .chatting-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: white;
     display: flex;
     align-items: center;
-    padding: 15px;
-    font-weight: bold;
+    padding: 15px 15px;
     color: #1a2c51;
     font-size: 18px;
+    margin-bottom: 20px;
   }
   
   .back-button {
@@ -20,6 +29,7 @@
     border: none;
     font-size: 24px;
     margin-right: 10px;
+    color: black;
     cursor: pointer;
   }
   
@@ -31,15 +41,16 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 12px;
     overflow-y: auto;
     background-color: #fff;
+    padding-top: 60px;
+    padding-bottom: 80px; /* 입력창 가리기 방지 여백 */
   }
   
   .chatting-message {
     max-width: 70%;
     padding: 10px 14px;
-    margin: 6px 12px;
+    margin: 6px 0px;
     border-radius: 18px;
     font-size: 15px;
     word-break: break-word;
@@ -61,11 +72,15 @@
   
   
   .chatting-input-box {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     display: flex;
     align-items: center;
     padding: 15px;
-    
     background: white;
+    box-sizing: border-box;
   }
   
   .chatting-input-box input {

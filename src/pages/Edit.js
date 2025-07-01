@@ -14,13 +14,13 @@ function Edit() {
   };
 
   return (
-    <div className="edit-container">
-      <h2 className="edit-title">개인정보 수정 요청</h2>
+    <div className="container">
+      <h2 className="page-title">개인정보 수정 요청</h2>
 
       <form className="edit-form" onSubmit={handleSubmit}>
-        <label className="edit-label">수정 항목</label>
+        <label className="label">수정 항목</label>
         <select
-          className="edit-select"
+          className="textarea"
           value={field}
           onChange={(e) => setField(e.target.value)}
           required
@@ -29,9 +29,9 @@ function Edit() {
           <option value="전화번호">전화번호</option>
         </select>
 
-        <label className="edit-label">변경 내용</label>
+        <label className="label">변경 내용</label>
         <input
-          className="edit-input"
+          className="textarea"
           type="text"
           placeholder="변경할 내용을 입력하세요"
           value={newValue}
@@ -39,16 +39,16 @@ function Edit() {
           required
         />
 
-        <label className="edit-label">변경 사유</label>
+        <label className="label">변경 사유</label>
         <textarea
-          className="edit-textarea"
+          className="longtext"
           placeholder="변경 사유를 입력하세요"
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           required
         />
 
-        <button className="edit-submit-button" type="submit">제출하기</button>
+        <button className="big-button" type="submit">제출하기</button>
       </form>
     </div>
   );

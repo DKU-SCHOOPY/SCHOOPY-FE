@@ -6,8 +6,8 @@ const Mypage = () => {
   const navigate = useNavigate();
   
   return (
-    <div className="mypage-container">
-      <h2 className="mypage-title">My Page</h2>
+    <div className="container">
+      <h2 className="page-title">My Page</h2>
 
       <div className="mypage-profile">
         <div className="mypage-info">

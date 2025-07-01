@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { API_BASE_URL } from '../config';
 
 const AddSchedule = () => {
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ const AddSchedule = () => {
 
     try {
       const response = await axios.post(
-        "http://ec2-3-37-86-181.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/regist-event",
+        `${API_BASE_URL}/event/regist-event`,
         submitData,
         {
           headers: {
@@ -85,77 +86,63 @@ const AddSchedule = () => {
   };
 
   return (
-    <Container>
-      <Header>일정 추가</Header>
-      <FormSection onSubmit={handleSubmit}>
-        <Label>행사 이름</Label>
-        <Input
-          type="text"
-          name="eventName"
-          placeholder="행사 이름"
-          value={formData.eventName}
-          onChange={handleInputChange}
-          required
-        />
-
-        <Label>학과</Label>
-        <Input
-          type="text"
-          name="department"
-          placeholder="학과"
-          value={formData.department}
-          onChange={handleInputChange}
-          required
-        />
-
-        <Row>
-          <Col>
-            <Label>수요 조사 시작일</Label>
-            <StyledDatePicker
+    <div className="container">
+      <div className="page-title">일정 추가</div>
+      <form className="addschedule-form" onSubmit={handleSubmit}>
+        
+        <div className="addschedule-row">
+          <div className="addschedule-col">
+            <label className="label">수요 조사 시작일</label>
+            <DatePicker
+              className="addschedule-datepicker"
               selected={formData.surveyStartDate}
               onChange={(date) => handleDateChange(date, "surveyStartDate")}
               dateFormat="yyyy-MM-dd"
               placeholderText="시작일 선택"
               required
             />
-          </Col>
-          <Col>
-            <Label>수요 조사 종료일</Label>
-            <StyledDatePicker
+          </div>
+          <div className="addschedule-col">
+            <label className="label">수요 조사 종료일</label>
+            <DatePicker
+              className="addschedule-datepicker"
               selected={formData.surveyEndDate}
               onChange={(date) => handleDateChange(date, "surveyEndDate")}
               dateFormat="yyyy-MM-dd"
               placeholderText="종료일 선택"
               required
             />
-          </Col>
-        </Row>
+          </div>
+        </div>
 
-        <Row>
-          <Col>
-            <Label>행사 시작일</Label>
-            <StyledDatePicker
+        <div className="addschedule-row">
+          <div className="addschedule-col">
+            <label className="addschedule-label">행사 시작일</label>
+            <DatePicker
+              className="addschedule-datepicker"
               selected={formData.eventStartDate}
               onChange={(date) => handleDateChange(date, "eventStartDate")}
               dateFormat="yyyy-MM-dd"
               placeholderText="시작일 선택"
               required
             />
-          </Col>
-          <Col>
-            <Label>행사 종료일</Label>
-            <StyledDatePicker
+          </div>
+          <div className="addschedule-col">
+            <label className="addschedule-label">행사 종료일</label>
+            <DatePicker
+              className="addschedule-datepicker"
               selected={formData.eventEndDate}
               onChange={(date) => handleDateChange(date, "eventEndDate")}
               dateFormat="yyyy-MM-dd"
               placeholderText="종료일 선택"
               required
             />
-          </Col>
-        </Row>
+          </div>
+        </div>
 
-        <Label>최대 수용 인원</Label>
-        <Input
+        <label className="addschedule-label">최대 수용 인원</label>
+        <input
+          className="addschedule-input"
           type="number"
           name="maxParticipants"
           placeholder="최대 수용 인원"
@@ -164,28 +151,29 @@ const AddSchedule = () => {
           required
         />
 
-        <Label>행사 설명</Label>
-        <TextArea
+        <label className="addschedule-label">행사 설명</label>
+        <textarea
+          className="addschedule-textarea"
           name="eventDescription"
-          placeholder="행사 설명을 입력하세요"
+          placeholder="행사 설명 입력"
           value={formData.eventDescription}
           onChange={handleInputChange}
-          required
         />
 
-        <Label>행사 이미지</Label>
-        <Input
+        <label className="addschedule-label">이미지 첨부</label>
+        <input
+          className="addschedule-input"
           type="file"
-          name="eventImages"
-          onChange={handleImageChange}
-          multiple
           accept="image/*"
-          required
+          multiple
+          onChange={handleImageChange}
         />
 
-        <BottomButton type="submit">등록</BottomButton>
-      </FormSection>
-    </Container>
+        <button type="submit" className="addschedule-submit-button">
+          등록
+        </button>
+      </form>
+    </div>
   );
 };
 

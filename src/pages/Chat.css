@@ -1,25 +1,4 @@
 /* Chat.css */
-.chat-container {
-    padding: 20px;
-    font-family: sans-serif;
-  }
-  
-  .chat-title {
-    text-align: center;
-    font-weight: bold;
-    font-size: 24px;
-    color: #1a2c51;
-    margin-bottom: 20px;
-  }
-  
-  .chat-search {
-    width: 100%;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-  }
   
   .chat-list {
     display: flex;
@@ -56,7 +35,7 @@
   }
   
   .chat-name {
-    font-weight: bold;
+    /* font-weight: bold; */
     font-size: 16px;
   }
   

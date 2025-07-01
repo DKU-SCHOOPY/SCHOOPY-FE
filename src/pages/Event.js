@@ -1,166 +1,159 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
-
-// 더미 행사 데이터
-const DUMMY_EVENTS = [
-  {
-    id: 1,
-    name: "새내기배움터",
-    participants: [
-      {
-        id: 1,
-        name: "홍길동",
-        major: "소웨 25",
-        avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-        status: "Active now"
-      },
-      // ...생략
-    ]
-  },
-  // ...다른 행사
-];
+import "./Event.css";
 
 export default function EventApplicants() {
-  const { id } = useParams();
+  const { id: eventId } = useParams(); // id → eventId로 명확히
   const navigate = useNavigate();
-  const event = DUMMY_EVENTS.find(ev => ev.id === Number(id));
-  const [participants, setParticipants] = useState(event?.participants || []);
+  const [participants, setParticipants] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState("");
+
+  const filteredParticipants = participants.filter(p => {
+  const name = p.user?.name || "";
+  const dept = p.user?.department || "";
+  return (
+    name.toLowerCase().includes(searchText.toLowerCase()) ||
+    dept.toLowerCase().includes(searchText.toLowerCase())
+  );
+});
+
+
+  useEffect(() => {
+    const fetchEventData = async () => {
+  try {
+    const res = await axios.get(
+      `http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/submissions/${eventId}`
+    );
+
+    console.log("응답 전체:", res);
+    console.log("응답 데이터:", res.data);
+
+    const data = res.data;
+
+    const submissions = Array.isArray(data)
+      ? data
+      : Array.isArray(data.data)
+        ? data.data
+        : [];
+
+    if (submissions.length === 0) {
+      alert("신청자 없음");
+    }
+
+    const formatted = submissions.map(app => ({
+      applicationId: app.applicationId,
+      user: app.user,
+      isStudent: app.isStudent,
+      councilFeePaid: app.councilFeePaid,
+      isPaymentCompleted: app.isPaymentCompleted
+    }));
+
+    setParticipants(formatted);
+  } catch (e) {
+    console.error("조회 오류:", e);
+    alert("신청자 조회 중 오류");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+    if (eventId) fetchEventData();
+    else setLoading(false);
+  }, [eventId]);
 
   const handleApprove = async (applicationId, isAccept) => {
     try {
-      await axios.post(
-        "http://ec2-3-37-86-181.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/approve",
+      if (!isAccept) {
+      const confirmed = window.confirm("반려하시겠습니까? 신청이 삭제됩니다.");
+      if (!confirmed) return;
+    }
+
+      const res = await axios.post(
+        "http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/approve",
         {
-            applicationId: Number(applicationId), // 반드시 숫자!
-            choice: Boolean(isAccept)
-        },
-        { headers: { "Content-Type": "application/json" } }
+          applicationId: Number(applicationId),
+          choice: isAccept ? "True" : "False"
+        }
       );
-      if (isAccept) {
-        alert("신청이 승인되었습니다!");
-        // 승인 시에는 상태만 바꿀 수도 있고, 그대로 둘 수도 있음
-      } else {
-        // 거절 시 리스트에서 제거
-        setParticipants(prev => prev.filter(p => p.id !== applicationId));
-      }
-    } catch (e) {
-      alert("처리 실패: " + e.message);
+
+      console.log("서버 응답:", res.data);
+
+      if (res.data.updatedStatus === true && isAccept) {
+  alert("승인 완료");
+
+  setParticipants(prev =>
+    prev.map(p =>
+      p.applicationId === applicationId
+        ? { ...p, isPaymentCompleted: true }
+        : p
+    )
+  );
+} else if (res.data.updatedStatus === false && !isAccept) {
+  alert("반려 완료");
+
+  setParticipants(prev =>
+    prev.filter(p => p.applicationId !== applicationId)
+  );
+} else {
+  alert("처리 실패");
+  console.log("응답 이상:", res.data);
+}
+
+    } catch (err) {
+      console.error("승인 처리 오류:", err);
+      alert("서버 오류");
     }
   };
 
   return (
-    <Container>
-      <TopBar>
-        <BackBtn onClick={() => navigate(-1)}>&larr;</BackBtn>
-        <EventTitle>{event?.name}</EventTitle>
-        <RightSpace />
-      </TopBar>
-      <UserList>
-        {event?.participants.map(user => (
-          <UserRow key={user.id}>
-            <Avatar src={user.avatar} />
-            <UserInfo>
-              <UserName>{user.major} {user.name}</UserName>
-              <UserStatus>{user.status}</UserStatus>
-            </UserInfo>
-            <ActionButtons>
-                <AcceptBtn onClick={() => handleApprove(user.id, true)}>수락</AcceptBtn>
-                <RejectBtn onClick={() => handleApprove(user.id, false)}>거절</RejectBtn>
-            </ActionButtons>
-          </UserRow>
-        ))}
-      </UserList>
-    </Container>
-  );
-}
+  <div className="container">
+    <div className="topbar">
+      <button className="backbtn" onClick={() => navigate(-1)}>&larr;</button>
+      <h2 className="title">신청자 목록</h2>
+      <div className="rightspace" />
+    </div>
+      <div className="searchbox">
+        <input
+          className="searchinput"
+          type="text"
+          placeholder="이름 검색"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+      </div>
+      <div className="userlist">
+      {filteredParticipants.length === 0 ? (
+        <div className="noapplicants">신청자가 없습니다.</div>
+      ) : (
+        filteredParticipants.map(p => (
+          <div key={p.applicationId} className="userrow">
+            <div className="userinfo">
+              <div className="username">{p.user?.name}</div>
+              <div className="userstatus">
+                {p.isStudent ? "재학생" : "휴학생"} |
+                {p.councilFeePaid ? " 학생회비 납부" : " 학생회비 미납"} |
+                {p.isPaymentCompleted ? " 입금완료" : " 대기중"}
+              </div>
+            </div>
+            <div className="actionbuttons">
+              {p.isPaymentCompleted ? (
+                <div className="approvedtext">승인완료</div>
+              ) : (
+                <>
+                  <button className="acceptbtn" onClick={() => handleApprove(p.applicationId, true)}>승인</button>
+                  <button className="rejectbtn" onClick={() => handleApprove(p.applicationId, false)}>반려</button>
+                </>
+              )}
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  </div>
+);
 
-// 스타일
-const Container = styled.div`
-  padding: 0 0 80px 0;
-  background: #fff;
-  min-height: 100vh;
-  position: relative;
-`;
-const TopBar = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 28px 20px 18px 20px;
-`;
-const BackBtn = styled.button`
-  background: none;
-  border: none;
-  font-size: 22px;
-  color: #888;
-  cursor: pointer;
-  width: 32px;
-`;
-const EventTitle = styled.h2`
-  font-size: 18px;
-  font-weight: 600;
-  color: #222;
-  margin: 0;
-  flex: 1;
-  text-align: center;
-`;
-const RightSpace = styled.div`
-  width: 32px;
-`;
-const UserList = styled.div`
-  margin: 0 16px;
-`;
-const UserRow = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 18px 0 12px 0;
-  border-bottom: 1px solid #f2f2f2;
-`;
-const Avatar = styled.img`
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  margin-right: 14px;
-  object-fit: cover;
-  border: 2px solid #f5f5f5;
-`;
-const UserInfo = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-`;
-const UserName = styled.div`
-  font-size: 16px;
-  font-weight: 500;
-  color: #222;
-`;
-const UserStatus = styled.div`
-  font-size: 13px;
-  color: #7c7c7c;
-  margin-top: 2px;
-`;
-const ActionButtons = styled.div`
-  display: flex;
-  gap: 8px;
-`;
-const AcceptBtn = styled.button`
-  background: #7ed957;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 7px 14px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-`;
-const RejectBtn = styled.button`
-  background: #ffd36e;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 7px 14px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-`;
+}

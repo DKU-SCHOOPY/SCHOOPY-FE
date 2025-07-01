@@ -1,34 +1,11 @@
-.edit-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-  background-color: #fff;
-  min-height: 100vh;
-  font-family: sans-serif;
-}
-
-.edit-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin-bottom: 40px;
-}
-
 .edit-form {
   width: 100%;
-  max-width: 360px;
   display: flex;
   flex-direction: column;
 }
 
-.edit-label {
-  font-size: 14px;
-  color: #333;
-  margin-bottom: 8px;
-}
 
-.edit-select,
+/* .edit-select,
 .edit-input,
 .edit-textarea {
   width: 100%;
@@ -38,7 +15,6 @@
   border-radius: 12px;
   margin-bottom: 24px;
   outline: none;
-  background-color: #f9f9f9;
   transition: border-color 0.2s, box-shadow 0.2s;
   font-family: sans-serif;
   box-sizing: border-box;
@@ -47,7 +23,7 @@
 .edit-input:focus,
 .edit-select:focus,
 .edit-textarea:focus {
-  border-color: #6a5af9;
+  border-color: #a48cf0;
   background-color: #fff;
   box-shadow: 0 0 0 2px rgba(106, 90, 249, 0.2);
 }
@@ -58,6 +34,7 @@
 }
 
 .edit-submit-button {
+  align-items: center;
   padding: 15px;
   font-size: 16px;
   font-weight: bold;
@@ -72,4 +49,4 @@
 
 .edit-submit-button:hover {
   background-color: #584af5;
-}
+} */
