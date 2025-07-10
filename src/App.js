@@ -23,6 +23,11 @@ import CreatePost from "./pages/CreatePost";
 import CreateForm from "./pages/CreateForm";
 import AddSchedule from "./pages/AddSchedule";
 
+import KakaoCallback from "./pages/KakaoCallback";
+import NaverCallback from "./pages/NaverCallback";
+import KakaoLinkCallback from "./pages/KakaoLinkCallback";
+import NaverLinkCallback from "./pages/NaverLinkCallback";
+
 import { messaging } from './firebase';
 import { getToken } from 'firebase/messaging';
 import axios from 'axios';
@@ -63,7 +68,12 @@ function Layout() {
         <Route path="/alarm" element={<Alarm />} />
         <Route path="/createform" element={<CreateForm />} />
         <Route path="/addschedule" element={<AddSchedule />} />
-        <Route path="/createpost" element={<CreatePost />} />
+        <Route path="/createpost" element={<CreatePost />} /> 
+        <Route path="/oauth2/authorization/kakao" element={<KakaoCallback />} />
+        <Route path="/oauth2/authorization/naver" element={<NaverCallback />} />
+        <Route path="/oauth2/authorization/kakao/link" element={<KakaoLinkCallback />} />
+        <Route path="/oauth2/authorization/naver/link" element={<NaverLinkCallback />} />
+
       </Routes>
 
       {!shouldHideUI && <Navbar />}

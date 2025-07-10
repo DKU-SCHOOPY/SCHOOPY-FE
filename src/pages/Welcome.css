@@ -59,7 +59,7 @@
   @media (max-width: 650px){
     .welcome-container {
       overflow-x: hidden;
-      height: 90vh;
+      height: 83vh;
     }
     .welcome-content {
       flex-direction: column;

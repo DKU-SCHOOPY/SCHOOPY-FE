@@ -5,6 +5,7 @@ import { API_BASE_URL } from '../config';
 import "./Login.css";
 import { requestPermission, requestFCMToken } from "../firebase"; // firebase 설정에서 import
 import { connectSocket } from "../socket";
+import { KAKAO_AUTH_URL, NAVER_AUTH_URL } from './OAuth';
 
 function Login() {
   const navigate = useNavigate();
@@ -62,12 +63,11 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
+    <div className="container">
       <div className="login-text-container">
-        <h2 className="login-title">로그인하기</h2>
+        <h2 className="page-title">로그인하기</h2>
         <p className="login-subtitle">
-          학번과 <br />
-          비밀번호를 입력해주세요
+          학번과 비밀번호를 입력해주세요
         </p>
       </div>
       <div className="login-button-container">
@@ -86,12 +86,26 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button className="login-forgot">Forgot Password?</button>
-        <button className="login-button" onClick={handleLogin}>
-          로그인
+
+        <button className="login-button" onClick={handleLogin}>로그인
         </button>
-        <button className="login-button" onClick={() => navigate("/join")}>
-          회원가입
+        <button className="login-button" onClick={() => navigate("/join")}>회원가입
         </button>
+
+        <div className="login-divider">
+          <span>또는 소셜 로그인</span>
+        </div>
+
+
+        <div className="login-sns-container">
+        <a href={KAKAO_AUTH_URL} className="kakaobtn">
+          <img src={process.env.PUBLIC_URL + '/kakao_phone.png'} />
+        </a>
+        <a href={NAVER_AUTH_URL} className="naverbtn">
+          <img src={process.env.PUBLIC_URL + "/naver_phone.png"} alt="네이버 로그인" />
+        </a>
+        </div>
+
       </div>
     </div>
   );

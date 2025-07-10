@@ -8,7 +8,7 @@
   }
   
   .login-text-container {
-    width: 80%;
+    width: 100%;
     text-align: center;
   }
   
@@ -19,9 +19,9 @@
   }
   
   .login-subtitle {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: gray;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     line-height: 2;
   }
   
@@ -29,10 +29,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 
   .textarea {
+    width: 80%;
     margin-bottom: 15px;
   }
 
@@ -40,22 +41,70 @@
   .login-forgot {
     color: #6a5af9;
     text-decoration: none;
-    margin-bottom: 80px;
+    margin-bottom: 50px;
     border: none;
     cursor: pointer;
     background: white;
   }
   
   .login-button {
-    width: 200px;
-    padding: 15px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 15px;
-    background: #6a5af9;
-    color: white;
-    cursor: pointer;
-    margin: 10px 0;
+    width: 80%;
+  padding: 13px;
+  font-size: 15px;
+  color: white;
+  background-color: #6a5af9;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(106, 90, 249, 0.25);
+  transition: background-color 0.2s;
+  margin-bottom: 10px;
   }
   
+ .login-divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 10px 0;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #888;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #ccc;
+}
+
+.login-divider::before {
+  margin-right: 10px;
+}
+
+.login-divider::after {
+  margin-left: 10px;
+}
+
+.login-sns-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.kakaobtn,
+.naverbtn {
+  width: 80%;              /* login-button과 동일한 너비 */
+  display: block;
+  margin-bottom: 10px;
+}
+
+.kakaobtn img,
+.naverbtn img {
+  width: 100%;             /* 부모 a 태그 기준으로 채우기 */
+  height: auto;
+  display: block;
+}
+
+

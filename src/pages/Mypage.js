@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Mypage.css';
+import { KAKAO_LINK_URL, NAVER_LINK_URL } from "./OAuth";
 
 const Mypage = () => {
   const navigate = useNavigate();
@@ -33,10 +34,23 @@ const Mypage = () => {
           </div>
         </div>
       </div>
-
       <button className="edit-button" onClick={() => navigate('/edit')}>
       개인정보 수정 요청
-    </button>
+      </button>
+
+      <div className="login-divider">
+        <span>SNS계정 연동하여 간편하게 로그인하기</span>
+      </div>
+
+      <div className="link-container">
+        <a href={KAKAO_LINK_URL} className="kakaolink">
+          <img src={process.env.PUBLIC_URL + "/kakao_link.png"} alt="카카오 연동" />
+        </a>
+        <a href={NAVER_LINK_URL} className="naverlink">
+          <img src={process.env.PUBLIC_URL + "/naver_link.png"} alt="네이버 연동" />
+        </a>
+      </div>
+
     </div>
   );
 };
