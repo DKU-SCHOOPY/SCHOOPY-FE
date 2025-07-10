@@ -133,8 +133,8 @@ export default function FormPage() {
                 alt={`미리보기 ${idx + 1}`}
                 style={{
                   width: "100%",
-                  height: "100px",
-                  objectFit: "cover",
+                  maxHeight: "180px",
+                  objectFit: "contain",
                   borderRadius: "10px",
                   boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
                 }}
