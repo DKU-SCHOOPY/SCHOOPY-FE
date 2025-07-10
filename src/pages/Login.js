@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_BASE_URL } from '../config';
+import { REACT_APP_API_BASE_URL } from '../config';
 import "./Login.css";
 import { requestPermission, requestFCMToken } from "../firebase"; // firebase 설정에서 import
 import { connectSocket } from "../socket";
@@ -25,7 +25,7 @@ function Login() {
       //   return;
       // }
       const response = await axios.post(
-        `${API_BASE_URL}/auth/sign-in`,
+        `${REACT_APP_API_BASE_URL}/auth/sign-in`,
         {
           studentNum,
           password
