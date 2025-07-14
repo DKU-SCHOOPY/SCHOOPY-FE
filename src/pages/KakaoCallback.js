@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
-import { REACT_APP_API_BASE_URL } from "../config";
+import { API_BASE_URL } from '../config';
 
 const KakaoCallback = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const KakaoCallback = () => {
     const kakaoLogin = async () => {
       try {
         const response = await axios.get(
-          `${REACT_APP_API_BASE_URL}/oauth/kakao/callback`,
+          `${API_BASE_URL}/oauth/kakao/callback`,
           {
             params: { code, state },
             headers: {

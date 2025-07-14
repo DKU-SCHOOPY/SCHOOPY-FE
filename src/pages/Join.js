@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from '../config';
+import { useNavigate } from "react-router-dom";
 import "./Join.css";
 
 function Join() {
@@ -109,10 +109,10 @@ function Join() {
 
       <div className="input-row">
         <select className="textarea" value={department} onChange={(e) => setDepartment(e.target.value)}>
-          <option value="software">소프트웨어학과</option>
-          <option value="computer">컴퓨터공학과</option>
-          <option value="cyber">사이버보안학과</option>
-          <option value="data">통계데이터사이언스학과</option>
+          <option value="소프트웨어학과">소프트웨어학과</option>
+          <option value="컴퓨터공학과">컴퓨터공학과</option>
+          <option value="사이버보안학과">사이버보안학과</option>
+          <option value="통계데이터사이언스학과">통계데이터사이언스학과</option>
         </select>
       </div>
 

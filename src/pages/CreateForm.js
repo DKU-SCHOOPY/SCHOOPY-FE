@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from '../config';
 import jsQR from "jsqr";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from '../config';
 import { useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "../config";
 
 const KakaoLinkCallback = () => {
   const code = new URL(window.location.href).searchParams.get("code");
@@ -10,6 +10,9 @@ const KakaoLinkCallback = () => {
 
   useEffect(() => {
     const sendLinkRequest = async () => {
+
+      <p>연동 중입니다... 잠시만 기다려주세요.</p>
+
       try {
         const studentNum = localStorage.getItem("studentNum");
 
@@ -21,9 +24,11 @@ const KakaoLinkCallback = () => {
 
         
         console.log("카카오 연동 완료", res.data);
+        alert("✅ 카카오 연동이 완료되었습니다");
         navigate("/mypage");
       } catch (err) {
         console.error("카카오 연동 실패", err);
+        alert("❌ 연동 중 오류가 발생했습니다. 다시 시도해주세요");
         navigate("/mypage");
       }
     };

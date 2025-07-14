@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from '../config';
 import { useNavigate } from "react-router-dom";
-import { REACT_APP_API_BASE_URL } from "../config";
 
 const NaverLinkCallback = () => {
   const code = new URL(window.location.href).searchParams.get("code");
@@ -13,7 +13,7 @@ const NaverLinkCallback = () => {
       try {
         const studentNum = localStorage.getItem("studentNum");
 
-        const res = await axios.post(`${REACT_APP_API_BASE_URL}/oauth/naver/link`, {
+        const res = await axios.post(`${API_BASE_URL}/oauth/naver/link`, {
           studentNum,
           code,
           state,
