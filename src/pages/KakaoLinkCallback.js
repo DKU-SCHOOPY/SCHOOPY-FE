@@ -19,6 +19,7 @@ const KakaoLinkCallback = () => {
           state,
         });
 
+        
         console.log("카카오 연동 완료", res.data);
         navigate("/mypage");
       } catch (err) {

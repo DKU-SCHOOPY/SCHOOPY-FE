@@ -13,7 +13,7 @@ const KakaoCallback = () => {
     const kakaoLogin = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_API_BASE_URL}/oauth/kakao/callback`,
+          `${process.env.API_BASE_URL}/oauth/kakao/callback`,
           {
             params: { code, state },
             headers: {
