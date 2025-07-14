@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import { API_BASE_URL } from '../config';
 import {
   startOfMonth,
   endOfMonth,
@@ -17,7 +18,6 @@ import {
   yearsToDays,
 } from "date-fns";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { API_BASE_URL } from '../config';
 import "./Calendar.css";
 
 function Calendar() {
@@ -27,6 +27,13 @@ function Calendar() {
   const now = new Date();
   const [currentDate, setCurrentDate] = useState(now);
   const [events, setEvents] = useState([]);
+
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [selectedDepartments, setSelectedDepartments] = useState([]);
+
+  //const departmentList = Array.from(new Set(events.map((event) => event.department))).filter(Boolean);
+  const departmentList = ["컴퓨터공학", "전자공학", "기계공학", "경영학"];
+
 
   // 초기 URL이 없을 경우 현재 날짜로 URL 설정
   useEffect(() => {
@@ -44,35 +51,78 @@ function Calendar() {
   }, []);
 
   // URL 연/월에 맞춰 이벤트 불러오기
+//   const fetchEvents = useCallback(async (year, month) => {
+//   try {
+
+//     const token = localStorage.getItem("accessToken");
+//     console.log("토큰 확인:", token);
+
+//     const response = await axios.get(
+// //        `${API_BASE_URL}/event/calendar?year=${year}&month=${month}`,
+// //   //     {
+// //   // headers: {
+// //   //   Authorization: `Bearer ${token}`
+// //   // }
+// // // }
+// //     );
+
+//     console.log("응답 전체:", response);
+//     console.log("응답 데이터:", response.data);
+
+//     const data = response.data;
+    
+//     setEvents(
+//       data.map((event) => ({
+//         id: event.eventCode,
+//         title: event.title,
+//         start: event.start,
+//         end: event.end,
+//         department: event.department,
+//         color: "#edebfd",
+//       }))
+    
+//     );
+//   } catch (err) {
+//     console.error("일정 로드 실패:", err.message);
+//   }
+// }, []);
+
   const fetchEvents = useCallback(async (year, month) => {
   try {
+    // 임의 일정 데이터
+    const mockData = [
+      {
+        eventCode: "ev1",
+        title: "컴퓨터공학 세미나",
+        start: `${year}-${month.toString().padStart(2, "0")}-10`,
+        end: `${year}-${month.toString().padStart(2, "0")}-12`,
+        department: "컴퓨터공학",
+      },
+      {
+        eventCode: "ev2",
+        title: "전자공학 발표",
+        start: `${year}-${month.toString().padStart(2, "0")}-15`,
+        end: `${year}-${month.toString().padStart(2, "0")}-15`,
+        department: "전자공학",
+      },
+      {
+        eventCode: "ev3",
+        title: "기계공학 워크숍",
+        start: `${year}-${month.toString().padStart(2, "0")}-18`,
+        end: `${year}-${month.toString().padStart(2, "0")}-20`,
+        department: "기계공학",
+      },
+    ];
 
-    const token = localStorage.getItem("accessToken");
-    console.log("토큰 확인:", token);
-
-    const response = await axios.get(
-       `${API_BASE_URL}/event/calendar?year=${year}&month=${month}`,
-  //     {
-  // headers: {
-  //   Authorization: `Bearer ${token}`
-  // }
-// }
-    );
-
-    console.log("응답 전체:", response);
-    console.log("응답 데이터:", response.data);
-
-    const data = response.data;
-    
     setEvents(
-      data.map((event) => ({
+      mockData.map((event) => ({
         id: event.eventCode,
         title: event.title,
         start: event.start,
         end: event.end,
+        department: event.department,
         color: "#edebfd",
       }))
-    
     );
   } catch (err) {
     console.error("일정 로드 실패:", err.message);
@@ -100,7 +150,7 @@ function Calendar() {
 
     return (
       <div className="header-top-row">
-        <button className="menu-button">☰</button>
+        <button className="menu-button" onClick={() => setShowSidebar(true)}>☰</button>
         <div className="nav-compact">
           <span className="month">{month}</span>
           <span className="year">{year}</span>
@@ -131,6 +181,10 @@ function Calendar() {
     const rows = [];
     let days = [];
     let day = startDate;
+
+    const filteredEvents = events.filter((event) =>
+      selectedDepartments.length === 0 || selectedDepartments.includes(event.department)
+    );
 
     while (day <= endDate) {
       const currentRowStart = day;
@@ -163,7 +217,7 @@ function Calendar() {
         <div key={currentRowStart} className="week-row">
           <div className="week-grid">{days}</div>
           <div className="event-row">
-            {events.map((event) => {
+            {filteredEvents.map((event) => {
               const eventStart = parseISO(event.start);
               const eventEnd = parseISO(event.end);
               const isStartInWeek = isWithinInterval(eventStart, {
@@ -202,8 +256,61 @@ function Calendar() {
     return <div className="cells-container">{rows}</div>;
   };
 
+//   const renderSidebar = () => {
+//   if (!showSidebar) return null;
+
+//   return (
+//     <div className="sidebar-backdrop" onClick={() => setShowSidebar(false)}>
+//       <div className="sidebar" onClick={(e) => e.stopPropagation()}>
+//         <h3>학과 필터</h3>
+//         {departmentList.map((dept) => (
+//           <label key={dept} className="checkbox-label">
+//             <input
+//               type="checkbox"
+//               value={dept}
+//               checked={selectedDepartments.includes(dept)}
+//               onChange={(e) => {
+//                 const checked = e.target.checked;
+//                 setSelectedDepartments((prev) =>
+//                   checked ? [...prev, dept] : prev.filter((d) => d !== dept)
+//                 );
+//               }}
+//             />
+//             {dept}
+//           </label>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+
+
   return (
     <div className="calendar-container">
+      {showSidebar && (
+      <div className="sidebar-backdrop" onClick={() => setShowSidebar(false)}>
+        <div className="sidebar" onClick={(e) => e.stopPropagation()}>
+          <h3>학과 필터</h3>
+          {departmentList.map((dept) => (
+            <label key={dept} className="checkbox-label">
+              <input
+                type="checkbox"
+                value={dept}
+                checked={selectedDepartments.includes(dept)}
+                onChange={(e) => {
+                  const checked = e.target.checked;
+                  setSelectedDepartments((prev) =>
+                    checked ? [...prev, dept] : prev.filter((d) => d !== dept)
+                  );
+                }}
+              />
+              {dept}
+            </label>
+          ))}
+        </div>
+      </div>
+    )}
       {renderHeader()}
       <div style={{ marginTop: "15px" }}>
         {renderDays()}
