@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from '../config';
+import FilterBar from "../components/FilterBar";
 import './FormList.css';
 
 const FILTERS = [
@@ -73,60 +75,55 @@ const FormList = () => {
   console.log("Current search:", search);
   console.log("Filtered events:", filteredEvents);
 
-  return (
+return (
     <div className="container">
-  <h2 className="page-title">신청 폼 목록</h2>
-  <div className="searchbox">
-    <input
-      className="searchinput"
-      placeholder="Search"
-      value={search}
-      onChange={(e) => setSearch(e.target.value)}
-    />
-  </div>
-  <div className="filter-bar">
-    {FILTERS.map((f) => (
-      <button
-        key={f}
-        className={`filter-button ${filter === f ? "selected" : ""}`}
-        onClick={() => setFilter(f)}
-      >
-        {f}
-      </button>
-    ))}
-  </div>
-  <div className="event-list">
-    {filteredEvents.length === 0 ? (
-      <div className="no-events">등록된 이벤트가 없습니다.</div>
-    ) : (
-      filteredEvents.map((ev) => (
-        <div
-          key={ev.id}
-          className="event-card"
-          onClick={() => navigate(`/event/${ev.id}`)}
-        >
-          <div className="event-title">{ev.name}</div>
-          <div className="event-period">
-            {formatDate(ev.startDate)} ~ {formatDate(ev.endDate)}
-          </div>
-          <div className="progress-row">
-            <div className="progress-text">{ev.current}/{ev.total}</div>
-            <div className="progress-bar">
-              <div
-                className="progress-fill"
-                style={{
-                  width: `${(ev.current / ev.total) * 100}%`,
-                  background: ev.id % 2 === 0 ? "#ffd36e" : "#7ed957",
-                }}
-              />
+      <h2 className="page-title">신청 폼 목록</h2>
+
+      <div className="searchbox">
+        <input
+          className="searchinput"
+          placeholder="Search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
+      {/* 필터바 컴포넌트 적용 */}
+      <FilterBar filters={FILTERS} selected={filter} onSelect={setFilter} />
+
+      <div className="event-list">
+        {filteredEvents.length === 0 ? (
+          <div className="no-events">등록된 이벤트가 없습니다.</div>
+        ) : (
+          filteredEvents.map((ev) => (
+            <div
+              key={ev.id}
+              className="event-card"
+              onClick={() => navigate(`/event/${ev.id}`)}
+            >
+              <div className="event-title">{ev.name}</div>
+              <div className="event-period">
+                {formatDate(ev.startDate)} ~ {formatDate(ev.endDate)}
+              </div>
+              <div className="progress-row">
+                <div className="progress-text">{ev.current}/{ev.total}</div>
+                <div className="progress-bar">
+                  <div
+                    className="progress-fill"
+                    style={{
+                      width: `${(ev.current / ev.total) * 100}%`,
+                      background: ev.id % 2 === 0 ? "#ffd36e" : "#7ed957",
+                    }}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      ))
-    )}
-  </div>
-</div>
+          ))
+        )}
+      </div>
+    </div>
   );
-}
+};
+
 
 export default FormList;
