@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
+import { REACT_APP_API_BASE_URL } from "../config";
 
 const KakaoCallback = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const KakaoCallback = () => {
     const kakaoLogin = async () => {
       try {
         const response = await axios.get(
-          `${process.env.API_BASE_URL}/oauth/kakao/callback`,
+          `${REACT_APP_API_BASE_URL}/oauth/kakao/callback`,
           {
             params: { code, state },
             headers: {
@@ -23,14 +24,16 @@ const KakaoCallback = () => {
           }
         );
 
-        console.log("✅ 소셜 로그인 성공", response.data);
+        console.log("KAKAO CLIENT_ID:", process.env.REACT_APP_REST_API_KEY_KAKAO);
+        console.log("KAKAO REDIRECT:", process.env.REACT_APP_REDIRECT_URL_KAKAO);
 
-        // 사용자 정보 저장
-        localStorage.setItem("name", response.data.account.kakaoName);
+        console.log("✅ 소셜 로그인 성공", response.data);
 
         // 로그인 완료 후 페이지 이동
         navigate("/home");
       } catch (error) {
+        console.log("KAKAO CLIENT_ID:", process.env.REACT_APP_REST_API_KEY_KAKAO);
+        console.log("KAKAO REDIRECT:", process.env.REACT_APP_REDIRECT_URL_KAKAO);
         console.error("❌ 소셜 로그인 실패", error);
         navigate("/login");
       }

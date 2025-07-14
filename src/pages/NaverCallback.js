@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_BASE_URL } from "../config";
+import { REACT_APP_API_BASE_URL } from "../config";
 
 function NaverCallback() {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ function NaverCallback() {
       try {
         // code, state만 백엔드에 전달
         const response = await axios.get(
-          `${API_BASE_URL}/oauth/naver/callback?code=${code}&state=${state}`
+          `${REACT_APP_API_BASE_URL}/oauth/naver/callback?code=${code}&state=${state}`
         );
 
         // 백엔드에서 로그인 처리 후 결과 반환
