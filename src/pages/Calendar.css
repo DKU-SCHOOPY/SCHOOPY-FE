@@ -17,6 +17,7 @@
     border: none;
     cursor: pointer;
     color: #6a5af9;
+    margin-left: 8px;
   }
   
   .nav-compact {
@@ -99,8 +100,15 @@
     grid-auto-rows: 14px;
     row-gap: 1px;
     overflow: visible;
+    cursor: pointer;
   }
-  
+
+  .event-cell {
+    flex: 1;
+    cursor: pointer;
+    min-height: 24px;
+  }
+
   .event-block {
     font-size: 0.65rem;
     padding: 0px 6px;
@@ -171,4 +179,76 @@
   margin: 0;
 }
 
-  
+/* Calendar.css */
+
+.popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  max-height: 60vh;
+  overflow-y: auto;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+.popup h4 {
+  margin-top: 0;
+}
+
+.popup-event {
+  padding: 8px;
+  background: #f0f0ff;
+  margin: 5px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.popup-event:hover {
+  background: #d9d9ff;
+}
+.day-cell-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cell-event-space {
+  height: 32px; /* 일정이 들어갈 여백 높이 */
+  width: 100%;
+}
+.calendar-day-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+
+.event-placeholder {
+  height: 32px; /* 또는 일정 예상 높이 */
+  width: 100%;
+}
+
+.day-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid transparent;
+  padding-bottom: 4px;
+}

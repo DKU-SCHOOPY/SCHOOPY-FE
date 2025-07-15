@@ -3,16 +3,6 @@
   flex-direction: column;
 }
 
-.back-button {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  position: absolute;
-  top: 20px;
-  left: 20px;
-}
-
 .qr-section {
   margin: 20px 0;
   display: flex;

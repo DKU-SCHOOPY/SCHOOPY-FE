@@ -1,0 +1,99 @@
+
+.department-profile {
+  display: flex;
+  align-items: center;
+}
+
+.department-image {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+}
+
+.department-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+
+.event-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+.event-image {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.event-meta {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.2;
+  margin-bottom: 10px;
+  border-left: 4px solid #996aea;
+  padding-left: 16px;
+}
+
+.event-description p {
+  margin-bottom: 14px;
+  line-height: 1.2;
+  font-size: 16px;
+}
+
+.carousel {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 22px 0;
+  overflow: hidden;
+  text-align: center;
+}
+
+.carousel-image {
+  width: 96%;
+  object-fit: contain;
+}
+
+/* 버튼 숨김 기본값 */
+.carousel-btn {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+/* 마우스 올렸을 때만 보이도록 */
+.carousel:hover .carousel-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.7);
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0px 8px;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  z-index: 10;
+}
+
+.carousel-btn.left {
+  left: 13px;
+}
+
+.carousel-btn.right {
+  right: 13px;
+}

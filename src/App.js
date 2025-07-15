@@ -22,6 +22,7 @@ import Alarm from "./pages/Alarm";
 import CreatePost from "./pages/CreatePost";
 import CreateForm from "./pages/CreateForm";
 import AddSchedule from "./pages/AddSchedule";
+import EventDetail from "./pages/EventDetail";
 
 import KakaoCallback from "./pages/KakaoCallback";
 import NaverCallback from "./pages/NaverCallback";
@@ -73,7 +74,7 @@ function Layout() {
         <Route path="/oauth2/authorization/naver" element={<NaverCallback />} />
         <Route path="/oauth2/authorization/kakao/link" element={<KakaoLinkCallback />} />
         <Route path="/oauth2/authorization/naver/link" element={<NaverLinkCallback />} />
-
+        <Route path="/eventdetail/:eventId" element={<EventDetail />} />
       </Routes>
 
       {!shouldHideUI && <Navbar />}

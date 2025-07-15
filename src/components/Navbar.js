@@ -35,7 +35,7 @@ export default function Navbar() {
 const NavContainer = styled.div`
   width: 100%;
   max-width: 500px;
-  height: 60px;
+  height: 56px;
   position: fixed;
   bottom: 0;
   left: 50%;
@@ -66,15 +66,15 @@ const NavItem = styled.button`
 
 const PostButton = styled.button`
   position: absolute;
-  bottom: 50px;
+  bottom: 48px;
   left: 50%;
   transform: translateX(-50%);
   background: #6a5af9;
   color: white;
   border: none;
   border-radius: 50%;
-  width: 45px;
-  height: 45px;
+  width: 40px;
+  height: 40px;
   font-size: 20px;
   font-weight: bold;
   display: flex;

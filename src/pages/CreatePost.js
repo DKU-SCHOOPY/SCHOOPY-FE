@@ -79,7 +79,7 @@ export default function FormPage() {
 
   return (
     <div className="container">
-      <button className="form-back-button" onClick={() => navigate(-1)}>←</button>
+      <button className="back-button" onClick={() => navigate(-1)}>←</button>
       <div className="page-title">게시물 생성</div>
 
       <label className="label">게시물 제목</label>

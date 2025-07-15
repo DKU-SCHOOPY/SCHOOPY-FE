@@ -1,14 +1,4 @@
 
-.form-back-button {
-  
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  position: absolute;
-  top: 20px;
-  left: 20px;
-}
 
 .form-upload-button {
   margin-top: 5px;

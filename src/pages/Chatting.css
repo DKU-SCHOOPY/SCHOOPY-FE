@@ -18,23 +18,15 @@
     background-color: white;
     display: flex;
     align-items: center;
-    padding: 15px 15px;
+    padding: 20px 15px;
     color: #1a2c51;
     font-size: 18px;
     margin-bottom: 20px;
   }
   
-  .back-button {
-    background: none;
-    border: none;
-    font-size: 24px;
-    margin-right: 10px;
-    color: black;
-    cursor: pointer;
-  }
-  
   .chatting-title {
     font-size: 18px;
+    margin-left: 50px;
   }
   
   .chatting-body {

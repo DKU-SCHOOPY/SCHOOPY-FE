@@ -16,6 +16,7 @@ function Edit() {
   return (
     <div className="container">
       <h2 className="page-title">개인정보 수정 요청</h2>
+      <button onClick={() => window.history.back()} className="back-button">←</button>
 
       <form className="edit-form" onSubmit={handleSubmit}>
         <label className="label">수정 항목</label>
