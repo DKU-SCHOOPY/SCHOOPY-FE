@@ -1,0 +1,36 @@
+
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 32px 16px;
+}
+
+.page-title {
+    font-size: 2rem;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.answer-list {
+    margin-top: 24px;
+}
+
+.answer-block {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+    background: #fafbfc;
+}
+
+.question {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.answer {
+    font-size: 1.1rem;
+}
+
+

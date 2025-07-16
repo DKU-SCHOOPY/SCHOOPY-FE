@@ -25,7 +25,7 @@
   padding: 12px;
   border-radius: 12px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: px;
   cursor: pointer;
   border: none;
   transition: 0.2s;
@@ -67,3 +67,24 @@
   cursor: not-allowed;
   box-shadow: none;
 }
+
+.question-label {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.answer-input {
+  margin-bottom: 16px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
