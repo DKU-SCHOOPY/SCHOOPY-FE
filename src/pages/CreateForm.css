@@ -3,8 +3,18 @@
   flex-direction: column;
 }
 
+.back-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
 .qr-section {
-  margin: 20px 0;
+  margin: 20px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -213,3 +223,6 @@
     transform: translateY(0);
   }
 }
+
+
+

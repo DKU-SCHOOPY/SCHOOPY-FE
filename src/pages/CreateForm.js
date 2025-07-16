@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import { API_BASE_URL } from '../config';
 import jsQR from "jsqr";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -9,8 +8,8 @@ import "./CreateForm.css";
 
 // 질문 타입 상수
 const QUESTION_TYPES = {
-  SUBJECTIVE: "subjective",
-  OBJECTIVE: "objective"
+  SUBJECTIVE: "SUBJECTIVE",
+  OBJECTIVE: "MULTIPLE_CHOICE"
 };
 
 const AddSchedule = () => {
@@ -160,8 +159,39 @@ const AddSchedule = () => {
     }
   };
 
+
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+
+    // 필수 필드 검증
+    if (!formData.surveyStartDate || !formData.surveyEndDate) {
+      alert("수요 조사 시작일과 종료일을 모두 선택해주세요.");
+      return;
+    }
+    if (!formData.eventStartDate || !formData.eventEndDate) {
+      alert("행사 시작일과 종료일을 모두 선택해주세요.");
+      return;
+    }
+    if (!formData.maxParticipants || parseInt(formData.maxParticipants) <= 0) {
+      alert("최대 수용 인원을 입력해주세요.");
+      return;
+    }
+
+    // 환경변수로 분기
+    const isDummy = process.env.REACT_APP_USE_DUMMY === "true";
+
+    if (isDummy) {
+      // 더미 응답
+      const response = { data: { code: "SU", message: "더미 성공" } };
+      if (response.data.code === "SU") {
+        alert("행사가 성공적으로 등록되었습니다! (더미)");
+        navigate("/formlist");
+      } else {
+        alert("행사 등록에 실패했습니다: " + response.data.message);
+      }
+      return;
+    }
 
     try {
       const submitData = new FormData();
@@ -175,14 +205,31 @@ const AddSchedule = () => {
       submitData.append("currentParticipants", "0");
       submitData.append("eventDescription", formData.eventDescription);
 
+      // QR 코드 이미지 추가
       Object.entries(formData.qrCodeImages).forEach(([type, url]) => {
         if (url) {
           submitData.append(type, url);
         }
       });
 
+      // 질문 데이터 추가
+      questions.forEach((question, index) => {
+        submitData.append(`question[${index}].questionText`, question.question);
+        submitData.append(`question[${index}].questionType`, question.type);
+        submitData.append(`question[${index}].isRequired`, question.required);
+        submitData.append(`question[${index}].isMultiple`, question.multiple);
+
+        if (question.type === QUESTION_TYPES.OBJECTIVE && question.options.length > 0) {
+          question.options.forEach((choice, choiceIndex) => {
+            if (choice.trim()) {
+              submitData.append(`question[${index}].choices[${choiceIndex}]`, choice);
+            }
+          });
+        }
+      });
+
       const response = await axios.post(
-        `${API_BASE_URL}/event/regist-event`,
+        "http://localhost:8080/schoopy/v1/event/regist-event",
         submitData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
@@ -299,25 +346,29 @@ const AddSchedule = () => {
         <div style={{ display: 'flex', gap: 16, marginBottom: 20 }}>
           <div style={{ flex: 1 }}>
             <label className="label">행사 시작일</label>
-            <DatePicker
-              className="textarea"
-              selected={formData.eventStartDate}
-              onChange={(date) => handleDateChange(date, "eventStartDate")}
-              dateFormat="yyyy-MM-dd"
-              placeholderText="시작일 선택"
-              required
-            />
+            <div>
+              <DatePicker
+                className="textarea"
+                selected={formData.eventStartDate}
+                onChange={(date) => handleDateChange(date, "eventStartDate")}
+                dateFormat="yyyy-MM-dd"
+                placeholderText="시작일 선택"
+                required
+              />
+            </div>
           </div>
           <div style={{ flex: 1 }}>
             <label className="label">행사 종료일</label>
-            <DatePicker
-              className="textarea"
-              selected={formData.eventEndDate}
-              onChange={(date) => handleDateChange(date, "eventEndDate")}
-              dateFormat="yyyy-MM-dd"
-              placeholderText="종료일 선택"
-              required
-            />
+            <div>
+              <DatePicker
+                className="textarea"
+                selected={formData.eventEndDate}
+                onChange={(date) => handleDateChange(date, "eventEndDate")}
+                dateFormat="yyyy-MM-dd"
+                placeholderText="종료일 선택"
+                required
+              />
+            </div>
           </div>
         </div>
 
