@@ -182,7 +182,7 @@ const AddSchedule = () => {
       });
 
       const response = await axios.post(
-        "http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/regist-event",
+        `${API_BASE_URL}/event/regist-event`,
         submitData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

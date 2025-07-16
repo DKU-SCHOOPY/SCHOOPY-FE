@@ -26,7 +26,7 @@ export default function EventApplicants() {
     const fetchEventData = async () => {
   try {
     const res = await axios.get(
-      `http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/submissions/${eventId}`
+      `${API_BASE_URL}/event/submissions/${eventId}`
     );
 
     console.log("응답 전체:", res);
@@ -74,7 +74,7 @@ export default function EventApplicants() {
     }
 
       const res = await axios.post(
-        "http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/approve",
+        "${API_BASE_URL}/event/approve",
         {
           applicationId: Number(applicationId),
           choice: isAccept ? "True" : "False"

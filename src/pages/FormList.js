@@ -26,7 +26,7 @@ const FormList = () => {
       try {
         console.log("Fetching events...");
         const res = await axios.get(
-          "http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/event/get-active"
+          `${API_BASE_URL}/event/get-active`
         );
         console.log("Raw API Response:", res.data);
 

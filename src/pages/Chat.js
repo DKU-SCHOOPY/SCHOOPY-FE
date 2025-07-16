@@ -17,7 +17,7 @@ function ChatRoomList() {
     if (!currentUser || !currentUser.userId) return;
     const studentId = parseInt(currentUser.userId);
 
-    axios.get(`http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/chat/rooms/${studentId}`)
+    axios.get(`${API_BASE_URL}/chat/rooms/${studentId}`)
       .then((res) => {
         const data = res.data.map((room) => {
           const otherUser = room.userA === studentId ? room.userB : room.userA;
