@@ -1,11 +1,12 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Form.css";
 
 function FormPage() {
   const { eventCode } = useParams();
+  const navigate = useNavigate();
   const [form, setForm] = useState(null);
   const [answers, setAnswers] = useState({});
   const [loading, setLoading] = useState(true);
@@ -14,11 +15,17 @@ function FormPage() {
   const [councilFeePaid, setCouncilFeePaid] = useState(false);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/schoopy/v1/event/get-form/${eventCode}`)
+    axios.get(`http://52.78.213.185:8080/schoopy/v1/event/get-form/${eventCode}`)
       .then(res => {
         setForm(res.data);
         setLoading(false);
       });
+
+    // 학번 자동 세팅
+    const storedStudentNum = localStorage.getItem("studentNum");
+    if (storedStudentNum) {
+      setStudentNum(storedStudentNum);
+    }
   }, [eventCode]);
 
   if (loading) return <div>로딩중...</div>;
@@ -84,16 +91,21 @@ function FormPage() {
 
     const payload = {
       studentNum,
-      eventCode: form.formId,
+      eventCode: Number(form.formId), // 숫자 타입으로 변환
       isStudent,
       answer: answerArr
     };
 
-    const res = await axios.post(
-      "http://localhost:8080/schoopy/v1/event/application",
-      payload
-    );
-    alert(res.data.message);
+    try {
+      const res = await axios.post(
+        "http://52.78.213.185:8080/schoopy/v1/event/application",
+        payload
+      );
+      alert(res.data.message);
+      navigate('/formlist');
+    } catch (err) {
+      alert("신청 중 오류: " + (err.response?.data?.message || err.message));
+    }
   };
 
   // 송금 QR URL이 있는지 확인

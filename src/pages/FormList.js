@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { API_BASE_URL } from '../config';
 import FilterBar from "../components/FilterBar";
 import './FormList.css';
 
@@ -26,7 +25,7 @@ const FormList = () => {
       try {
         console.log("Fetching events...");
         const res = await axios.get(
-          `${API_BASE_URL}/event/get-active`
+          "http://52.78.213.185:8080/schoopy/v1/event/get-active"
         );
         console.log("Raw API Response:", res.data);
 
@@ -75,7 +74,7 @@ const FormList = () => {
   console.log("Current search:", search);
   console.log("Filtered events:", filteredEvents);
 
-return (
+  return (
     <div className="container">
       <h2 className="page-title">신청 폼 목록</h2>
 
@@ -99,11 +98,11 @@ return (
             <div
               key={ev.id}
               className="event-card"
-              onClick={() => navigate(`/event/${ev.id}`)}
+              onClick={() => navigate(`/form/${ev.id}`)}
             >
               <div className="event-title">{ev.name}</div>
               <div className="event-period">
-                {formatDate(ev.startDate)} ~ {formatDate(ev.endDate)}
+                {formatDate(ev.surveyStartDate)} ~ {formatDate(ev.surveyEndDate)}
               </div>
               <div className="progress-row">
                 <div className="progress-text">{ev.current}/{ev.total}</div>

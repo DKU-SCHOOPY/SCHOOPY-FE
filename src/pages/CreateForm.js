@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./CreateForm.css";
 
+
 // 질문 타입 상수
 const QUESTION_TYPES = {
   SUBJECTIVE: "SUBJECTIVE",
@@ -214,31 +215,34 @@ const AddSchedule = () => {
 
       // 질문 데이터 추가
       questions.forEach((question, index) => {
-        submitData.append(`question[${index}].questionText`, question.question);
-        submitData.append(`question[${index}].questionType`, question.type);
-        submitData.append(`question[${index}].isRequired`, question.required);
-        submitData.append(`question[${index}].isMultiple`, question.multiple);
+        submitData.append(`questions[${index}].questionText`, question.question);
+        submitData.append(`questions[${index}].questionType`, question.type);
+        submitData.append(`questions[${index}].required`, question.required ? "true" : "false");
+        submitData.append(`questions[${index}].multiple`, question.multiple ? "true" : "false");
 
+        // 객관식일 때만 choices 추가
         if (question.type === QUESTION_TYPES.OBJECTIVE && question.options.length > 0) {
           question.options.forEach((choice, choiceIndex) => {
             if (choice.trim()) {
-              submitData.append(`question[${index}].choices[${choiceIndex}]`, choice);
+              submitData.append(`questions[${index}].choices[${choiceIndex}]`, choice);
             }
           });
         }
       });
 
       const response = await axios.post(
-        "http://localhost:8080/schoopy/v1/event/regist-event",
+        // ${API_BASE_URL}event/regist-event",
+        "http://52.78.213.185:8080/schoopy/v1/event/regist-event",
         submitData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
 
-      if (response.data.code === "SU") {
+      console.log(response.data);
+      if (response.data.code === "SU" || response.status === 200) {
         alert("행사가 성공적으로 등록되었습니다!");
         navigate("/formlist");
       } else {
-        alert("행사 등록에 실패했습니다: " + response.data.message);
+        alert("행사 등록에 실패했습니다: " + (response.data.message || ""));
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -375,15 +379,17 @@ const AddSchedule = () => {
         {/* ====== 최대 수용 인원 ====== */}
         <div style={{ marginBottom: 24 }}>
           <label className="label">최대 수용 인원</label>
-          <input
-            className="textarea"
-            type="number"
-            name="maxParticipants"
-            placeholder="최대 수용 인원"
-            value={formData.maxParticipants}
-            onChange={handleInputChange}
-            required
-          />
+          <div>
+            <input
+              className="textarea"
+              type="number"
+              name="maxParticipants"
+              placeholder="최대 수용 인원"
+              value={formData.maxParticipants}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
         </div>
 
         {/* ====== QR 추가 버튼 ====== */}
