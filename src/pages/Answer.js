@@ -9,7 +9,7 @@ function AnswerPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://localhost:8080/schoopy/v1/event/application/${applicationId}/answer`)
+    axios.get(`http://52.78.213.185:8080/schoopy/v1/event/application/${applicationId}/answers`)
       .then(res => {
         setAnswers(res.data);
         setLoading(false);
