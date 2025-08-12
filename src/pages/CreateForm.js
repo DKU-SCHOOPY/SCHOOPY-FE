@@ -4,6 +4,7 @@ import axios from "axios";
 import jsQR from "jsqr";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Header from "../components/Header";
 import "./CreateForm.css";
 
 
@@ -252,9 +253,8 @@ const AddSchedule = () => {
 
   return (
     <div className="container">
-      <button className="back-button" onClick={() => navigate(-1)}>←</button>
+      <Header title="폼 생성" showBack />
       <form className="form" onSubmit={handleFormSubmit}>
-        <h2 className="page-title">폼 생성</h2>
 
         {/* ====== 질문 ====== */}
         <div className="question-section">
@@ -269,7 +269,7 @@ const AddSchedule = () => {
           <div>
             {questions.map((q, idx) => (
               <div key={q.id} className="question-card">
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
                   <span style={{ fontWeight: 600 }}>{idx + 1}.</span>
                   <input
                     type="text"
@@ -321,8 +321,8 @@ const AddSchedule = () => {
         <hr style={{ margin: '32px 0 24px 0', border: 'none', borderTop: '1.5px solid #e0e0e0' }} />
 
         {/* ====== 수요조사 시작/종료일 ====== */}
-        <div style={{ display: 'flex', gap: 16, marginBottom: 20 }}>
-          <div style={{ flex: 1 }}>
+        <div className="form-row">
+          <div className="form-item">
             <label className="label">수요 조사 시작일</label>
             <DatePicker
               className="textarea"
@@ -333,7 +333,8 @@ const AddSchedule = () => {
               required
             />
           </div>
-          <div style={{ flex: 1 }}>
+          
+          <div className="form-item">
             <label className="label">수요 조사 종료일</label>
             <DatePicker
               className="textarea"
@@ -347,10 +348,9 @@ const AddSchedule = () => {
         </div>
 
         {/* ====== 행사 시작/종료일 ====== */}
-        <div style={{ display: 'flex', gap: 16, marginBottom: 20 }}>
-          <div style={{ flex: 1 }}>
+        <div className="form-row">
+          <div className="form-item">
             <label className="label">행사 시작일</label>
-            <div>
               <DatePicker
                 className="textarea"
                 selected={formData.eventStartDate}
@@ -359,11 +359,9 @@ const AddSchedule = () => {
                 placeholderText="시작일 선택"
                 required
               />
-            </div>
           </div>
-          <div style={{ flex: 1 }}>
+          <div className="form-item">
             <label className="label">행사 종료일</label>
-            <div>
               <DatePicker
                 className="textarea"
                 selected={formData.eventEndDate}
@@ -372,12 +370,10 @@ const AddSchedule = () => {
                 placeholderText="종료일 선택"
                 required
               />
-            </div>
           </div>
         </div>
 
         {/* ====== 최대 수용 인원 ====== */}
-        <div style={{ marginBottom: 24 }}>
           <label className="label">최대 수용 인원</label>
           <div>
             <input
@@ -390,10 +386,9 @@ const AddSchedule = () => {
               required
             />
           </div>
-        </div>
 
         {/* ====== QR 추가 버튼 ====== */}
-        <div style={{ margin: '32px 0 24px 0', textAlign: 'center' }}>
+        <div style={{ margin: '10px 0 24px 0', textAlign: 'center' }}>
           <button type="button" className="question-action-btn" style={{ fontSize: 15, padding: '10px 32px' }} onClick={() => setQrModalOpen(true)}>
             QR 추가
           </button>

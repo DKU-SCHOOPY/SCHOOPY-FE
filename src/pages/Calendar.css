@@ -252,3 +252,13 @@
   border: 1px solid transparent;
   padding-bottom: 4px;
 }
+
+.event-ellipsis {
+  grid-column-start: auto;
+  grid-column-end: auto;
+  color: #666;
+  font-weight: bold;
+  text-align: center;
+  user-select: none;
+  cursor: default;
+}

@@ -34,6 +34,10 @@ function Login() {
         }
       );
 
+      // 토큰 저장
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+
       // const { code, message, token } = response.data;
       const { code, message } = response.data;
       console.log("응답 데이터",response.data);
@@ -75,14 +79,14 @@ function Login() {
         <input
           type="text"
           placeholder="Enter your student ID"
-          className="textarea"
+          className="login-textarea"
           value={studentNum}
           onChange={(e) => setStudentNum(e.target.value)}
         />
         <input
           type="password"
           placeholder="Enter your password"
-          className="textarea"
+          className="login-textarea"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

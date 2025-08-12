@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { API_BASE_URL } from '../config';
 import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
 import "./CreatePost.css";
 
 export default function FormPage() {
@@ -79,8 +80,9 @@ export default function FormPage() {
 
   return (
     <div className="container">
-      <button className="back-button" onClick={() => navigate(-1)}>←</button>
-      <div className="page-title">게시물 생성</div>
+      <Header title="게시물 생성" showBack />
+      {/* <button className="back-button" onClick={() => navigate(-1)}>←</button> */}
+      {/* <div className="page-title">게시물 생성</div> */}
 
       <label className="label">게시물 제목</label>
       <input

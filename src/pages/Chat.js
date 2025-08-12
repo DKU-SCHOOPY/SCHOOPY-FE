@@ -13,27 +13,27 @@ function ChatRoomList() {
   const navigate = useNavigate();
   const currentUser = { userId: localStorage.getItem("studentNum") }; // 임시 userId, 실제론 useSelector 사용
 
-  useEffect(() => {
-    if (!currentUser || !currentUser.userId) return;
-    const studentId = parseInt(currentUser.userId);
+useEffect(() => {
+  if (!currentUser || !currentUser.userId) return;
+  const studentId = parseInt(currentUser.userId);
 
-    axios.get(`${API_BASE_URL}/chat/rooms/${studentId}`)
-      .then((res) => {
-        const data = res.data.map((room) => {
-          const otherUser = room.userA === studentId ? room.userB : room.userA;
-          
-          
+  axios.get(`${API_BASE_URL}/chat/rooms/${studentId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  })
+    .then((res) => {
+      const data = res.data.map((room) => ({
+        id: room.roomId,
+        name: room.counterpartName,   // 이름으로 표시
+        lastMessage: room.lastMessage, // 마지막 메시지
+        status: "활성 채팅"
+      }));
+      setChats(data);
+    })
+    .catch((err) => console.error("채팅방 목록 불러오기 실패", err));
+}, [currentUser]);
 
-          return {
-            id: room.id,
-            name: `${otherUser}`,
-            status: "활성 채팅",
-          };
-        });
-        setChats(data);
-      })
-      .catch((err) => console.error("채팅방 목록 불러오기 실패", err));
-  }, [currentUser]);
 
   const filteredChats = chats.filter(chat =>
     chat.name.toLowerCase().includes(search.toLowerCase())
@@ -53,24 +53,23 @@ function ChatRoomList() {
       </div>
 
       <div className="chat-list">
-        {filteredChats.map(chat => (
-          <Link
-            key={chat.id}
-            to={`/chat/room/${chat.id}`}
-            state={{ otherUserId: chat.name }} // chat.name = 실제 상대방 ID여야 함
-          >
-            
+  {filteredChats.map(chat => (
+    <Link
+      key={chat.id}
+      to={`/chat/room/${chat.id}`}
+      state={{ otherUserId: chat.name }} 
+    >
       <div className="chat-item">
         <FaUserCircle className="chat-avatar" />
         <div className="chat-info">
-          <div className="chat-name"></div>
-            {chat.name === "32203027" ? "SW융합대학 학생회" : chat.name}
-          <div className="chat-status">{chat.status}</div>
+          <div className="chat-name">{chat.name}</div>
+          <div className="chat-last-message">{chat.lastMessage}</div>
         </div>
       </div>
     </Link>
-        ))}
-      </div>
+  ))}
+</div>
+
     </div>
   );
 }

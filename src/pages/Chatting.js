@@ -17,7 +17,11 @@ function Chatting() {
 
   const fetchMessages = async () => {
     try {
-      const res = await axios.get(`${API_BASE_URL}/chat/room/${roomId}`);
+      const res = await axios.get(`${API_BASE_URL}/chat/room/${roomId}`,
+        { headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }}
+      );
       setMessages(res.data);
 
       if (res.data.length > 0 && !customerId) {
@@ -100,7 +104,7 @@ function Chatting() {
   return (
     <div className="chatting-container">
       <div className="chatting-header">
-        <button onClick={() => window.history.back()} className="back-button">←</button>
+        <button className="chatting-back-button" onClick={() => window.history.back()}> ← </button>
         <span className="chatting-title"></span>
           {customerId === "32203027" ? "SW융합대학 학생회" : customerId}
       </div>

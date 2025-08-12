@@ -3,7 +3,23 @@
   flex-direction: column;
 }
 
-.back-button {
+.form-row {
+  display: flex;
+  gap: 20px; /* 항목 사이 간격 */
+}
+
+.form-item {
+  flex: 1; /* 두 항목이 균등 너비 */
+  display: flex;
+  flex-direction: column; /* label 위, input 아래 */
+}
+
+.form-item label {
+  margin-bottom: 8px; /* label과 input 사이 간격 */
+}
+
+
+/* .back-button {
   background: none;
   border: none;
   font-size: 24px;
@@ -11,7 +27,7 @@
   position: absolute;
   top: 20px;
   left: 20px;
-}
+} */
 
 .qr-section {
   margin: 20px;
@@ -46,7 +62,7 @@
   font-size: 13px;
   min-width: 80px;
   transition: background 0.15s, color 0.15s;
-  margin-top: 8px;
+  margin-top: 0px;
 }
 
 .qr-upload-button:hover {
@@ -88,11 +104,11 @@
 /* ===== 질문 추가 UI 스타일 ===== */
 
 .question-section {
-  margin-top: 32px;
-  background: #fafaff;
+  margin-top: 10px;
+  background: #f5f5ff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(106, 90, 249, 0.07);
-  padding: 24px 20px 16px 20px;
+  padding: 0px 15px 6px 15px;
 }
 
 .question-section-title {
@@ -106,7 +122,7 @@
   display: flex;
   gap: 10px;
   align-items: center;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .question-card {
@@ -115,7 +131,7 @@
   box-shadow: 0 1px 4px rgba(106, 90, 249, 0.08);
   border: 1px solid #e0e0e0;
   padding: 18px 14px 12px 14px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   transition: box-shadow 0.2s;
 }
 
@@ -123,13 +139,27 @@
   box-shadow: 0 2px 8px rgba(106, 90, 249, 0.15);
 }
 
+.question-card > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.question-input {
+  flex-grow: 1;
+  min-width: 0; /* 줄바꿈 시 넘침 방지 */
+}
+
+
 .question-input {
   flex: 1;
   font-size: 15px;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
   padding: 8px 10px;
-  margin-right: 8px;
+  margin-left: 4px;
+  margin-right: 2px;
   outline: none;
   transition: border 0.2s;
 }
@@ -153,7 +183,7 @@
   color: #6a5af9;
   border: 1px solid #6a5af9;
   border-radius: 6px;
-  padding: 6px 12px;
+  padding: 6px 6px;
   font-size: 13px;
   cursor: pointer;
   margin-left: 6px;

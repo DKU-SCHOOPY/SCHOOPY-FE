@@ -62,23 +62,23 @@ const Mypage = () => {
       <div className="mypage-profile">
         <div className="mypage-info">
           <div className="info-row">
-            <span className="label">이름</span>
+            <span className="my-label">이름</span>
             <span className="value">{userInfo.name}</span>
           </div>
           <div className="info-row">
-            <span className="label">학번</span>
+            <span className="my-label">학번</span>
             <span className="value">{userInfo.studentNum}</span>
           </div>
           <div className="info-row">
-            <span className="label">학과</span>
+            <span className="my-label">학과</span>
             <span className="value">{userInfo.department}</span>
           </div>
           <div className="info-row">
-            <span className="label">생년월일</span>
+            <span className="my-label">생년월일</span>
             <span className="value">{userInfo.birthDay}</span>
           </div>
           <div className="info-row">
-            <span className="label">전화번호</span>
+            <span className="my-label">전화번호</span>
             <span className="value">{userInfo.phoneNum}</span>
           </div>
         </div>

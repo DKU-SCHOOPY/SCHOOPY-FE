@@ -38,6 +38,11 @@
     /* font-weight: bold; */
     font-size: 16px;
   }
+
+  .chat-last-message {
+    font-size: 12px;
+    color: gray;
+  }
   
   .chat-status {
     font-size: 12px;

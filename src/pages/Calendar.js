@@ -49,40 +49,32 @@ function Calendar() {
 
   const fetchEvents = useCallback(async (year, month) => {
     try {
-      // 임의 일정 데이터
-      const mockData = [
-        {
-          eventCode: "ev1",
-          title: "컴퓨터공학 세미나",
-          start: `${year}-${month.toString().padStart(2, "0")}-11`,
-          end: `${year}-${month.toString().padStart(2, "0")}-13`,
-          department: "컴퓨터공학",
-        },
-        {
-          eventCode: "ev2",
-          title: "전자공학 발표",
-          start: `${year}-${month.toString().padStart(2, "0")}-15`,
-          end: `${year}-${month.toString().padStart(2, "0")}-15`,
-          department: "전자공학",
-        },
-        {
-          eventCode: "ev3",
-          title: "기계공학 워크숍",
-          start: `${year}-${month.toString().padStart(2, "0")}-15`,
-          end: `${year}-${month.toString().padStart(2, "0")}-17`,
-          department: "기계공학",
-        },
-      ];
+      const token = localStorage.getItem("token");
+    console.log("토큰 확인:", token);
 
-      setEvents(
-        mockData.map((event) => ({
-          id: event.eventCode,
-          title: event.title,
-          start: event.start,
-          end: event.end,
-          department: event.department,
-          color: "#edebfd",
-        }))
+    const response = await axios.get(
+       `${API_BASE_URL}/event/calendar?year=${year}&month=${month}`,
+       {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }
+    );
+
+    console.log("응답 전체:", response);
+    console.log("응답 데이터:", response.data);
+
+    const data = response.data;
+
+    setEvents(
+      data.map((event) => ({
+        id: event.eventCode,
+        title: event.title,
+        start: event.start,
+        end: event.end,
+        department: event.department,
+        color: "#edebfd",
+      }))
       );
     } catch (err) {
       console.error("일정 로드 실패:", err.message);
@@ -137,116 +129,172 @@ function Calendar() {
   };
 
 
-  const renderCells = () => {
-    const monthStart = startOfMonth(currentDate);
-    const monthEnd = endOfMonth(currentDate);
-    const startDate = startOfWeek(monthStart);
-    const endDate = endOfWeek(monthEnd);
+ const renderCells = () => {
+  const monthStart = startOfMonth(currentDate);
+  const monthEnd = endOfMonth(currentDate);
+  const startDate = startOfWeek(monthStart);
+  const endDate = endOfWeek(monthEnd);
 
-    const rows = [];
-    let days = [];
-    let day = startDate;
+  const rows = [];
+  let days = [];
+  let day = startDate;
 
-    const filteredEvents = events.filter((event) =>
-      selectedDepartments.length === 0 || selectedDepartments.includes(event.department)
-    );
+  const filteredEvents = events.filter(
+    (event) =>
+      selectedDepartments.length === 0 ||
+      selectedDepartments.includes(event.department)
+  );
 
-    while (day <= endDate) {
-      const currentRowStart = day;
+  while (day <= endDate) {
+    const currentRowStart = day;
 
-      for (let i = 0; i < 7; i++) {
-        const thisDay = day;
-        const formattedDate = format(thisDay, "d");
-        const isCurrentMonth = isSameMonth(thisDay, currentDate);
-        const isToday = isSameDay(thisDay, new Date());
+    // 이번 주(7일) 각 날짜별 이벤트 개수 카운트 맵
+    const eventCountMap = {};
+    filteredEvents.forEach((event) => {
+      const eventStart = parseISO(event.start);
+      const eventEnd = parseISO(event.end);
+      const weekStart = currentRowStart;
+      const weekEnd = addDays(currentRowStart, 6);
 
-        const isSunday = thisDay.getDay() === 0;
+      if (eventEnd < weekStart || eventStart > weekEnd) return;
 
-        const cellStyle = {
-          color: isToday
-            ? "white"
-            : isSunday
-            ? "#5511f3ff"
-            : isCurrentMonth
-            ? "#000"
-            : "#ccc",
-          fontWeight: isToday ? "bold" : "normal",
-        };
+      const visibleStart = eventStart < weekStart ? weekStart : eventStart;
+      const visibleEnd = eventEnd > weekEnd ? weekEnd : eventEnd;
 
-
-        days.push(
-          <div
-            key={thisDay.toISOString()}
-            className="calendar-day-box"
-            onClick={() => setSelectedDate(new Date(thisDay))}
-          >
-            <div className="cell" style={cellStyle}>
-              {isToday ? (
-                <div className="today-circle">{formattedDate}</div>
-              ) : (
-                <div>{formattedDate}</div>
-              )}
-            </div>
-            <div className="event-placeholder" />
-          </div>
-        );
-
-        day = addDays(day, 1);
+      let iter = visibleStart;
+      while (iter <= visibleEnd) {
+        const key = format(iter, "yyyy-MM-dd");
+        eventCountMap[key] = (eventCountMap[key] || 0) + 1;
+        iter = addDays(iter, 1);
       }
+    });
 
-      rows.push(
-        <div key={currentRowStart} className="week-row">
-          <div className="week-grid">{days}</div>
-          <div
-            className="event-row"
-            onClick={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              const clickX = e.clientX - rect.left;
-              const cellWidth = rect.width / 7;
-              const dayIndex = Math.floor(clickX / cellWidth);
-              const clickedDate = addDays(currentRowStart, dayIndex);
-              setSelectedDate(new Date(clickedDate));
-            }}
-          >
-            {filteredEvents.map((event) => {
-              const eventStart = parseISO(event.start);
-              const eventEnd = parseISO(event.end);
-              const weekStart = currentRowStart;
-              const weekEnd = addDays(currentRowStart, 6);
+    // 이번 주 전체 이벤트 중 상위 3개까지만 표시
+    // (긴 블록은 그대로 유지)
+    const eventsToShow = filteredEvents.filter((event, idx) => idx < 3);
 
-              // 일정이 이번 주와 겹치는지 확인
-              if (eventEnd < weekStart || eventStart > weekEnd) return null;
+    for (let i = 0; i < 7; i++) {
+      const thisDay = day;
+      const formattedDate = format(thisDay, "d");
+      const isCurrentMonth = isSameMonth(thisDay, currentDate);
+      const isToday = isSameDay(thisDay, new Date());
 
-              const visibleStart = eventStart < weekStart ? weekStart : eventStart;
-              const visibleEnd = eventEnd > weekEnd ? weekEnd : eventEnd;
+      const isSunday = thisDay.getDay() === 0;
 
-              const startCol = differenceInCalendarDays(visibleStart, weekStart);
-              const span = differenceInCalendarDays(visibleEnd, visibleStart) + 1;
+      const cellStyle = {
+        color: isToday
+          ? "white"
+          : isSunday
+          ? "#5511f3ff"
+          : isCurrentMonth
+          ? "#000"
+          : "#ccc",
+        fontWeight: isToday ? "bold" : "normal",
+      };
 
-              return (
-                <div
-                  key={event.id + "_" + weekStart.toISOString()}
-                  className="event-block"
-                  style={{
-                    backgroundColor: event.color,
-                    gridColumnStart: startCol + 1,
-                    gridColumnEnd: `span ${span}`,
-                  }}
-                  title={event.title}
-                >
-                  {event.title}
-                </div>
-              );
-            })}
+      days.push(
+        <div
+          key={thisDay.toISOString()}
+          className="calendar-day-box"
+          onClick={() => setSelectedDate(new Date(thisDay))}
+        >
+          <div className="cell" style={cellStyle}>
+            {isToday ? (
+              <div className="today-circle">{formattedDate}</div>
+            ) : (
+              <div>{formattedDate}</div>
+            )}
           </div>
+          <div className="event-placeholder" />
         </div>
       );
 
-      days = [];
+      day = addDays(day, 1);
     }
 
-    return <div className="cells-container">{rows}</div>;
-  };
+    rows.push(
+      <div key={currentRowStart} className="week-row">
+        <div className="week-grid">{days}</div>
+
+        <div
+          className="event-row"
+          onClick={(e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const cellWidth = rect.width / 7;
+            const dayIndex = Math.floor(clickX / cellWidth);
+            const clickedDate = addDays(currentRowStart, dayIndex);
+            setSelectedDate(new Date(clickedDate));
+          }}
+          style={{ position: "relative" }}
+        >
+          {eventsToShow.map((event) => {
+            const eventStart = parseISO(event.start);
+            const eventEnd = parseISO(event.end);
+            const weekStart = currentRowStart;
+            const weekEnd = addDays(currentRowStart, 6);
+
+            if (eventEnd < weekStart || eventStart > weekEnd) return null;
+
+            const visibleStart = eventStart < weekStart ? weekStart : eventStart;
+            const visibleEnd = eventEnd > weekEnd ? weekEnd : eventEnd;
+
+            const startCol = differenceInCalendarDays(visibleStart, weekStart);
+            const span = differenceInCalendarDays(visibleEnd, visibleStart) + 1;
+
+            return (
+              <div
+                key={event.id + "_" + weekStart.toISOString()}
+                className="event-block"
+                style={{
+                  backgroundColor: event.color,
+                  gridColumnStart: startCol + 1,
+                  gridColumnEnd: `span ${span}`,
+                }}
+                title={event.title}
+              >
+                {event.title}
+              </div>
+            );
+          })}
+
+          {/* 각 날짜별 이벤트가 4개 이상일 때 ... 표시 */}
+          {[...Array(7)].map((_, idx) => {
+            const date = addDays(currentRowStart, idx);
+            const key = format(date, "yyyy-MM-dd");
+            if ((eventCountMap[key] || 0) > 3) {
+              return (
+                <div
+                  key={"ellipsis_" + key}
+                  className="event-ellipsis"
+                  style={{
+                    gridColumnStart: idx + 1,
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    fontSize: "18px",
+                    lineHeight: "1",
+                    userSelect: "none",
+                    cursor: "default",
+                    color: "#555",
+                  }}
+                >
+                  ...
+                </div>
+              );
+            }
+            return null;
+          })}
+        </div>
+      </div>
+    );
+
+    days = [];
+  }
+
+  return <div className="cells-container">{rows}</div>;
+};
+
+
 
   return (
     <div className="calendar-container">

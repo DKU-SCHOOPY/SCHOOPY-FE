@@ -1,23 +1,57 @@
 import { useState } from 'react';
+import axios from 'axios';
 import './Edit.css';
+import Header from "../components/Header";
+import { API_BASE_URL } from "../config";
 
 function Edit() {
   const [field, setField] = useState('');
   const [newValue, setNewValue] = useState('');
-  const [reason, setReason] = useState('');
 
-  const handleSubmit = (e) => {
+  const studentNum = localStorage.getItem('studentNum');
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const request = { field, newValue, reason };
-    console.log('요청 전송:', request);
-    alert('제출 완료');
+    console.log("제출 이벤트 발생!");
+    try {
+      let response;
+      console.log("axios 요청 직전");
+
+      if (field === "학과") {
+        response = await axios.post(`${API_BASE_URL}/auth/change-dept`, {
+          studentNum,
+          department: newValue,
+        });
+        console.log("axios 요청 후, 응답:", response);
+      } else if (field === "전화번호") {
+        response = await axios.post(`${API_BASE_URL}/auth/change-phone-num`, {
+          studentNum,
+          phoneNum: newValue,
+        });
+        console.log("axios 요청 후, 응답:", response);
+      } else {
+        console.error("axios 요청 에러", e);
+        alert("잘못된 항목입니다.");
+        return;
+      }
+
+      if (response.data.code === "SU") {
+        console.log("응답 데이터:", response.data);
+        alert("제출 완료");
+      } else {
+        alert("요청 실패: " + response.data.message);
+      }
+
+    } catch (error) {
+      console.error("요청 에러:", error);
+      alert("요청 중 오류가 발생했습니다.");
+    }
   };
 
   return (
     <div className="container">
-      <h2 className="page-title">개인정보 수정 요청</h2>
-      <button onClick={() => window.history.back()} className="back-button">←</button>
-
+      <Header title="개인정보 수정" showBack />
+      
       <form className="edit-form" onSubmit={handleSubmit}>
         <label className="label">수정 항목</label>
         <select
@@ -26,6 +60,7 @@ function Edit() {
           onChange={(e) => setField(e.target.value)}
           required
         >
+          <option value="">선택하세요</option>
           <option value="학과">학과</option>
           <option value="전화번호">전화번호</option>
         </select>
@@ -40,14 +75,14 @@ function Edit() {
           required
         />
 
-        <label className="label">변경 사유</label>
+        {/* <label className="label">변경 사유</label>
         <textarea
           className="longtext"
           placeholder="변경 사유를 입력하세요"
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           required
-        />
+        /> */}
 
         <button className="big-button" type="submit">제출하기</button>
       </form>

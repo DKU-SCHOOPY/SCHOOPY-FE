@@ -19,7 +19,7 @@ function Join() {
   const handleEmailCheck = async () => {
   try {
     const response = await axios.post(
-      `${API_BASE_URL}/auth/email-certification`,
+      `${API_BASE_URL}/auth/email-check`,
       { studentNum }
     );
     alert(`✅ ${response.data.message}`);

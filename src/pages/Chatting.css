@@ -23,6 +23,18 @@
     font-size: 18px;
     margin-bottom: 20px;
   }
+
+  .chatting-back-button {
+    position: absolute;
+    left: 10px; /* 왼쪽 끝에서 약간 안쪽 */
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 20px; /* 화살표 크기 */
+    cursor: pointer;
+    color: inherit; /* 글자색 헤더 색상과 동일하게 */
+  }
   
   .chatting-title {
     font-size: 18px;
