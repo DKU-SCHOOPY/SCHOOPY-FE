@@ -49,7 +49,7 @@ function Join() {
       { studentNum, certificationNumber }
     );
     alert(`✅ ${response.data.message}`);
-    navigate("/login");
+    
   } catch (error) {
     const message = error?.response?.data?.message || "네트워크 오류";
     alert(`❗ ${message}`);
@@ -72,6 +72,7 @@ function Join() {
       }
     );
     alert(`✅ ${response.data.message}`);
+    navigate("/login");
   } catch (error) {
     const message = error?.response?.data?.message || "네트워크 오류";
     alert(`❗ ${message}`);
