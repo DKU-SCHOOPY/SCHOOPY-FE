@@ -4,6 +4,7 @@ import axios from "axios";
 import jsQR from "jsqr";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { API_BASE_URL } from '../config';
 import Header from "../components/Header";
 import "./CreateForm.css";
 
@@ -232,10 +233,9 @@ const AddSchedule = () => {
       });
 
       const response = await axios.post(
-        // ${API_BASE_URL}event/regist-event",
-        "http://52.78.213.185:8080/schoopy/v1/event/regist-event",
+        `${API_BASE_URL}event/regist-event`,
         submitData,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "multipart/form-data" } }
       );
 
       console.log(response.data);

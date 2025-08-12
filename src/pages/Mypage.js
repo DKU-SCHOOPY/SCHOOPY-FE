@@ -24,7 +24,12 @@ const Mypage = () => {
         const studentNum = localStorage.getItem('studentNum');
         const res = await axios.post(`${API_BASE_URL}/auth/mypage`, {
           studentNum: studentNum,
-        });
+        },
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  });
         const data = res.data;
         if (data.code === 'SU') {
           setUserInfo({
@@ -43,7 +48,12 @@ const Mypage = () => {
     const fetchLinkedStatus = async () => {
       try {
         const studentNum = localStorage.getItem('studentNum');
-        const res = await axios.get(`${API_BASE_URL}/user/social-status?studentNum=${studentNum}`);
+        const res = await axios.get(`${API_BASE_URL}/user/social-status?studentNum=${studentNum}`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  });
         setIsKakaoLinked(res.data.kakao === true);
         setIsNaverLinked(res.data.naver === true);
       } catch (err) {

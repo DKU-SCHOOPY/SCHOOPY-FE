@@ -21,13 +21,23 @@ function Edit() {
         response = await axios.post(`${API_BASE_URL}/auth/change-dept`, {
           studentNum,
           department: newValue,
-        });
+        },
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  });
         console.log("axios 요청 후, 응답:", response);
       } else if (field === "전화번호") {
         response = await axios.post(`${API_BASE_URL}/auth/change-phone-num`, {
           studentNum,
           phoneNum: newValue,
-        });
+        },
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  });
         console.log("axios 요청 후, 응답:", response);
       } else {
         console.error("axios 요청 에러", e);

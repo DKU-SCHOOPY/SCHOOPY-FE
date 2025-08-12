@@ -18,7 +18,7 @@ const KakaoCallback = () => {
           {
             params: { code, state },
             headers: {
-              "Content-Type": "application/json;charset=utf-8",
+              Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "application/json;charset=utf-8",
               "Access-Control-Allow-Origin": "*",
             },
           }

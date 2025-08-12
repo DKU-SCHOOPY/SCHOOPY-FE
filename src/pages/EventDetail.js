@@ -14,7 +14,12 @@ function EventDetail() {
       try {
         const response = await axios.post(`${API_BASE_URL}/home/get-event`, {
           eventCode: parseInt(eventCode),
-        });
+        },
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  });
         if (response.data.code === "SU") {
           setEventData(response.data);
         } else {

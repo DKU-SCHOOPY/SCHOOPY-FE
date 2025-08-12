@@ -17,7 +17,12 @@ function NaverCallback() {
       try {
         // code, state만 백엔드에 전달
         const response = await axios.get(
-          `${API_BASE_URL}/oauth/naver/callback?code=${code}&state=${state}`
+          `${API_BASE_URL}/oauth/naver/callback?code=${code}&state=${state}`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }
         );
 
         // 백엔드에서 로그인 처리 후 결과 반환

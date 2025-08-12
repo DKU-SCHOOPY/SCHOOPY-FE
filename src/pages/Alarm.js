@@ -31,7 +31,12 @@ export default function Alarm() {
   // 읽음 처리 핸들러
   const handleNotificationClick = async (id) => {
     try {
-      await axios.patch(`${API_BASE_URL}/notice/check/${id}`);
+      await axios.patch(`${API_BASE_URL}/notice/check/${id}`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  });
       setNotifications((prev) =>
         prev.map((noti) =>
           noti.id === id ? { ...noti, read: true } : noti

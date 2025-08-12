@@ -11,15 +11,21 @@ const FILTERS = [
 ];
 
 export default function Home() {
-  const [posts, setPosts] = useState([]);
+  const [post, setPosts] = useState([]);
   const [selected, setSelected] = useState(FILTERS[0]);
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const res = await axios.get(`${API_BASE_URL}/event/home`);
+        const res = await axios.get(`${API_BASE_URL}/home/home`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  });
         setPosts(res.data);
+        console.log(res);
       } catch (err) {
         console.error("이벤트 불러오기 실패", err);
       }
@@ -27,7 +33,7 @@ export default function Home() {
     fetchEvents();
   }, []);
 
-  const filteredPosts = posts.filter(
+  const filteredPosts = post.filter(
     post => selected === "전체" || post.department === selected
   );
 
