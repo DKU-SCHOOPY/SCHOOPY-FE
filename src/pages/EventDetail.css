@@ -2,21 +2,24 @@
 .department-profile {
   display: flex;
   align-items: center;
+  justify-content: center; /* 가로 가운데 */
+  margin-bottom: 10px;
 }
 
 .department-image {
-  width: 26px;
-  height: 26px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 10px;
+  margin-right: 8px;
   border: 1px solid #ccc;
 }
 
 .department-name {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
+  font-size: 14px;
+  font-weight: 300;
+  color: #696969;
+  text-align: center; /* 학과 이름도 중앙 */
 }
 
 
@@ -25,6 +28,8 @@
   font-weight: 700;
   margin-bottom: 20px;
   line-height: 1.3;
+  text-align: center; /* 제목 가운데 */
+  margin-top: 4px; /* 기본 마진 없애고 원하는 값만 */
 }
 
 .event-image {
@@ -34,17 +39,45 @@
   margin-bottom: 24px;
 }
 
-.event-meta {
-  font-size: 15px;
-  color: #666;
-  line-height: 1.2;
-  margin-bottom: 10px;
-  border-left: 4px solid #996aea;
-  padding-left: 16px;
+.event-info-container-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 14px 0;
+  background: #f0f0ff;
+  padding: 12px 18px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(100, 90, 230, 0.15);
+  font-size: 14px;
+  color: #333;
 }
 
+.event-info-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.event-info-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.event-info-label {
+  font-weight: 600;
+  color: #666;
+  min-width: 80px;
+}
+
+.event-info-value {
+  font-weight: 700;
+  color: #222;
+}
+
+
+
 .event-description p {
-  margin-bottom: 14px;
+  margin-bottom: 26px;
   line-height: 1.2;
   font-size: 16px;
 }

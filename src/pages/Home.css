@@ -49,44 +49,56 @@
   gap: 24px;
 }
 
-.event-card {
+.home-event-card {
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 2px 8px rgba(108, 92, 231, 0.07);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  padding: 16px;
 }
 
-.event-image {
+.home-event-image {
   width: 100%;
-  height: 180px;
+  height: auto;
+  border-radius: 12px;
   object-fit: cover;
   background: #eee;
 }
 
-.event-info {
-  padding: 18px 16px 14px 16px;
+.home-event-info {
+  padding: 0px 6px 4px 6px;
+  margin: 8px;
+  margin-bottom: 0px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 1px;
 }
 
-.event-title {
-  font-size: 18px;
+.home-event-title {
+  font-size: 20px;
   font-weight: 700;
   color: #222;
+  margin: 4px;
 }
 
-.event-sub {
+.home-event-sub {
   font-size: 14px;
   color: #6c5ce7;
-  margin-bottom: 2px;
+  margin-left: 4px;
 }
 
-.event-desc {
+.home-event-desc {
   font-size: 14px;
   color: #666;
   line-height: 1.5;
+  margin: 4px;
+  margin-bottom: 0px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* 최대 3줄 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-line; /* \n 줄바꿈 유지 */
 }

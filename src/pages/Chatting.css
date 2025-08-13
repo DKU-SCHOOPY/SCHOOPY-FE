@@ -34,11 +34,12 @@
     font-size: 20px; /* 화살표 크기 */
     cursor: pointer;
     color: inherit; /* 글자색 헤더 색상과 동일하게 */
+    font-weight: bold;
   }
   
   .chatting-title {
     font-size: 18px;
-    margin-left: 50px;
+    margin-left: 30px;
   }
   
   .chatting-body {
@@ -94,6 +95,12 @@
     border-radius: 15px;
     background: #f1f1f1;
     margin-right: 10px;
+  }
+
+  .chatting-input-box input:focus {
+    border: 1px solid #a48cf0;
+    outline: none; /* 브라우저 기본 파란 outline 제거 */
+    box-shadow: 0 0 0 1px rgba(106, 90, 249, 0.2);
   }
   
   .send-button {

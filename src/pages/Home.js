@@ -61,19 +61,19 @@ export default function Home() {
       <div className="post-list">
         {filteredPosts.map(post => (
           <div
-            className="event-card"
+            className="home-event-card"
             key={post.eventCode}
-            onClick={() => navigate(`/form/${post.eventCode}`)}
+            onClick={() => navigate(`/eventdetail/${post.eventCode}`)}
           >
             <img
-              className="event-image"
-              src={post.eventImages?.[0] || "/default.jpg"}
+              className="home-event-image"
+              src={post.eventImages?.[0] || "/003.jpg"}
               alt={post.eventName}
             />
-            <div className="event-info">
-              <div className="event-title">{post.eventName}</div>
-              <div className="event-sub">{post.department}</div>
-              <div className="event-desc">{post.eventDescription}</div>
+            <div className="home-event-info">
+              <div className="home-event-title">{post.eventName}</div>
+              <div className="home-event-sub">{post.department}</div>
+              <div className="home-event-desc">{post.eventDescription}</div>
             </div>
           </div>
         ))}

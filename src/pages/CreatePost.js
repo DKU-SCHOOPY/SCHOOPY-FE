@@ -107,7 +107,8 @@ export default function FormPage() {
         value={department}
         onChange={(e) => setDepartment(e.target.value)}
       >
-        <option value="SW융합대학학생회">SW융합대학학생회</option>
+        <option value="">학과 선택</option>
+        <option value="SW융합대학학생회">SW융합대학</option>
         <option value="소프트웨어학과">소프트웨어학과</option>
         <option value="컴퓨터공학과">컴퓨터공학과</option>
         <option value="통계데이터사이언스학과">통계데이터사이언스학과</option>

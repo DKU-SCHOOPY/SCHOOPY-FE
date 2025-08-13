@@ -1,10 +1,10 @@
-.event-list {
+.form-event-list {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-.event-card {
+.form-event-card {
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(108, 92, 231, 0.07);
@@ -16,17 +16,17 @@
   transition: box-shadow 0.15s;
 }
 
-.event-card:hover {
+.form-event-card:hover {
   box-shadow: 0 4px 16px rgba(108, 92, 231, 0.13);
 }
 
-.event-title {
+.form-event-title {
   font-size: 16px;
   font-weight: 600;
   color: #222;
 }
 
-.event-period {
+.form-event-period {
   font-size: 13px;
   color: #888;
   margin-bottom: 4px;

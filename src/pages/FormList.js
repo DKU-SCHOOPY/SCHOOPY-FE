@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import FilterBar from "../components/FilterBar";
 import './FormList.css';
+import { API_BASE_URL } from "../config";
 
 const FILTERS = [
   "전체", "SW융합대학", "소프트웨어학과", "컴퓨터공학과", "통계데이터사이언스학과", "사이버보안학과"
@@ -25,7 +26,12 @@ const FormList = () => {
       try {
         console.log("Fetching events...");
         const res = await axios.get(
-          "http://52.78.213.185:8080/schoopy/v1/event/get-active"
+          `${API_BASE_URL}/get-active`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }
         );
         console.log("Raw API Response:", res.data);
 

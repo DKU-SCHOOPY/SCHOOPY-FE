@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import {API_BASE_URL} from "../config";
 import "./Answer.css";
 
 function AnswerPage() {
@@ -9,11 +10,16 @@ function AnswerPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`http://52.78.213.185:8080/schoopy/v1/event/application/${applicationId}/answers`)
+    axios.get(`${API_BASE_URL}/event/application/${applicationId}/answers`)
       .then(res => {
         setAnswers(res.data);
         setLoading(false);
-      });
+      },
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  });
   }, [applicationId]);
 
   if (loading) return <div>로딩중...</div>;

@@ -233,7 +233,7 @@ const AddSchedule = () => {
       });
 
       const response = await axios.post(
-        `${API_BASE_URL}event/regist-event`,
+        `${API_BASE_URL}/event/regist-event`,
         submitData,
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "multipart/form-data" } }
       );

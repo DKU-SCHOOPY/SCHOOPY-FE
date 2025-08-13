@@ -74,7 +74,7 @@ function Layout() {
         <Route path="/oauth2/authorization/naver" element={<NaverCallback />} />
         <Route path="/oauth2/authorization/kakao/link" element={<KakaoLinkCallback />} />
         <Route path="/oauth2/authorization/naver/link" element={<NaverLinkCallback />} />
-        <Route path="/eventdetail/:eventId" element={<EventDetail />} />
+        <Route path="/eventdetail/:eventCode" element={<EventDetail />} />
       </Routes>
 
       {!shouldHideUI && <Navbar />}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from '../config';
-import { REACT_APP_API_BASE_URL } from '../config';
+import OkEnter from "../components/OkEnter";
 import "./Login.css";
 import { requestPermission, requestFCMToken } from "../firebase"; // firebase 설정에서 import
 import { connectSocket } from "../socket";
@@ -68,6 +68,7 @@ function Login() {
   };
 
   return (
+    <OkEnter onSubmit={handleLogin}>
     <div className="container">
       <div className="login-text-container">
         <h2 className="page-title">로그인하기</h2>
@@ -113,6 +114,7 @@ function Login() {
 
       </div>
     </div>
+    </OkEnter>
   );
 }
 

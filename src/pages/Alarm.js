@@ -2,16 +2,24 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { API_BASE_URL } from '../config';
 import "./Alarm.css";
+import Header from "../components/Header";
+import { FiCheck } from "react-icons/fi";
 
 export default function Alarm() {
   const [notifications, setNotifications] = useState([]);
+  const studentNum = localStorage.getItem("studentNum");
 
   useEffect(() => {
     const fetchNotifications = async () => {
+      
+      
       try {
-        //const studentNum = localStorage.getItem("studentNum");
-        const res = await axios.get(`${API_BASE_URL}/notice/32193440`);
-        // const res = await axios.get(`http://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/schoopy/v1/notice/studentNum=${studentNum}`);
+        const res = await axios.get(`${API_BASE_URL}/notice/${studentNum}`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  });
         const data = res.data.map((item) => ({
           id: item.noticeId,
           title: item.title,
@@ -31,7 +39,7 @@ export default function Alarm() {
   // 읽음 처리 핸들러
   const handleNotificationClick = async (id) => {
     try {
-      await axios.patch(`${API_BASE_URL}/notice/check/${id}`,
+      await axios.patch(`${API_BASE_URL}/notice/studentNum=${studentNum}`,
   {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -49,7 +57,7 @@ export default function Alarm() {
 
   return (
     <div className="container">
-      <h2 className="page-title">알림함</h2>
+      <Header title="알림함" showBack/>
       <div className="alarm-list">
         {notifications.length === 0 ? (
           <div className="alarm-empty">알림이 없습니다</div>
@@ -60,8 +68,11 @@ export default function Alarm() {
               className={`alarm-item ${noti.read ? "read" : ""}`}
               onClick={() => handleNotificationClick(noti.id)}
             >
-              <div className="alarm-title">{noti.title}</div>
-              <div className="alarm-message">{noti.message}</div>
+              <FiCheck size={20} className="alarm-icon" />
+              <div className="alarm-content">
+                <div className="alarm-title">{noti.title}</div>
+                <div className="alarm-message">{noti.message}</div>
+              </div>
             </div>
           ))
         )}

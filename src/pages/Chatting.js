@@ -104,7 +104,7 @@ function Chatting() {
   return (
     <div className="chatting-container">
       <div className="chatting-header">
-        <button className="chatting-back-button" onClick={() => window.history.back()}> ← </button>
+        <button className="chatting-back-button" onClick={() => window.history.back()}> 〈 </button>
         <span className="chatting-title"></span>
           {customerId === "32203027" ? "SW융합대학 학생회" : customerId}
       </div>

@@ -31,7 +31,9 @@ function Calendar() {
   const [selectedDepartments, setSelectedDepartments] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
 
-  const departmentList = ["컴퓨터공학", "전자공학", "기계공학", "경영학"];
+  const departmentList = Array.from(
+    new Set(events.map((event) => event.department).filter(Boolean))
+  );
 
   useEffect(() => {
     const year = searchParams.get("year");
@@ -271,14 +273,14 @@ function Calendar() {
                     gridColumnStart: idx + 1,
                     textAlign: "center",
                     fontWeight: "bold",
-                    fontSize: "18px",
+                    fontSize: "14px",
                     lineHeight: "1",
                     userSelect: "none",
                     cursor: "default",
                     color: "#555",
                   }}
                 >
-                  ...
+                ···
                 </div>
               );
             }

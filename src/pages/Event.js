@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import axios from "axios";
+import {API_BASE_URL} from "../config";
 import "./Event.css";
 
 export default function EventApplicants() {
@@ -25,7 +25,12 @@ export default function EventApplicants() {
     const fetchEventData = async () => {
       try {
         const res = await axios.get(
-          `http://52.78.213.185:8080/schoopy/v1/event/submissions/${eventId}`
+          `${API_BASE_URL}/event/submissions/${eventId}`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }
         );
 
         console.log("응답 전체:", res);
@@ -73,11 +78,16 @@ export default function EventApplicants() {
       }
 
       const res = await axios.post(
-        "http://52.78.213.185:8080/schoopy/v1/event/approve",
+        `${API_BASE_URL}/event/approve`,
         {
           applicationId: Number(applicationId),
           choice: isAccept ? "True" : "False"
-        }
+        },
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }
       );
 
       console.log("서버 응답:", res.data);

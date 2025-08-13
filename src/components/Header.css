@@ -16,12 +16,13 @@
 
 .back-button {
   position: absolute;
-  top: 30%;
+  top: 28%;
   left: 5px; /* ← 왼쪽 끝에 더 가까이 붙도록 설정 */
   transform: translateY(-50%);
   background: none;
   border: none;
   font-size: 24px;
+  font-weight: bold;
   color: black;
   cursor: pointer;
   padding: 1px;

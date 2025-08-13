@@ -4,21 +4,22 @@
   flex-direction: column;
   gap: 10px; /* 알림 간 간격 줄임 */
   flex-grow: 1;
-  overflow-y: auto;
   min-height: 75vh;
-  max-width: 400px;
-  padding-left: 4px;
-  padding-right: 4px;
-  padding-bottom: 4px;
-
+  width: 100%;
+  align-items: center;
 }
 
 .alarm-item {
+  position: relative; /* 아이콘 절대 위치 기준 */
+  width: 100%;
+  display: flex;
+  align-items: center; /* 아이콘과 텍스트 세로 가운데 */
+  gap: 12px;
   background: #fff;
   padding: 14px 16px;
-  border-radius: 10px;
-  box-shadow: 0px 1px 3px rgba(0,0,0,0.1);
-  color: #333;
+  border-radius: 8px;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+  color: #000000b4;
   font-size: 14px;
   transition: background 0.3s;
   cursor: pointer;
@@ -30,6 +31,28 @@
   color: #b1b1b1;
 }
 
+.alarm-header {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* 아이콘과 제목 간격 */
+  margin-bottom: 4px;
+}
+
+.alarm-icon {
+  position: absolute;
+  color: #202020;
+  flex-shrink: 0; /* 아이콘 크기 고정 */
+  top: 14px;
+  left: 12px;
+}
+.alarm-content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 26px;
+}
+
 .alarm-title {
   font-weight: bold;
+  margin-bottom: 4px;
+  color: #000000;
 }

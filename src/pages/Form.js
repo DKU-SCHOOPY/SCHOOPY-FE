@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import {API_BASE_URL} from "../config";
 import "./Form.css";
 
 function FormPage() {
@@ -15,7 +16,12 @@ function FormPage() {
   const [councilFeePaid, setCouncilFeePaid] = useState(false);
 
   useEffect(() => {
-    axios.get(`http://52.78.213.185:8080/schoopy/v1/event/get-form/${eventCode}`)
+    axios.get(`${API_BASE_URL}/event/get-form/${eventCode}`,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  })
       .then(res => {
         setForm(res.data);
         setLoading(false);
@@ -98,8 +104,13 @@ function FormPage() {
 
     try {
       const res = await axios.post(
-        "http://52.78.213.185:8080/schoopy/v1/event/application",
-        payload
+        `${API_BASE_URL}/event/application`,
+        payload,
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  }
       );
       alert(res.data.message);
       navigate('/formlist');
