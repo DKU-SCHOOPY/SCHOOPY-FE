@@ -19,6 +19,8 @@ const Mypage = () => {
 
   useEffect(() => {
     const fetchUserInfo = async () => {
+console.log(process.env.REACT_APP_KAKAO_REST_API_KEY);
+console.log(process.env.REACT_APP_KAKAO_REDIRECT_URI);
 
       try {
         const studentNum = localStorage.getItem('studentNum');

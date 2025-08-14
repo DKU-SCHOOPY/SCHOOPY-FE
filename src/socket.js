@@ -3,7 +3,7 @@ let socket = null;
 export const connectSocket = (myId, targetId) => {
   if (socket) return socket;
 
-  socket = new WebSocket(`ws://ec2-3-39-189-60.ap-northeast-2.compute.amazonaws.com:8080/ws/chat/${myId}/${targetId}`);
+  socket = new WebSocket(`wss://www.schoopy.co.kr/ws/chat/${myId}/${targetId}`);
 
   socket.onopen = () => {
     console.log("웹소켓 연결됨");

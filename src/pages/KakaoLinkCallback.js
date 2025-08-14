@@ -10,6 +10,7 @@ const KakaoLinkCallback = () => {
 
   useEffect(() => {
     const sendLinkRequest = async () => {
+      
 
       <p>연동 중입니다... 잠시만 기다려주세요.</p>
 
@@ -21,7 +22,7 @@ const KakaoLinkCallback = () => {
           code,
           state,
         },
-  );
+        );
 
         
         console.log("카카오 연동 완료", res.data);
