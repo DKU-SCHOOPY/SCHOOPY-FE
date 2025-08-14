@@ -21,11 +21,7 @@ const KakaoLinkCallback = () => {
           code,
           state,
         },
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-  });
+  );
 
         
         console.log("카카오 연동 완료", res.data);

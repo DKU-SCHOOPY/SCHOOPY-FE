@@ -17,10 +17,7 @@ const KakaoCallback = () => {
           `${API_BASE_URL}/oauth/kakao/callback`,
           {
             params: { code, state },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "application/json;charset=utf-8",
-              "Access-Control-Allow-Origin": "*",
-            },
+            
           }
         );
 
