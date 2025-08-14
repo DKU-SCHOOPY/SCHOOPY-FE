@@ -79,7 +79,7 @@ function EventDetail() {
         <span className="event-info-icon">👥</span>
         <span className="event-info-label">모집인원</span>
         {/*<span className="event-info-value">100명</span>*/}
-        <span className="event-info-value">{eventData.maxParticipants}</span>
+        <span className="event-info-value">{eventData.maxParticipant}명</span>
       </div>
       <div className="event-info-row">
         <span className="event-info-icon">📅</span>
@@ -90,7 +90,6 @@ function EventDetail() {
       <div className="event-info-row">
         <span className="event-info-icon">📝</span>
         <span className="event-info-label">신청 날짜</span>
-        <span className="event-info-value">2025.08.15 ~ 2025.08.17</span>
         <span className="event-info-value">{eventData.surveyStartDate} ~ {eventData.surveyEndDate}</span>
       </div>
     </div>
