@@ -26,12 +26,12 @@ const FormList = () => {
       try {
         console.log("Fetching events...");
         const res = await axios.get(
-          `${API_BASE_URL}/get-active`,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-  }
+          `${API_BASE_URL}/event/get-active`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          }
         );
         console.log("Raw API Response:", res.data);
 
