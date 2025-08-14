@@ -6,6 +6,8 @@ import axios from "axios";
 import { API_BASE_URL } from '../config';
 
 function NaverCallback() {
+  console.log("네이버api", process.env.REACT_APP_REST_API_KEY_NAVER);
+  console.log("네이버 리다이렉트", process.env.REACT_APP_REDIRECT_URL_NAVER);
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -108,7 +108,7 @@ function Login() {
           <img src={process.env.PUBLIC_URL + '/kakao_phone.png'} />
         </a>
         <a href={NAVER_AUTH_URL} className="naverbtn">
-          <img src={process.env.PUBLIC_URL + "/naver_phone.png"} alt="네이버 로그인" />
+          <img src={process.env.PUBLIC_URL + "/naver_phone.png"} />
         </a>
         </div>
 
