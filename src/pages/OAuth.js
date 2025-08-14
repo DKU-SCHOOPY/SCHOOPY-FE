@@ -9,7 +9,7 @@ export const KAKAO_LINK_URL = `https://kauth.kakao.com/oauth/authorize?client_id
 const CLIENT_ID_NAVER = process.env.REACT_APP_REST_API_KEY_NAVER;
 const REDIRECT_URI_NAVER = process.env.REACT_APP_REDIRECT_URL_NAVER;
 const REDIRECT_URI_NAVER_LINK = process.env.REACT_APP_REDIRECT_URL_NAVER_LINK;
-const STATE = false;
+const STATE = "RANDOM_STRING";
 
 export const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${CLIENT_ID_NAVER}&state=${STATE}&redirect_uri=${REDIRECT_URI_NAVER}`;
 export const NAVER_LINK_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${CLIENT_ID_NAVER}&state=${STATE}&redirect_uri=${REDIRECT_URI_NAVER_LINK}`;
