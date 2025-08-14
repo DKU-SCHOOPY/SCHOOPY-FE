@@ -13,14 +13,18 @@ const KakaoLinkCallback = () => {
       
 
       <p>연동 중입니다... 잠시만 기다려주세요.</p>
+      console.log("코드", code);
+      console.log("상태", state);
 
       try {
         const studentNum = localStorage.getItem("studentNum");
 
-        const res = await axios.post(`${API_BASE_URL}/oauth/kakao/link`
-        );
+        const res = await axios.post(`${API_BASE_URL}/oauth/kakao/link`,{
+          code: code,
+          state: state,
+          studentNum: studentNum
+        });
 
-        
         console.log("카카오 연동 완료", res.data);
         alert("✅ 카카오 연동이 완료되었습니다");
         navigate("/mypage");

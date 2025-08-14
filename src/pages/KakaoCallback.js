@@ -17,11 +17,19 @@ const KakaoCallback = () => {
           `${API_BASE_URL}/oauth/kakao/callback?code=${code}&state=${state}`
         );
 
-        console.log("KAKAO CLIENT_ID:", process.env.REACT_APP_REST_API_KEY_KAKAO);
-        console.log("KAKAO REDIRECT:", process.env.REACT_APP_REDIRECT_URL_KAKAO);
+        if (response.data.code === "SU" && response.data.token) {
+          // ✅ 로그인 성공 처리
+          localStorage.setItem("token", response.data.token); // JWT 저장
+          localStorage.setItem("studentNum", response.data.studentNum); // 학번 저장
+          console.log("✅ 소셜 로그인 성공", response.data);
 
-        console.log("✅ 소셜 로그인 성공", response.data);
-
+          navigate("/home"); // 로그인 완료 후 이동
+        } else {
+          // 실패 처리
+          console.error("❌ 소셜 로그인 실패", response.data);
+          navigate("/login");
+        }
+        
         // 로그인 완료 후 페이지 이동
         navigate("/home");
       } catch (error) {
