@@ -14,11 +14,7 @@ const KakaoCallback = () => {
     const kakaoLogin = async () => {
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/oauth/kakao/callback`,
-          {
-            params: { code, state },
-            
-          }
+          `${API_BASE_URL}/oauth/kakao/callback?code=${code}&state=${state}`
         );
 
         console.log("KAKAO CLIENT_ID:", process.env.REACT_APP_REST_API_KEY_KAKAO);

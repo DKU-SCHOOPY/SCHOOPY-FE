@@ -17,11 +17,7 @@ const KakaoLinkCallback = () => {
       try {
         const studentNum = localStorage.getItem("studentNum");
 
-        const res = await axios.post(`${API_BASE_URL}/oauth/kakao/link`, {
-          studentNum,
-          code,
-          state,
-        },
+        const res = await axios.post(`${API_BASE_URL}/oauth/kakao/link`
         );
 
         
