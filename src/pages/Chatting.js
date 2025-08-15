@@ -44,6 +44,7 @@ function Chatting() {
 
   // 연결 안 돼있으면 연결
   if (!socket || socket.readyState !== WebSocket.OPEN) {
+    console.log("상대",customerId);
     socket = connectSocket(currentUser.userId, customerId);
     console.log("웹소켓 재연결 시도 중...");
     socket.onopen = () => {
