@@ -2,7 +2,7 @@ const CLIENT_ID_KAKAO = process.env.REACT_APP_REST_API_KEY_KAKAO;
 const REDIRECT_URI_KAKAO = process.env.REACT_APP_REDIRECT_URL_KAKAO;
 const REDIRECT_URI_KAKAO_LINK = process.env.REACT_APP_REDIRECT_URL_KAKAO_LINK;
 
-const STATE_KAKAO = createState("kakao");
+const STATE_KAKAO = Math.random().toString(36).substring(2, 15);
 export const KAKAO_AUTH_URL = 
   `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID_KAKAO}` +
   `&redirect_uri=${REDIRECT_URI_KAKAO}` +
