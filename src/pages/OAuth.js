@@ -2,8 +2,14 @@ const CLIENT_ID_KAKAO = process.env.REACT_APP_REST_API_KEY_KAKAO;
 const REDIRECT_URI_KAKAO = process.env.REACT_APP_REDIRECT_URL_KAKAO;
 const REDIRECT_URI_KAKAO_LINK = process.env.REACT_APP_REDIRECT_URL_KAKAO_LINK;
 
-export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID_KAKAO}&redirect_uri=${REDIRECT_URI_KAKAO}&response_type=code`;
-export const KAKAO_LINK_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID_KAKAO}&redirect_uri=${REDIRECT_URI_KAKAO_LINK}&response_type=code`;
+const STATE_KAKAO = createState("kakao");
+export const KAKAO_AUTH_URL = 
+  `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID_KAKAO}` +
+  `&redirect_uri=${REDIRECT_URI_KAKAO}` +
+  `&response_type=code` +
+  `&state=${STATE_KAKAO}`;
+
+export const KAKAO_LINK_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID_KAKAO}&redirect_uri=${REDIRECT_URI_KAKAO_LINK}&response_type=code&state=${STATE_KAKAO}`;
 
 
 const CLIENT_ID_NAVER = process.env.REACT_APP_REST_API_KEY_NAVER;
