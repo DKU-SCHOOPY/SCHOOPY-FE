@@ -3,7 +3,7 @@ let socket = null;
 export function connectSocket(myId, targetId) {
   const token = localStorage.getItem("token");
   const socket = new WebSocket(
-    `wss://schoopy.co.kr/ws/chat/${myId}/${targetId}/${token}`
+    `ws://schoopy.co.kr/ws/chat/${myId}/${targetId}`
   );
   socket.onopen = () => {
     console.log("웹소켓 연결됨");
