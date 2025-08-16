@@ -1,10 +1,10 @@
 let socket = null;
 
-export const connectSocket = (myId, targetId) => {
-  if (socket) return socket;
-
-  socket = new WebSocket(`wss://schoopy.co.kr/ws/chat/${myId}/${targetId}`);
-
+export function connectSocket(myId, targetId) {
+  const token = localStorage.getItem("token");
+  const socket = new WebSocket(
+    `wss://schoopy.co.kr/ws/chat/${myId}/${targetId}?token=${token}`
+  );
   socket.onopen = () => {
     console.log("웹소켓 연결됨");
   };
