@@ -30,6 +30,7 @@ useEffect(() => {
         status: "활성 채팅"
       }));
       setChats(data);
+      console.log("데이터",data);
     })
     .catch((err) => console.error("채팅방 목록 불러오기 실패", err));
 }, [currentUser]);
