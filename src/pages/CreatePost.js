@@ -94,7 +94,7 @@ export default function FormPage() {
     }
   };
 
-  return (
+  return ( 
     <div className="container">
       <Header title="게시물 생성" showBack />
       {/* <button className="back-button" onClick={() => navigate(-1)}>←</button> */}
