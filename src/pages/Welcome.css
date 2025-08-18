@@ -76,11 +76,12 @@
     .welcome-text {
       width: 100%;
       text-align: center;
-      padding: 20px;
+      padding: 10px;
     }
 
     .start-button {
       width: 80%;
+      margin-bottom: 6px;
     }
   }
   
