@@ -21,7 +21,6 @@ const KakaoLinkCallback = () => {
 
         const res = await axios.post(`${API_BASE_URL}/oauth/kakao/link`,{
           code: code,
-          state: state,
           studentNum: studentNum
         });
 
