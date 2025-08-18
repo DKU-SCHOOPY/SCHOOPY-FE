@@ -85,7 +85,7 @@ export default function FormPage() {
       const res = await axios.post(
         `${API_BASE_URL}/event/regist-event`,
         formData,
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}`,"Content-Type": "multipart/form-data" } }
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "multipart/form-data" } }
       );
       alert("등록 성공!");
       navigate("/home");
