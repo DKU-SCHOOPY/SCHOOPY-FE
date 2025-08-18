@@ -5,6 +5,14 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import "./CreatePost.css";
 
+const VALID_DEPARTMENTS = [
+  "SW융합대학학생회",
+  "소프트웨어학과",
+  "컴퓨터공학과",
+  "통계데이터사이언스학과",
+  "사이버보안학과"
+];
+
 export default function FormPage() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
@@ -45,6 +53,10 @@ export default function FormPage() {
       alert("게시물 설명을 입력해주세요.");
       return;
     }
+    if (!VALID_DEPARTMENTS.includes(department)) {
+      alert("학과를 필수로 선택해주세요.");
+      return;
+    }
 
     const eventData = {
       eventName: title,
@@ -57,6 +69,10 @@ export default function FormPage() {
   };
 
   const handleSkip = async () => {
+    if (!VALID_DEPARTMENTS.includes(department)) {
+      alert("학과를 필수로 선택해주세요.");
+      return;
+    }
     const formData = new FormData();
     formData.append("eventName", title);
     formData.append("eventDescription", description);
