@@ -1,6 +1,6 @@
 .welcome-container {
-    width: 100vw;  /* 화면 전체 너비 */
-    height: 100vh; /* 화면 전체 높이 */
+    width: 100%;  /* 화면 전체 너비 */
+    height: 100%; /* 화면 전체 높이 */
     background-color: white; /* 배경을 흰색으로 설정 */
     display: flex;
     justify-content: center;
@@ -58,18 +58,18 @@
   /* 📌 모바일 화면: 세로 정렬 */
   @media (max-width: 650px){
     .welcome-container {
-      overflow-x: hidden;
-      height: 83vh;
+      overflow: hidden; /* 스크롤 숨김 */
+      height: 100%;
     }
     .welcome-content {
       flex-direction: column;
       width: 100%;
-      height: 83vh;
+      height: 100%;
     }
   
     .welcome-image {
-      width: 100vw;  /* 화면 너비를 꽉 채우기 */
-      height: 50vh; /* 화면 높이도 꽉 채우기 */
+      width: 100%;  /* 화면 너비를 꽉 채우기 */
+      height: 40vh; /* 화면 높이도 꽉 채우기 */
       object-fit: cover; /* 이미지 비율 유지하면서 꽉 차게 */
     }
   
