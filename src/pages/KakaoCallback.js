@@ -14,7 +14,7 @@ const KakaoCallback = () => {
     const kakaoLogin = async () => {
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/oauth/kakao/callback?code=${code}&state=${state}`
+          `${API_BASE_URL}/oauth/kakao/callback?code=${code}`
         );
 
         if (response.data.code === "SU" && response.data.token) {
