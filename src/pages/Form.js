@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {API_BASE_URL} from "../config";
+import { API_BASE_URL } from "../config";
 import "./Form.css";
 
 function FormPage() {
@@ -17,11 +17,11 @@ function FormPage() {
 
   useEffect(() => {
     axios.get(`${API_BASE_URL}/event/get-form/${eventCode}`,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-  })
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      })
       .then(res => {
         setForm(res.data);
         setLoading(false);
@@ -43,9 +43,19 @@ function FormPage() {
 
   // 송금 버튼 클릭 시
   const handlePayment = (remitType) => {
-    // 실제 송금 로직은 API 명세에 맞게 구현
-    setCouncilFeePaid(true);
-    alert(remitType + " 송금 완료(모의)");
+    let url = "";
+    if (remitType === "토스") {
+      url = form.qr_toss_x; // 토스 QR URL
+    } else if (remitType === "카카오페이") {
+      url = form.qr_kakaopay_x; // 카카오페이 QR URL
+    }
+    if (url) {
+      window.open(url, "_blank");
+      setCouncilFeePaid(true);
+      alert(remitType + " 송금 완료");
+    } else {
+      alert(remitType + " QR 코드가 등록되어 있지 않습니다.");
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -106,11 +116,11 @@ function FormPage() {
       const res = await axios.post(
         `${API_BASE_URL}/event/application`,
         payload,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-  }
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        }
       );
       alert(res.data.message);
       navigate('/formlist');
