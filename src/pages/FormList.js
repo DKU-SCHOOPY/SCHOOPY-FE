@@ -96,18 +96,18 @@ const FormList = () => {
       {/* 필터바 컴포넌트 적용 */}
       <FilterBar filters={FILTERS} selected={filter} onSelect={setFilter} />
 
-      <div className="event-list">
+      <div className="form-event-list">
         {filteredEvents.length === 0 ? (
           <div className="no-events">등록된 이벤트가 없습니다.</div>
         ) : (
           filteredEvents.map((ev) => (
             <div
               key={ev.id}
-              className="event-card"
+              className="form-event-card"
               onClick={() => navigate(`/form/${ev.id}`)}
             >
-              <div className="event-title">{ev.name}</div>
-              <div className="event-period">
+              <div className="form-event-title">{ev.name}</div>
+              <div className="form-event-period">
                 {formatDate(ev.surveyStartDate)} ~ {formatDate(ev.surveyEndDate)}
               </div>
               <div className="progress-row">

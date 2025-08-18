@@ -71,7 +71,7 @@ function Layout() {
         <Route path="/addschedule" element={<AddSchedule />} />
         <Route path="/createpost" element={<CreatePost />} /> 
         <Route path="/oauth2/authorization/kakao" element={<KakaoCallback />} />
-        <Route path="/oauth2/authorization/naver" element={<NaverCallback />} />
+        <Route path="/oauth2/callback/naver" element={<NaverCallback />} />
         <Route path="/oauth2/authorization/kakao/link" element={<KakaoLinkCallback />} />
         <Route path="/oauth2/authorization/naver/link" element={<NaverLinkCallback />} />
         <Route path="/eventdetail/:eventCode" element={<EventDetail />} />

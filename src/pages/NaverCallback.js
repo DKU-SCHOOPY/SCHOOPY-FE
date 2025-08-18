@@ -6,6 +6,8 @@ import axios from "axios";
 import { API_BASE_URL } from '../config';
 
 function NaverCallback() {
+  console.log("네이버api", process.env.REACT_APP_REST_API_KEY_NAVER);
+  console.log("네이버 리다이렉트", process.env.REACT_APP_REDIRECT_URL_NAVER);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,11 +20,6 @@ function NaverCallback() {
         // code, state만 백엔드에 전달
         const response = await axios.get(
           `${API_BASE_URL}/oauth/naver/callback?code=${code}&state=${state}`,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-  }
         );
 
         // 백엔드에서 로그인 처리 후 결과 반환

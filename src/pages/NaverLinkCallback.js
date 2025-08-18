@@ -17,12 +17,7 @@ const NaverLinkCallback = () => {
           studentNum,
           code,
           state,
-        },
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-  });
+        },);
 
         console.log("네이버 연동 완료", res.data);
         navigate("/mypage");
