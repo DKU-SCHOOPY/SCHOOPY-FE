@@ -148,9 +148,9 @@ function FormPage() {
               {q.questionType === "MULTIPLE_CHOICE" ? (
                 q.multiple ? (
                   // 체크박스 그룹
-                  <div>
+                  <div className="option-chips">
                     {q.choices.map(opt => (
-                      <label key={opt} style={{ marginRight: 16 }}>
+                      <label key={opt} className="option-chip">
                         <input
                           type="checkbox"
                           checked={(answers[q.questionId] || []).includes(opt)}
@@ -163,7 +163,7 @@ function FormPage() {
                             }
                           }}
                         />
-                        {opt}
+                        <span className="chip-text">{opt}</span>
                       </label>
                     ))}
                   </div>
@@ -195,7 +195,7 @@ function FormPage() {
 
         {/* 재학생 여부 */}
         <div className="form-group">
-          <label>
+          <label className="checkbox-label">
             <input
               type="checkbox"
               checked={isStudent}
