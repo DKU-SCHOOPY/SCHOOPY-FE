@@ -18,7 +18,7 @@ export default function Home() {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const res = await axios.get(`${API_BASE_URL}/home/home`,
+        const res = await axios.get(`${API_BASE_URL}/home/feedback`,
   {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
