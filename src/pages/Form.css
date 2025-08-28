@@ -78,13 +78,13 @@
 }
 
 /* Added layout and input styles */
-.container {
+.form-container {
   max-width: 640px;
   margin: 0 auto;
   padding: 32px 16px;
 }
 
-.page-title {
+.form-page-title {
   font-size: 24px;
   font-weight: 700;
   text-align: center;
