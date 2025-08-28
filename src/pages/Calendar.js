@@ -55,7 +55,7 @@ function Calendar() {
     console.log("토큰 확인:", token);
 
     const response = await axios.get(
-       `${API_BASE_URL}/event/calendar?year=${year}&month=${month}`,
+       `${API_BASE_URL}/event/all/calendar?year=${year}&month=${month}`,
        {
     headers: {
       Authorization: `Bearer ${token}`

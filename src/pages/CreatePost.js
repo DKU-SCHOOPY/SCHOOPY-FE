@@ -83,7 +83,7 @@ export default function FormPage() {
 
     try {
       const res = await axios.post(
-        `${API_BASE_URL}/event/regist-event`,
+        `${API_BASE_URL}/event/council/regist-event`,
         formData,
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}`, "Content-Type": "multipart/form-data" } }
       );

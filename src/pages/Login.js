@@ -13,8 +13,6 @@ function Login() {
   const [studentNum, setStudentNum] = useState("");
   const [password, setPassword] = useState("");
 
- 
-
   const handleLogin = async () => {
     try {
       // // 알림 권한 요청
@@ -51,14 +49,14 @@ function Login() {
         localStorage.setItem("studentNum", studentNum);
         localStorage.setItem("noticeCount", response.data.noticeCount);
 
-        // connectSocket(token);
-        // if (token) {
-        //   localStorage.setItem('accessToken', token);  // ✅ 여기서 저장
-           navigate('/home'); // 로그인 후 이동
-        // } else {
-        //   console.error("토큰 없음");
-        // }
-        
+        // role 체크 후 이동
+        const userRole = response.data.role; // API에서 role 받아옴
+
+        if (userRole === "STUDENT") {
+          navigate("/home");       // 학생이면 기존대로 Home
+        } else if (userRole === "COUNCIL") {
+          navigate("/select");     // 학생회이면 Select 페이지
+        }
       } else {
         alert(`⚠️ ${message}`);
       }
@@ -71,29 +69,27 @@ function Login() {
 
   return (
     <OkEnter onSubmit={handleLogin}>
-    <div className="container">
-      <div className="login-text-container">
-        <h2 className="page-title">로그인하기</h2>
-        <p className="login-subtitle">
-          학번과 비밀번호를 입력해주세요
-        </p>
-      </div>
-      <div className="login-button-container">
-        <input
-          type="text"
-          placeholder="Enter your student ID"
-          className="login-textarea"
-          value={studentNum}
-          onChange={(e) => setStudentNum(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Enter your password"
-          className="login-textarea"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button className="login-forgot">Forgot Password?</button>
+      <div className="container">
+        <div className="login-text-container">
+          <h2 className="page-title">로그인하기</h2>
+          <p className="login-subtitle">학번과 비밀번호를 입력해주세요</p>
+        </div>
+        <div className="login-button-container">
+          <input
+            type="text"
+            placeholder="Enter your student ID"
+            className="login-textarea"
+            value={studentNum}
+            onChange={(e) => setStudentNum(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Enter your password"
+            className="login-textarea"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button className="login-forgot">Forgot Password?</button>
 
         <button className="login-button" onClick={handleLogin}>로그인
         </button>
@@ -114,8 +110,8 @@ function Login() {
         </a>
         </div>
 
+        </div>
       </div>
-    </div>
     </OkEnter>
   );
 }

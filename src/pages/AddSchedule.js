@@ -69,7 +69,7 @@ const AddSchedule = () => {
 
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/event/regist-event`,
+        `${API_BASE_URL}/event/council/regist-event`,
         submitData,
         {
           headers: {

@@ -10,7 +10,7 @@ function AnswerPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/event/application/${applicationId}/answers`)
+    axios.get(`${API_BASE_URL}/event/council/application/${applicationId}/answers`)
       .then(res => {
         setAnswers(res.data);
         setLoading(false);

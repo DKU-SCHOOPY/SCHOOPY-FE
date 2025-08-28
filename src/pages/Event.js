@@ -25,7 +25,7 @@ export default function EventApplicants() {
     const fetchEventData = async () => {
       try {
         const res = await axios.get(
-          `${API_BASE_URL}/event/submissions/${eventId}`,
+          `${API_BASE_URL}/event/council/submissions/${eventId}`,
   {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -78,7 +78,7 @@ export default function EventApplicants() {
       }
 
       const res = await axios.post(
-        `${API_BASE_URL}/event/approve`,
+        `${API_BASE_URL}/event/council/approve`,
         {
           applicationId: Number(applicationId),
           choice: isAccept ? "True" : "False"

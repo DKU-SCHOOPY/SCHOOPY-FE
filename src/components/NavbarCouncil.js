@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Home, FileText, Calendar, MessageCircle, User } from "lucide-react";
+import { Home, FileText, Plus, MessageCircle, User } from "lucide-react";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -14,8 +14,8 @@ export default function Navbar() {
       <NavItem onClick={() => navigate("/formlist")}>
         <FileText size={24} />
       </NavItem>
-      <NavItem onClick={() => navigate("/calendar")}>
-        <Calendar size={24} />
+      <NavItem onClick={() => navigate("/createpost")}>
+        <Plus size={24} />
       </NavItem>
       <NavItem onClick={() => navigate("/chat")}>
         <MessageCircle size={24} />

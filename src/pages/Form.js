@@ -16,7 +16,7 @@ function FormPage() {
   const [councilFeePaid, setCouncilFeePaid] = useState(false);
 
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/event/get-form/${eventCode}`,
+    axios.get(`${API_BASE_URL}/event/student/get-form/${eventCode}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -114,7 +114,7 @@ function FormPage() {
 
     try {
       const res = await axios.post(
-        `${API_BASE_URL}/event/application`,
+        `${API_BASE_URL}/event/student/application`,
         payload,
         {
           headers: {
