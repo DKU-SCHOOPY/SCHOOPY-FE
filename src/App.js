@@ -31,7 +31,6 @@ import Event from "./pages/Event";
 import RoleBasedRoute from "./routes/RoleBasedRoute";
 import RoleBasedNavbar from "./components/RoleBasedNavbar";
 
-import { AuthProvider } from "./AuthContext";
 
 function Layout() {
   const location = useLocation();
@@ -94,10 +93,8 @@ export default function App() {
   */
 
   return (
-    <AuthProvider>
-      <Router>
-        <Layout />
-      </Router>
-    </AuthProvider>
+    <Router>
+      <Layout />
+    </Router>
   );
 }
