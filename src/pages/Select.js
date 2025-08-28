@@ -1,15 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext";
 
 function Select() {
   const navigate = useNavigate();
-  const { setRole } = useAuth();
 
   const handleSelect = (choice) => {
-    setRole(choice);     // STUDENT / COUNCIL 저장
-    navigate("/home");   // 이동은 항상 Home
-  };
+  localStorage.setItem("role", choice); // STUDENT / COUNCIL 저장
+  navigate("/home");                     // 이동은 항상 Home
+};
+
 
   return (
     <div style={styles.container}>

@@ -49,8 +49,9 @@ function Login() {
         localStorage.setItem("studentNum", studentNum);
         localStorage.setItem("noticeCount", response.data.noticeCount);
 
-        // role 체크 후 이동
-        const userRole = response.data.role; // API에서 role 받아옴
+        const userRole = response.data.role; 
+        localStorage.setItem("role", userRole);  // 추가
+
 
         if (userRole === "STUDENT") {
           navigate("/home");       // 학생이면 기존대로 Home

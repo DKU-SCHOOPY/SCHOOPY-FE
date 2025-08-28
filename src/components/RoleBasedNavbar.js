@@ -1,13 +1,9 @@
-import React from "react";
-import Navbar from "./Navbar";               // 학생용
-import NavbarCouncil from "./NavbarCouncil"; // 학생회용
-import { useAuth } from "../AuthContext";
+import Navbar from "./Navbar";
+import NavbarCouncil from "./NavbarCouncil";
 
 function RoleBasedNavbar() {
-  const { role } = useAuth();
-
-  if (role === "COUNCIL") return <NavbarCouncil />;
-  return <Navbar />;
+  const role = localStorage.getItem("role");
+  return role === "COUNCIL" ? <NavbarCouncil /> : <Navbar />;
 }
 
 export default RoleBasedNavbar;
