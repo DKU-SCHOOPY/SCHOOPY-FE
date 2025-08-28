@@ -1,16 +1,18 @@
-// src/AuthContext.js
-import { createContext, useContext, useState } from "react";
+import React from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
-const AuthContext = createContext();
+function RoleBasedRoute({ student: StudentComp, council: CouncilComp }) {
+  const { role } = useAuth();
 
-export const AuthProvider = ({ children }) => {
-  const [role, setRole] = useState(null); // STUDENT / COUNCIL / null
+  if (!role) {
+    return <Navigate to="/login" />; // 로그인 안 되어 있으면 리다이렉트
+  }
 
-  return (
-    <AuthContext.Provider value={{ role, setRole }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+  if (role === "STUDENT") return <StudentComp />;
+  if (role === "COUNCIL") return <CouncilComp />;
 
-export const useAuth = () => useContext(AuthContext);
+  return <Navigate to="/not-authorized" />; // 그 외는 권한 없음
+}
+
+export default RoleBasedRoute;
