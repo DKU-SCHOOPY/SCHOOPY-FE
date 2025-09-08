@@ -32,8 +32,6 @@ const KakaoCallback = () => {
             navigate("/home");     // 학생회이면 Select 페이지
           }
 
-
-          navigate("/home"); // 로그인 완료 후 이동
         } else {
           // 실패 처리
           console.error("❌ 소셜 로그인 실패", response.data);

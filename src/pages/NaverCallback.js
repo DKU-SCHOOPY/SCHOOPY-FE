@@ -33,12 +33,11 @@ function NaverCallback() {
           localStorage.setItem("role", userRole);  // 추가
 
           if (userRole === "COUNCIL") {
-            navigate("/select");       // 학생이면 기존대로 Home
+            navigate("/select");       
           } else if (userRole === "STUDENT") {
-            navigate("/home");     // 학생회이면 Select 페이지
+            navigate("/home");     
           }
 
-          navigate("/home");
         } else {
           // 학번 연동 안 된 경우
           alert("네이버 계정이 학번 계정과 연동되지 않았습니다.\n회원가입 후 다시 시도해주세요.");
