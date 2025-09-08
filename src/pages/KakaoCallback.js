@@ -23,6 +23,16 @@ const KakaoCallback = () => {
           localStorage.setItem("studentNum", response.data.studentNum); // 학번 저장
           console.log("✅ 소셜 로그인 성공", response.data);
 
+          const userRole = response.data.role; 
+          localStorage.setItem("role", userRole);  // 추가
+
+          if (userRole === "STUDENT") {
+            navigate("/home");       // 학생이면 기존대로 Home
+          } else if (userRole === "COUNCIL") {
+            navigate("/select");     // 학생회이면 Select 페이지
+          }
+
+
           navigate("/home"); // 로그인 완료 후 이동
         } else {
           // 실패 처리

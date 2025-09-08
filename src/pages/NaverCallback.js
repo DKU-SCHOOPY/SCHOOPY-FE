@@ -28,6 +28,16 @@ function NaverCallback() {
         if (studentNum && token) {
           localStorage.setItem("studentNum", studentNum);
           localStorage.setItem("accessToken", token);
+
+          const userRole = response.data.role; 
+          localStorage.setItem("role", userRole);  // 추가
+
+          if (userRole === "STUDENT") {
+            navigate("/home");       // 학생이면 기존대로 Home
+          } else if (userRole === "COUNCIL") {
+            navigate("/select");     // 학생회이면 Select 페이지
+          }
+
           navigate("/home");
         } else {
           // 학번 연동 안 된 경우
