@@ -24,7 +24,6 @@ const FormList = () => {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        console.log("Fetching events...");
         const res = await axios.get(
           `${API_BASE_URL}/event/student/get-active`,
           {
@@ -33,7 +32,7 @@ const FormList = () => {
             }
           }
         );
-        console.log("Raw API Response:", res.data.data);
+        console.log("Raw API Response:", res.data);
 
         if (!res.data || !Array.isArray(res.data)) {
           console.error("Invalid API response format:", res.data);
