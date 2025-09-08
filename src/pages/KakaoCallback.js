@@ -38,8 +38,6 @@ const KakaoCallback = () => {
           navigate("/login");
         }
         
-        // 로그인 완료 후 페이지 이동
-        navigate("/home");
       } catch (error) {
         console.log("KAKAO CLIENT_ID:", process.env.REACT_APP_REST_API_KEY_KAKAO);
         console.log("KAKAO REDIRECT:", process.env.REACT_APP_REDIRECT_URL_KAKAO);
