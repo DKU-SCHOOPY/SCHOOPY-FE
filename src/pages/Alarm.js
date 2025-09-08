@@ -11,17 +11,29 @@ export default function Alarm() {
 
   useEffect(() => {
     const fetchNotifications = async () => {
-      
-      
-      try {
-        const res = await axios.get(`${API_BASE_URL}/notice/${studentNum}`,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-  });
+    try {
+      const role = localStorage.getItem("role");
+      const studentNum = localStorage.getItem("studentNum");
+
+      // role에 따라 요청 URL 변경
+      const url =
+        role === "COUNCIL"
+          ? `${API_BASE_URL}/notice/council/check`
+          : `${API_BASE_URL}/notice/student/check`;
+
+      const res = await axios.post(
+        url,
+        { studentNum },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
         const data = res.data.map((item) => ({
           id: item.noticeId,
+          sender: item.sender,
           title: item.title,
           message: item.message,
           read: item.check,
@@ -36,28 +48,67 @@ export default function Alarm() {
     fetchNotifications();
   }, []);
 
-  // 읽음 처리 핸들러
-  const handleNotificationClick = async (id) => {
+
+  // 전체 읽음 처리
+  const handleReadAll = async () => {
     try {
-      await axios.patch(`${API_BASE_URL}/notice/studentNum=${studentNum}`,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-  });
+      const studentNum = localStorage.getItem("studentNum");
+      const role = localStorage.getItem("role");
+
+      await axios.post(
+        `${API_BASE_URL}/notice/all/readAll`,
+        {
+          studentNum,
+          isPresident: role === "COUNCIL", // 학생회면 true
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      // 전체 읽음 상태로 업데이트
       setNotifications((prev) =>
-        prev.map((noti) =>
-          noti.id === id ? { ...noti, read: true } : noti
-        )
+        prev.map((noti) => ({ ...noti, read: true }))
       );
     } catch (err) {
-      console.error("읽음 처리 실패", err);
+      console.error("전체 읽음 처리 실패", err);
     }
   };
 
+
+  // 하나 읽음 처리
+const handleNotificationClick = async (id) => {
+  try {
+    await axios.post(
+      `${API_BASE_URL}/notice/all/justRead`,
+      { noticeId: id }, // body에 noticeId 전달
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    setNotifications((prev) =>
+      prev.map((noti) =>
+        noti.id === id ? { ...noti, read: true } : noti
+      )
+    );
+  } catch (err) {
+    console.error("읽음 처리 실패", err);
+  }
+};
+
   return (
     <div className="container">
-      <Header title="알림함" showBack/>
+      <Header title="알림함" showBack>
+      <button className="read-all-btn" onClick={handleReadAll}>
+        전체 읽음
+      </button>
+      </Header>
+
       <div className="alarm-list">
         {notifications.length === 0 ? (
           <div className="alarm-empty">알림이 없습니다</div>

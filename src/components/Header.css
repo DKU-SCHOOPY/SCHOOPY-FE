@@ -3,22 +3,20 @@
   height: 28px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   padding-bottom: 20px;
 }
 
 /* 가운데 정렬된 타이틀 */
 .header-title {
+  flex: 1;
+  text-align: center;
   font-size: 20px;
-  font-weight: bold;
   margin: 0;
 }
 
+/* back 버튼을 flex item으로 두고 좌측에 고정 */
 .back-button {
-  position: absolute;
-  top: 28%;
-  left: 5px; /* ← 왼쪽 끝에 더 가까이 붙도록 설정 */
-  transform: translateY(-50%);
   background: none;
   border: none;
   font-size: 24px;
@@ -26,4 +24,25 @@
   color: black;
   cursor: pointer;
   padding: 1px;
+  margin-left: 5px; /* 살짝 왼쪽 여백 */
+}
+
+/* 오른쪽 버튼 (전체읽음 등) */
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.read-all-btn {
+  color: rgb(0, 0, 0);
+  border: 1px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.read-all-btn:hover {
+  background-color: #5634ff8b;
 }
