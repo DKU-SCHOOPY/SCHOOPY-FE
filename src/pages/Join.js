@@ -35,7 +35,7 @@ function Join() {
       `${API_BASE_URL}/auth/email-certification`,
       { studentNum }
     );
-    alert(`✅ ${response.data.message}`);
+    alert(`✅ 발송완료 ( 스팸메일함도 확인해주세요 )`);
   } catch (error) {
     const message = error?.response?.data?.message || "네트워크 오류";
     alert(`❗ ${message}`);
@@ -99,7 +99,7 @@ function Join() {
       </div>
 
       <div className="input-row">
-        <input className="textarea" placeholder="비밀번호" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input className="textarea" placeholder="비밀번호 12~18자리" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
 
       <div className="input-row">
