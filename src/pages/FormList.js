@@ -33,7 +33,7 @@ const FormList = () => {
             }
           }
         );
-        console.log("Raw API Response:", res.data);
+        console.log("Raw API Response:", res.data.data);
 
         if (!res.data || !Array.isArray(res.data)) {
           console.error("Invalid API response format:", res.data);
