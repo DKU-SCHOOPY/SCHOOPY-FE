@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {API_BASE_URL} from "../config";
@@ -10,6 +10,14 @@ export default function EventApplicants() {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
+
+  // 참가자 중 첫 번째 학생의 학과 정보 추출 (없으면 빈 문자열)
+  const department = useMemo(() => {
+    if (participants.length > 0 && participants[0].user?.department) {
+      return participants[0].user.department;
+    }
+    return "";
+  }, [participants]);
 
   const filteredParticipants = participants.filter(p => {
     const name = p.user?.name || "";
@@ -168,6 +176,20 @@ export default function EventApplicants() {
           ))
         )}
       </div>
+      {/* 오른쪽 하단 파일 다운 버튼 */}
+      <button
+        className="file-download-fab"
+        onClick={() => {
+          if (!department) {
+            alert("학과 정보가 없습니다.");
+            return;
+          }
+          navigate(`/excel?department=${encodeURIComponent(department)}`);
+        }}
+        title="엑셀 파일 다운로드"
+      >
+        파일<br />다운
+      </button>
     </div>
   );
 
