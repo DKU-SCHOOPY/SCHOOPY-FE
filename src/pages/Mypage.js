@@ -19,10 +19,6 @@ const Mypage = () => {
 
   useEffect(() => {
     const fetchUserInfo = async () => {
-      console.log("API키", process.env.REACT_APP_REST_API_KEY_KAKAO);
-      console.log("URL", process.env.REACT_APP_REDIRECT_URL_KAKAO);
-      console.log("네이버api", process.env.REACT_APP_REST_API_KEY_NAVER);
-      console.log("네이버 리다이렉트", process.env.REACT_APP_REDIRECT_URL_NAVER);
 
       try {
         const studentNum = localStorage.getItem('studentNum');
@@ -35,6 +31,7 @@ const Mypage = () => {
     }
   });
         const data = res.data;
+        console.log(data);
         if (data.code === 'SU') {
           setUserInfo({
             name: data.name,
