@@ -26,7 +26,7 @@ const Mypage = () => {
 
       try {
         const studentNum = localStorage.getItem('studentNum');
-        const res = await axios.post(`${API_BASE_URL}/auth/mypage`, {
+        const res = await axios.post(`${API_BASE_URL}/mypage/check`, {
           studentNum: studentNum,
         },
   {

@@ -31,6 +31,8 @@ export default function Alarm() {
         }
       );
 
+      console.log("res", res.data);
+
         const data = res.data.map((item) => ({
           id: item.noticeId,
           sender: item.sender,

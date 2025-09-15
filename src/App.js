@@ -78,7 +78,7 @@ function Layout() {
         {/* 역할 기반 라우트 */}
         <Route
           path="/form/:eventCode"
-          element={<RoleBasedRoute student={Form} council={Event} />}
+          element={<RoleBasedRoute student={EventDetail} council={Event} />}
         />
       </Routes>
     </div>

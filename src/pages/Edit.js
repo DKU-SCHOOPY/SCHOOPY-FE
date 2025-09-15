@@ -18,7 +18,7 @@ function Edit() {
       console.log("axios 요청 직전");
 
       if (field === "학과") {
-        response = await axios.post(`${API_BASE_URL}/auth/change-dept`, {
+        response = await axios.post(`${API_BASE_URL}/mypage/change-dept`, {
           studentNum,
           department: newValue,
         },
@@ -29,7 +29,7 @@ function Edit() {
   });
         console.log("axios 요청 후, 응답:", response);
       } else if (field === "전화번호") {
-        response = await axios.post(`${API_BASE_URL}/auth/change-phone-num`, {
+        response = await axios.post(`${API_BASE_URL}/mypage/change-phone-num`, {
           studentNum,
           phoneNum: newValue,
         },

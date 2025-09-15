@@ -24,7 +24,6 @@ const FormList = () => {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        console.log("Fetching events...");
         const res = await axios.get(
           `${API_BASE_URL}/event/student/get-active`,
           {
