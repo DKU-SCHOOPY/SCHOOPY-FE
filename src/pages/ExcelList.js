@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import * as XLSX from "xlsx";
 import { API_BASE_URL } from "../config";
@@ -7,6 +7,10 @@ import "./ExcelList.css";
 
 export default function ExcelList() {
   const { eventId: paramEventId } = useParams();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const departmentFilter = params.get("department");
+
   const [eventId, setEventId] = useState(paramEventId || "");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -18,21 +22,24 @@ export default function ExcelList() {
     async function fetchEvents() {
       try {
         const res = await axios.get(
-          `${API_BASE_URL}/event/council/get-active`,
+          `${API_BASE_URL}/event/council/SW융합대학학생회/get-active`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
-        // 응답에 맞게 key를 맞춰주세요 (id, name)
-        setEvents(res.data || []);
+        let eventList = res.data || [];
+        if (departmentFilter) {
+          eventList = eventList.filter((ev) => ev.department === departmentFilter);
+        }
+        setEvents(eventList);
       } catch (e) {
         alert("행사 목록 조회 실패: " + (e.response?.data?.message || e.message));
       }
     }
     fetchEvents();
-  }, []);
+  }, [departmentFilter]);
 
   useEffect(() => {
     if (paramEventId) setEventId(paramEventId);

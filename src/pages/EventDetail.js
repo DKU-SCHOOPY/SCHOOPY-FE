@@ -14,11 +14,11 @@ function EventDetail() {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-      const payload = { eventCode: parseInt(eventCode) };
-      
-      const response = await axios.post(`${API_BASE_URL}/home/get-event`, payload, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+        const payload = { eventCode: parseInt(eventCode) };
+
+        const response = await axios.post(`${API_BASE_URL}/home/get-event`, payload, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        });
 
         if (response.data.code === "SU") {
           console.log(response.data);
@@ -67,32 +67,32 @@ function EventDetail() {
         <span className="department-name">{eventData.department}</span>
       </div>
 
-      
 
-     <div className="event-info-container-vertical">
-      <div className="event-info-row">
-        <span className="event-info-icon">📢</span>
-        <span className="event-info-label">주최</span>
-        <span className="event-info-value">{eventData.department}</span>
+
+      <div className="event-info-container-vertical">
+        <div className="event-info-row">
+          <span className="event-info-icon">📢</span>
+          <span className="event-info-label">주최</span>
+          <span className="event-info-value">{eventData.department}</span>
+        </div>
+        <div className="event-info-row">
+          <span className="event-info-icon">👥</span>
+          <span className="event-info-label">모집인원</span>
+          {/*<span className="event-info-value">100명</span>*/}
+          <span className="event-info-value">{eventData.maxParticipant}명</span>
+        </div>
+        <div className="event-info-row">
+          <span className="event-info-icon">📅</span>
+          <span className="event-info-label">행사 날짜</span>
+          {/*<span className="event-info-value">2025.08.20 ~ 2025.08.22</span>*/}
+          <span className="event-info-value">{eventData.eventStartDate} ~ {eventData.eventEndDate}</span>
+        </div>
+        <div className="event-info-row">
+          <span className="event-info-icon">📝</span>
+          <span className="event-info-label">신청 날짜</span>
+          <span className="event-info-value">{eventData.surveyStartDate} ~ {eventData.surveyEndDate}</span>
+        </div>
       </div>
-      <div className="event-info-row">
-        <span className="event-info-icon">👥</span>
-        <span className="event-info-label">모집인원</span>
-        {/*<span className="event-info-value">100명</span>*/}
-        <span className="event-info-value">{eventData.maxParticipant}명</span>
-      </div>
-      <div className="event-info-row">
-        <span className="event-info-icon">📅</span>
-        <span className="event-info-label">행사 날짜</span>
-        {/*<span className="event-info-value">2025.08.20 ~ 2025.08.22</span>*/}
-        <span className="event-info-value">{eventData.eventStartDate} ~ {eventData.eventEndDate}</span>
-      </div>
-      <div className="event-info-row">
-        <span className="event-info-icon">📝</span>
-        <span className="event-info-label">신청 날짜</span>
-        <span className="event-info-value">{eventData.surveyStartDate} ~ {eventData.surveyEndDate}</span>
-      </div>
-    </div>
 
 
 
@@ -115,7 +115,14 @@ function EventDetail() {
         </div>
       )}
 
-      <button className="big-button" onClick={() => navigate(`/form/${eventData.eventCode}`)}>신청하기</button>
+      {eventData.hasForm && (
+        <button
+          className="big-button"
+          onClick={() => navigate(`/formquest/${eventData.eventCode}`)}
+        >
+          신청하기
+        </button>
+      )}
     </div>
   );
 }

@@ -69,7 +69,7 @@ function Layout() {
         <Route path="/alarm" element={<Alarm />} />
         <Route path="/createform" element={<CreateForm />} />
         <Route path="/addschedule" element={<AddSchedule />} />
-        <Route path="/createpost" element={<CreatePost />} /> 
+        <Route path="/createpost" element={<CreatePost />} />
         <Route path="/oauth2/authorization/kakao" element={<KakaoCallback />} />
         <Route path="/oauth2/callback/naver" element={<NaverCallback />} />
         <Route path="/oauth2/authorization/kakao/link" element={<KakaoLinkCallback />} />
@@ -77,7 +77,7 @@ function Layout() {
         <Route path="/eventdetail/:eventCode" element={<EventDetail />} />
         <Route path="/excel" element={<ExcelList />} />
         <Route path="/excel/:eventId" element={<ExcelList />} />
-
+        <Route path="/formquest/:eventCode" element={<Form />} />
         {/* 역할 기반 라우트 */}
         <Route
           path="/form/:eventCode"
