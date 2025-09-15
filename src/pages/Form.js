@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
+import Header from "../components/Header";
 import "./Form.css";
 
 function FormPage() {
@@ -134,7 +135,7 @@ function FormPage() {
 
   return (
     <div className="container">
-      <h2 className="page-title">행사 신청</h2>
+      <Header title="행사 신청" showBack />
       <p className="form-description">아래 항목을 작성하여 신청해 주세요.</p>
       <form className="form" onSubmit={handleSubmit}>
         {/* 동적 질문 폼 */}

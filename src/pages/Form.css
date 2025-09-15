@@ -7,13 +7,13 @@
   padding: 36px 28px 32px 28px;
 }
 
-.page-title {
+/* .page-title {
   font-size: 1.7rem;
   font-weight: bold;
   color: #6a5af9;
   margin-bottom: 18px;
   text-align: center;
-}
+} */
 
 .form-description {
   color: #6a5af9;
@@ -131,7 +131,7 @@ select.input:focus {
   cursor: not-allowed;
 }
 
-.big-button {
+/* .big-button {
   width: 100%;
   padding: 16px 0;
   border-radius: 15px;
@@ -143,7 +143,7 @@ select.input:focus {
   cursor: pointer;
   margin-top: 10px;
   transition: background 0.2s;
-}
+} */
 
 .big-button:disabled {
   background: #bdbdbd;
