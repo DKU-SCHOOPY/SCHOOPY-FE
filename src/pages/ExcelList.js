@@ -18,7 +18,7 @@ export default function ExcelList() {
     async function fetchEvents() {
       try {
         const res = await axios.get(
-          `${API_BASE_URL}/event/get-active`,
+          `${API_BASE_URL}/event/council/get-active`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -47,7 +47,7 @@ export default function ExcelList() {
     setLoading(true);
     try {
       const res = await axios.get(
-        `https://schoopy.co.kr/event/council/${selectedEventId}/export-data`,
+        `{API_BASE_URL}/event/council/${selectedEventId}/export-data`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
