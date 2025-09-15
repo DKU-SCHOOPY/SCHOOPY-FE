@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import {API_BASE_URL} from "../config";
+import { API_BASE_URL } from "../config";
 import "./Event.css";
 
 export default function EventApplicants() {
-  const { id: eventId } = useParams(); // id → eventId로 명확히
+  const { id: eventId } = useParams();
   const navigate = useNavigate();
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
 
+<<<<<<< HEAD
   // 참가자 중 첫 번째 학생의 학과 정보 추출 (없으면 빈 문자열)
   const department = useMemo(() => {
     if (participants.length > 0 && participants[0].user?.department) {
@@ -20,6 +21,14 @@ export default function EventApplicants() {
   }, [participants]);
 
   const filteredParticipants = participants.filter(p => {
+=======
+  // 반려 모달 상태
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectReason, setRejectReason] = useState("");
+  const [rejectTarget, setRejectTarget] = useState(null);
+
+  const filteredParticipants = participants.filter((p) => {
+>>>>>>> e26dd6354f522813dba467b4c46941bf8e393a12
     const name = p.user?.name || "";
     const dept = p.user?.department || "";
     return (
@@ -28,40 +37,35 @@ export default function EventApplicants() {
     );
   });
 
-
   useEffect(() => {
     const fetchEventData = async () => {
       try {
         const res = await axios.get(
           `${API_BASE_URL}/event/council/submissions/${eventId}`,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-  }
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
 
-        console.log("응답 전체:", res);
-        console.log("응답 데이터:", res.data);
-
         const data = res.data;
-
         const submissions = Array.isArray(data)
           ? data
           : Array.isArray(data.data)
-            ? data.data
-            : [];
+          ? data.data
+          : [];
 
         if (submissions.length === 0) {
           alert("신청자 없음");
         }
 
-        const formatted = submissions.map(app => ({
+        const formatted = submissions.map((app) => ({
           applicationId: app.applicationId,
           user: app.user,
           isStudent: app.isStudent,
           councilFeePaid: app.councilFeePaid,
-          isPaymentCompleted: app.isPaymentCompleted
+          isPaymentCompleted: app.isPaymentCompleted,
         }));
 
         setParticipants(formatted);
@@ -73,29 +77,24 @@ export default function EventApplicants() {
       }
     };
 
-
     if (eventId) fetchEventData();
     else setLoading(false);
   }, [eventId]);
 
-  const handleApprove = async (applicationId, isAccept) => {
+  const handleApprove = async (applicationId, isAccept, reason = "") => {
     try {
-      if (!isAccept) {
-        const confirmed = window.confirm("반려하시겠습니까? 신청이 삭제됩니다.");
-        if (!confirmed) return;
-      }
-
       const res = await axios.post(
         `${API_BASE_URL}/event/council/approve`,
         {
           applicationId: Number(applicationId),
-          choice: isAccept ? "True" : "False"
+          choice: isAccept ? "True" : "False",
+          reason: isAccept ? null : reason, // 반려일 경우 사유 전달
         },
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-  }
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
 
       console.log("서버 응답:", res.data);
@@ -103,8 +102,8 @@ export default function EventApplicants() {
       if (res.data.updatedStatus === true && isAccept) {
         alert("승인 완료");
 
-        setParticipants(prev =>
-          prev.map(p =>
+        setParticipants((prev) =>
+          prev.map((p) =>
             p.applicationId === applicationId
               ? { ...p, isPaymentCompleted: true }
               : p
@@ -113,24 +112,40 @@ export default function EventApplicants() {
       } else if (res.data.updatedStatus === false && !isAccept) {
         alert("반려 완료");
 
-        setParticipants(prev =>
-          prev.filter(p => p.applicationId !== applicationId)
+        setParticipants((prev) =>
+          prev.filter((p) => p.applicationId !== applicationId)
         );
       } else {
         alert("처리 실패");
-        console.log("응답 이상:", res.data);
       }
-
     } catch (err) {
       console.error("승인 처리 오류:", err);
       alert("서버 오류");
     }
   };
 
+  const openRejectModal = (applicationId) => {
+    setRejectTarget(applicationId);
+    setShowRejectModal(true);
+  };
+
+  const confirmReject = () => {
+    if (!rejectReason.trim()) {
+      alert("반려 사유를 입력하세요.");
+      return;
+    }
+    handleApprove(rejectTarget, false, rejectReason);
+    setRejectReason("");
+    setShowRejectModal(false);
+    setRejectTarget(null);
+  };
+
   return (
     <div className="container">
       <div className="topbar">
-        <button className="backbtn" onClick={() => navigate(-1)}>&larr;</button>
+        <button className="backbtn" onClick={() => navigate(-1)}>
+          &larr;
+        </button>
         <h2 className="title">신청자 목록</h2>
         <div className="rightspace" />
       </div>
@@ -147,7 +162,7 @@ export default function EventApplicants() {
         {filteredParticipants.length === 0 ? (
           <div className="noapplicants">신청자가 없습니다.</div>
         ) : (
-          filteredParticipants.map(p => (
+          filteredParticipants.map((p) => (
             <div
               key={p.applicationId}
               className="userrow"
@@ -162,13 +177,32 @@ export default function EventApplicants() {
                   {p.isPaymentCompleted ? " 입금완료" : " 대기중"}
                 </div>
               </div>
-              <div className="actionbuttons" onClick={e => e.stopPropagation()}>
+              <div
+                className="actionbuttons"
+                onClick={(e) => e.stopPropagation()}
+              >
                 {p.isPaymentCompleted ? (
                   <div className="approvedtext">승인완료</div>
                 ) : (
                   <>
-                    <button className="acceptbtn" onClick={e => { e.stopPropagation(); handleApprove(p.applicationId, true); }}>승인</button>
-                    <button className="rejectbtn" onClick={e => { e.stopPropagation(); handleApprove(p.applicationId, false); }}>반려</button>
+                    <button
+                      className="acceptbtn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleApprove(p.applicationId, true);
+                      }}
+                    >
+                      승인
+                    </button>
+                    <button
+                      className="rejectbtn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openRejectModal(p.applicationId);
+                      }}
+                    >
+                      반려
+                    </button>
                   </>
                 )}
               </div>
@@ -176,6 +210,7 @@ export default function EventApplicants() {
           ))
         )}
       </div>
+<<<<<<< HEAD
       {/* 오른쪽 하단 파일 다운 버튼 */}
       <button
         className="file-download-fab"
@@ -190,7 +225,38 @@ export default function EventApplicants() {
       >
         파일<br />다운
       </button>
+=======
+
+      {/* 반려 사유 모달 */}
+      {showRejectModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>반려 사유 작성</h3>
+            <textarea
+              className="reject-textarea"
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+              placeholder="반려 사유를 입력하세요"
+            />
+            <div className="modal-buttons">
+              <button onClick={confirmReject} className="confirmbtn">
+                확인
+              </button>
+              <button
+                onClick={() => {
+                  setShowRejectModal(false);
+                  setRejectReason("");
+                  setRejectTarget(null);
+                }}
+                className="cancelbtn"
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+>>>>>>> e26dd6354f522813dba467b4c46941bf8e393a12
     </div>
   );
-
 }
