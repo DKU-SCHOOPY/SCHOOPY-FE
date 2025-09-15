@@ -1,0 +1,69 @@
+.excel-container {
+  max-width: 900px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 32px 24px;
+}
+
+.excel-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.excel-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.excel-controls input[type="text"] {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.excel-controls button {
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: none;
+  background: #4a90e2;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.excel-controls button:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+.excel-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  margin-top: 12px;
+}
+
+.excel-table th, .excel-table td {
+  border: 1px solid #e0e0e0;
+  padding: 8px 6px;
+  text-align: center;
+}
+
+.excel-table th {
+  background: #f5f7fa;
+  font-weight: 600;
+}
+
+.excel-nodata {
+  margin-top: 32px;
+  text-align: center;
+  color: #888;
+  font-size: 1.1rem;
+}
