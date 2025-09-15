@@ -1,69 +1,114 @@
 .excel-container {
-  max-width: 900px;
-  margin: 40px auto;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-  padding: 32px 24px;
+    max-width: 900px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    padding: 32px 24px;
 }
 
 .excel-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 24px;
-  text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 24px;
+    text-align: center;
 }
 
 .excel-controls {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-  justify-content: center;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    justify-content: center;
 }
 
 .excel-controls input[type="text"] {
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
 }
 
 .excel-controls button {
-  padding: 6px 16px;
-  border-radius: 6px;
-  border: none;
-  background: #4a90e2;
-  color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s;
+    padding: 6px 16px;
+    border-radius: 6px;
+    border: none;
+    background: #4a90e2;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
 }
+
 .excel-controls button:disabled {
-  background: #aaa;
-  cursor: not-allowed;
+    background: #aaa;
+    cursor: not-allowed;
 }
 
 .excel-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 15px;
-  margin-top: 12px;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    margin-top: 12px;
 }
 
-.excel-table th, .excel-table td {
-  border: 1px solid #e0e0e0;
-  padding: 8px 6px;
-  text-align: center;
+.excel-table th,
+.excel-table td {
+    border: 1px solid #e0e0e0;
+    padding: 8px 6px;
+    text-align: center;
 }
 
 .excel-table th {
-  background: #f5f7fa;
-  font-weight: 600;
+    background: #f5f7fa;
+    font-weight: 600;
 }
 
 .excel-nodata {
-  margin-top: 32px;
+    margin-top: 32px;
+    text-align: center;
+    color: #888;
+    font-size: 1.1rem;
+}
+
+/* 행사 카드 리스트 스타일 */
+.event-card-list {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.event-card {
+  background: #f7f7fa;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 18px 28px;
+  min-width: 140px;
+  cursor: pointer;
+  transition: box-shadow 0.2s, border 0.2s, background 0.2s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.08rem;
+  font-weight: 500;
+}
+.event-card.selected,
+.event-card:hover {
+  border: 2px solid #4a90e2;
+  background: #eaf3fc;
+  color: #2266bb;
+  box-shadow: 0 4px 12px rgba(74,144,226,0.10);
+}
+.event-card-title {
   text-align: center;
-  color: #888;
-  font-size: 1.1rem;
+}
+
+/* ExcelList.css */
+.event-dropdown {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1.5px solid #bdbdbd;
+  font-size: 1rem;
+  background: #fff;
+  margin-right: 8px;
 }

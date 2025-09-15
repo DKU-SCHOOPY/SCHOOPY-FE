@@ -102,7 +102,7 @@ export default function ExcelList() {
 
   return (
     <div className="excel-container">
-      <h2 className="excel-title">데이터 파일 다운로드</h2>
+      <h2 className="excel-title">파일 다운로드</h2>
       <div className="event-list-section">
         <div className="event-list-title">행사 선택</div>
         <select
