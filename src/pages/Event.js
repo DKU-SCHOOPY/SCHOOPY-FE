@@ -44,6 +44,7 @@ export default function EventApplicants() {
         );
 
         const data = res.data;
+        console.log(data);
         const submissions = Array.isArray(data)
           ? data
           : Array.isArray(data.data)
@@ -77,7 +78,7 @@ export default function EventApplicants() {
 
   const handleApprove = async (applicationId, isAccept, reason = "") => {
     try {
-      const res = await axios.post(
+      const response = await axios.post(
         `${API_BASE_URL}/event/council/approve`,
         {
           applicationId: Number(applicationId),
@@ -89,9 +90,10 @@ export default function EventApplicants() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
+        
       );
-
-      if (res.data.updatedStatus === true && isAccept) {
+      
+      if (response.data.updatedStatus === true && isAccept) {
         alert("승인 완료");
         setParticipants((prev) =>
           prev.map((p) =>
@@ -100,7 +102,7 @@ export default function EventApplicants() {
               : p
           )
         );
-      } else if (res.data.updatedStatus === false && !isAccept) {
+      } else if (response.data.updatedStatus === false && !isAccept) {
         alert("반려 완료");
         setParticipants((prev) =>
           prev.filter((p) => p.applicationId !== applicationId)
