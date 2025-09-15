@@ -115,7 +115,8 @@ function EventDetail() {
         </div>
       )}
 
-      {eventData.hasForm && (
+      {/* 신청하기 버튼: 최대 신청 인원이 1 이상일 때만 노출 */}
+      {eventData.maxParticipant > 0 && (
         <button
           className="big-button"
           onClick={() => navigate(`/formquest/${eventData.eventCode}`)}
