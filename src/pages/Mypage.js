@@ -55,8 +55,8 @@ const Mypage = () => {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     }
   });
-        setIsKakaoLinked(res.data.kakao === true);
-        setIsNaverLinked(res.data.naver === true);
+        setIsKakaoLinked(res.data.kakaoLogin === true);
+        setIsNaverLinked(res.data.naverLogin === true);
       } catch (err) {
         console.error('소셜 연동 상태 불러오기 실패', err);
       }
