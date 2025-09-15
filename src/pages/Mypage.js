@@ -40,30 +40,15 @@ const Mypage = () => {
             birthDay: data.birthDay,
             phoneNum: data.phoneNum,
           });
+        setIsKakaoLinked(res.data.kakaoLogin === true);
+        setIsNaverLinked(res.data.naverLogin === true)
         }
       } catch (err) {
         console.error('개인정보 불러오기 실패', err);
       }
     };
 
-    const fetchLinkedStatus = async () => {
-      try {
-        const studentNum = localStorage.getItem('studentNum');
-        const res = await axios.get(`${API_BASE_URL}/user/social-status?studentNum=${studentNum}`,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-  });
-        setIsKakaoLinked(res.data.kakaoLogin === true);
-        setIsNaverLinked(res.data.naverLogin === true);
-      } catch (err) {
-        console.error('소셜 연동 상태 불러오기 실패', err);
-      }
-    };
-
     fetchUserInfo();
-    fetchLinkedStatus();
   }, []);
 
   return (
