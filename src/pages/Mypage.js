@@ -89,15 +89,29 @@ const Mypage = () => {
       </div>
 
       <div className="link-container">
-        <a href={KAKAO_LINK_URL} className="kakaolink">
-          <img src={process.env.PUBLIC_URL + "/kakao_link.png"} alt="카카오 연동" />
+        <a
+          href={isKakaoLinked ? undefined : KAKAO_LINK_URL}
+          className={`kakaolink ${isKakaoLinked ? "disabled" : ""}`}
+          onClick={isKakaoLinked ? (e) => e.preventDefault() : undefined}
+        >
+          <img
+            src={process.env.PUBLIC_URL + "/kakao_link.png"}
+            alt="카카오 연동"
+          />
         </a>
-        {isKakaoLinked && <span className="badge kakao">연동 완료</span>}
-        <a href={NAVER_LINK_URL} className="naverlink">
-          <img src={process.env.PUBLIC_URL + "/naver_link.png"} alt="네이버 연동" />
+
+        <a
+          href={isNaverLinked ? undefined : NAVER_LINK_URL}
+          className={`naverlink ${isNaverLinked ? "disabled" : ""}`}
+          onClick={isNaverLinked ? (e) => e.preventDefault() : undefined}
+        >
+          <img
+            src={process.env.PUBLIC_URL + "/naver_link.png"}
+            alt="네이버 연동"
+          />
         </a>
-        {isNaverLinked && <span className="badge naver">연동 완료</span>}
       </div>
+
     </div>
   );
 };
