@@ -22,19 +22,25 @@ useEffect(() => {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     }
   })
-    .then((res) => {
-      const data = res.data.map((room) => ({
-        id: room.roomId,
-        name: room.counterpartName,   // 이름으로 표시
-        lastMessage: room.lastMessage, // 마지막 메시지
-        status: "활성 채팅"
-      }));
+  .then((e) => {
+    console.log("응답 전체:", e);
+    setChats(e.data);
+  })
+    // .then((res) => {
+    //   const data = res.data.map((room) => ({
+    //     id: room.roomId,
+    //     name: room.counterpartName,   // 이름으로 표시
+    //     lastMessage: room.lastMessage, // 마지막 메시지
+    //     status: "활성 채팅"
+    //   }));
       
-      setChats(data);
-      console.log(data);
-      
-    })
+    //   setChats(data);
+    //   console.log(data);
+
+    // })
+    
     .catch((err) => console.error("채팅방 목록 불러오기 실패", err));
+    
 }, [currentUser]);
 
 
