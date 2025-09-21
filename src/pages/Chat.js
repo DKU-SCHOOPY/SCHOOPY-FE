@@ -17,7 +17,7 @@ useEffect(() => {
   if (!currentUser || !currentUser.userId) return;
   const studentId = parseInt(currentUser.userId);
 
-  axios.get(`${API_BASE_URL}/chat/rooms/${studentId}`, {
+  axios.get(`${API_BASE_URL}/chat/council/contacts/${studentId}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     }
