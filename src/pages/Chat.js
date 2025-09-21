@@ -22,9 +22,16 @@ useEffect(() => {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     }
   })
-  .then((e) => {
-    console.log("응답 전체:", e);
-    setChats(e.data);
+  .then((res) => {
+    console.log("응답:", res.data);
+    if (Array.isArray(res.data)) {
+      setChats(res.data);
+    } else if (res.data.rooms && Array.isArray(res.data.rooms)) {
+      setChats(res.data.rooms);
+    } else {
+      console.warn("채팅방 응답이 예상과 다름:", res.data);
+      setChats([]); // fallback
+    }
   })
     // .then((res) => {
     //   const data = res.data.map((room) => ({
