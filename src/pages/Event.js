@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
@@ -9,22 +9,13 @@ export default function EventApplicants() {
   const navigate = useNavigate();
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchText, setSearchText] = useState("");
 
-  const filteredParticipants = participants.filter(p => {
-    const name = p.user?.name || "";
-    const dept = p.user?.department || "";
-    return (
-      name.toLowerCase().includes(searchText.toLowerCase()) ||
-      dept.toLowerCase().includes(searchText.toLowerCase())
-    );
-  });
-
+  // 신청자 조회
   useEffect(() => {
     const fetchEventData = async () => {
       try {
         const res = await axios.get(
-          `${API_BASE_URL}/event/council/submissions/${eventCode}`,
+          `${API_BASE_URL}/event/submissions/${eventCode}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -32,34 +23,21 @@ export default function EventApplicants() {
           }
         );
 
+        // 서버에서 문자열로 올 경우 parse
         let data = res.data;
-
-        // 만약 문자열이면 JSON.parse
         if (typeof data === "string") {
           try {
             data = JSON.parse(data);
-          } catch (e) {
-            console.error("JSON 파싱 실패:", e);
+          } catch (err) {
+            console.error("JSON 파싱 실패:", err);
             data = [];
           }
         }
 
-        if (!Array.isArray(data) || data.length === 0) {
-          alert("신청자 없음");
-          setParticipants([]);
-        } else {
-          const formatted = data.map(app => ({
-            applicationId: app.applicationId,
-            user: app.user,
-            isStudent: app.isStudent,
-            councilFeePaid: app.councilFeePaid,
-            isPaymentCompleted: app.isPaymentCompleted,
-          }));
-          setParticipants(formatted);
-        }
-      } catch (e) {
-        console.error("조회 오류:", e);
-        alert("신청자 조회 중 오류");
+        setParticipants(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("신청자 조회 오류:", err);
+        alert("신청자 조회 중 오류 발생");
       } finally {
         setLoading(false);
       }
@@ -69,6 +47,7 @@ export default function EventApplicants() {
     else setLoading(false);
   }, [eventCode]);
 
+  // 승인 / 반려
   const handleApprove = async (applicationId, isAccept) => {
     try {
       if (!isAccept) {
@@ -93,8 +72,8 @@ export default function EventApplicants() {
 
       if (res.data.updatedStatus === true && isAccept) {
         alert("승인 완료");
-        setParticipants(prev =>
-          prev.map(p =>
+        setParticipants((prev) =>
+          prev.map((p) =>
             p.applicationId === applicationId
               ? { ...p, isPaymentCompleted: true }
               : p
@@ -102,20 +81,20 @@ export default function EventApplicants() {
         );
       } else if (res.data.updatedStatus === false && !isAccept) {
         alert("반려 완료");
-        setParticipants(prev =>
-          prev.filter(p => p.applicationId !== applicationId)
+        setParticipants((prev) =>
+          prev.filter((p) => p.applicationId !== applicationId)
         );
       } else {
         alert("처리 실패");
         console.log("응답 이상:", res.data);
       }
     } catch (err) {
-      console.error("승인 처리 오류:", err);
-      alert("서버 오류");
+      console.error("승인/반려 오류:", err);
+      alert("서버 오류 발생");
     }
   };
 
-  if (loading) return <div>로딩 중...</div>;
+  if (loading) return <div className="container">로딩 중...</div>;
 
   return (
     <div className="container">
@@ -127,21 +106,11 @@ export default function EventApplicants() {
         <div className="rightspace" />
       </div>
 
-      <div className="searchbox">
-        <input
-          className="searchinput"
-          type="text"
-          placeholder="이름 검색"
-          value={searchText}
-          onChange={e => setSearchText(e.target.value)}
-        />
-      </div>
-
-      <div className="userlist">
-        {filteredParticipants.length === 0 ? (
-          <div className="noapplicants">신청자가 없습니다.</div>
-        ) : (
-          filteredParticipants.map(p => (
+      {participants.length === 0 ? (
+        <div className="noapplicants">신청자가 없습니다.</div>
+      ) : (
+        <div className="userlist">
+          {participants.map((p) => (
             <div
               key={p.applicationId}
               className="userrow"
@@ -151,15 +120,14 @@ export default function EventApplicants() {
               <div className="userinfo">
                 <div className="username">{p.user?.name}</div>
                 <div className="userstatus">
-                  {p.isStudent ? "재학생" : "휴학생"} |
-                  {p.councilFeePaid ? " 학생회비 납부" : " 학생회비 미납"} |
-                  {p.isPaymentCompleted ? " 입금완료" : " 대기중"}
+                  {p.isStudent ? "재학생" : "휴학생"} |{" "}
+                  {p.councilFeePaid ? "학생회비 납부" : "학생회비 미납"} |{" "}
+                  {p.isPaymentCompleted ? "입금완료" : "대기중"}
                 </div>
               </div>
-
               <div
                 className="actionbuttons"
-                onClick={e => e.stopPropagation()}
+                onClick={(e) => e.stopPropagation()}
               >
                 {p.isPaymentCompleted ? (
                   <div className="approvedtext">승인완료</div>
@@ -167,19 +135,17 @@ export default function EventApplicants() {
                   <>
                     <button
                       className="acceptbtn"
-                      onClick={e => {
-                        e.stopPropagation();
-                        handleApprove(p.applicationId, true);
-                      }}
+                      onClick={() =>
+                        handleApprove(p.applicationId, true)
+                      }
                     >
                       승인
                     </button>
                     <button
                       className="rejectbtn"
-                      onClick={e => {
-                        e.stopPropagation();
-                        handleApprove(p.applicationId, false);
-                      }}
+                      onClick={() =>
+                        handleApprove(p.applicationId, false)
+                      }
                     >
                       반려
                     </button>
@@ -187,9 +153,9 @@ export default function EventApplicants() {
                 )}
               </div>
             </div>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
