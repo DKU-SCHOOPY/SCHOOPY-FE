@@ -6,7 +6,7 @@ import { API_BASE_URL } from "../config";
 import "./Event.css";
 
 export default function EventApplicants() {
-  const { eventId } = useParams();
+  const { eventCode } = useParams();
   const navigate = useNavigate();
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,7 @@ export default function EventApplicants() {
       try {
         // 신청자 목록
         const res = await axios.get(
-          `${API_BASE_URL}/event/council/submissions/${eventId}`,
+          `${API_BASE_URL}/event/council/submissions/${eventCode}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -70,7 +70,7 @@ export default function EventApplicants() {
 
         // 행사 폼 질문 및 신청자 응답
         const excelRes = await axios.get(
-          `${API_BASE_URL}/event/council/${eventId}/export-data`,
+          `${API_BASE_URL}/event/council/${eventCode}/export-data`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -89,9 +89,9 @@ export default function EventApplicants() {
       }
     };
 
-    if (eventId) fetchEventData();
+    if (eventCode) fetchEventData();
     else setLoading(false);
-  }, [eventId]);
+  }, [eventCode]);
 
   const handleApprove = async (applicationId, isAccept, reason = "") => {
     try {
@@ -168,7 +168,7 @@ export default function EventApplicants() {
     const ws = XLSX.utils.json_to_sheet(excelData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "신청자목록");
-    XLSX.writeFile(wb, `event_${eventId}_신청자목록.xlsx`);
+    XLSX.writeFile(wb, `event_${eventCode}_신청자목록.xlsx`);
   };
 
   return (
