@@ -10,7 +10,6 @@ export default function EventApplicants() {
   const navigate = useNavigate();
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchText, setSearchText] = useState("");
 
   // 폼 질문 및 신청자 응답 상태
   const [eventName, setEventName] = useState("");
@@ -29,17 +28,6 @@ export default function EventApplicants() {
     return found ? found.user.department : "";
   }, [participants]);
 
-  const filteredParticipants = participants.filter((p) => {
-    if (!p.user) return false;
-    if (!searchText.trim()) return true;
-    const name = p.user.name || "";
-    const dept = p.user.department || "";
-    return (
-      name.toLowerCase().includes(searchText.toLowerCase()) ||
-      dept.toLowerCase().includes(searchText.toLowerCase())
-    );
-  });
-
   useEffect(() => {
     const fetchEventData = async () => {
       try {
@@ -56,9 +44,7 @@ export default function EventApplicants() {
         const data = res.data;
         const submissions = Array.isArray(data) ? data : data.data || [];
 
-        // user 매핑 수정
         const formatted = submissions.map((app) => {
-          // user 객체가 app.user 안에 있음
           const userData = app.user || {};
           return {
             applicationId: app.applicationId,
@@ -76,7 +62,6 @@ export default function EventApplicants() {
         });
 
         setParticipants(formatted);
-        console.log("Participants 상태:", formatted);
 
         // 폼 질문 및 신청자 응답
         const excelRes = await axios.get(
@@ -161,33 +146,39 @@ export default function EventApplicants() {
 
   // 한글 컬럼명 매핑
   const headerMap = {
+    studentNum: "학번",
     name: "이름",
     department: "학과",
-    studentNum: "학번",
-    email: "이메일",
-    isStudent: "재학생여부",
-    councilFeePaid: "학생회비납부",
-    isPaymentCompleted: "입금상태",
+    birthDay: "생년월일",
+    gender: "성별",
+    phoneNum: "전화번호",
+    councilPee: "학생회비납부",
   };
 
-  // 엑셀 다운로드 함수 (현재 신청자 정보만 저장)
-  const exportApplicantsExcel = () => {
-    if (!participants.length) {
+  const exportExcel = () => {
+    if (!rows.length) {
       alert("내보낼 데이터가 없습니다.");
       return;
     }
-    const excelData = participants.map((p) => {
+    const excelData = rows.map((item) => {
       const row = {};
-      Object.keys(headerMap).forEach((key) => {
-        if (key === "isStudent") {
-          row[headerMap[key]] = p.isStudent ? "재학생" : "휴학생";
-        } else if (key === "councilFeePaid") {
-          row[headerMap[key]] = p.councilFeePaid ? "O" : "X";
-        } else if (key === "isPaymentCompleted") {
-          row[headerMap[key]] = p.isPaymentCompleted ? "입금완료" : "대기중";
+      baseHeaders.forEach((header) => {
+        const colName = headerMap[header] || header;
+        if (header === "gender") {
+          row[colName] =
+            item.gender === "female"
+              ? "여자"
+              : item.gender === "male"
+                ? "남자"
+                : item.gender;
+        } else if (header === "councilPee") {
+          row[colName] = item.councilPee ? "O" : "X";
         } else {
-          row[headerMap[key]] = p.user?.[key] ?? "";
+          row[colName] = item[header];
         }
+      });
+      questionColumns.forEach((q, idx) => {
+        row[q.questionText] = item.answers?.[idx] ?? "";
       });
       return row;
     });
@@ -208,23 +199,13 @@ export default function EventApplicants() {
         <div className="rightspace" />
       </div>
 
-      <div className="searchbox">
-        <input
-          className="searchinput"
-          type="text"
-          placeholder="이름 검색"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-        />
-      </div>
-
       <div className="userlist">
         {loading ? (
           <div>로딩중...</div>
-        ) : filteredParticipants.length === 0 ? (
+        ) : participants.length === 0 ? (
           <div className="noapplicants">신청자가 없습니다.</div>
         ) : (
-          filteredParticipants.map((p) => (
+          participants.map((p) => (
             <div
               key={p.applicationId}
               className="userrow"
@@ -275,11 +256,11 @@ export default function EventApplicants() {
 
       <button
         className="file-download-fab"
-        onClick={exportApplicantsExcel}
+        onClick={exportExcel}
         title="엑셀 파일 다운로드"
-        disabled={loading || !participants.length}
+        disabled={loading || !rows.length}
       >
-        다운
+        엑셀 다운
       </button>
 
       {showRejectModal && (
