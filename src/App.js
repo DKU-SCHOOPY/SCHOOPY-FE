@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
 import './App.css';
 
 import Welcome from "./pages/Welcome";
@@ -19,15 +18,14 @@ import Alarm from "./pages/Alarm";
 import CreatePost from "./pages/CreatePost";
 import CreateForm from "./pages/CreateForm";
 import AddSchedule from "./pages/AddSchedule";
-import ExcelList from "./pages/ExcelList"; // 상단 import 추가
 
 import KakaoCallback from "./pages/KakaoCallback";
 import NaverCallback from "./pages/NaverCallback";
 import KakaoLinkCallback from "./pages/KakaoLinkCallback";
 import NaverLinkCallback from "./pages/NaverLinkCallback";
-
-import Form from "./pages/Form";
 import Event from "./pages/Event";
+import FormPage from "./pages/Form"; //
+import Form from "./pages/Form";
 
 import RoleBasedRoute from "./routes/RoleBasedRoute";
 import RoleBasedNavbar from "./components/RoleBasedNavbar";
@@ -75,13 +73,11 @@ function Layout() {
         <Route path="/oauth2/authorization/kakao/link" element={<KakaoLinkCallback />} />
         <Route path="/oauth2/authorization/naver/link" element={<NaverLinkCallback />} />
         <Route path="/eventdetail/:eventCode" element={<EventDetail />} />
-        <Route path="/excel" element={<ExcelList />} />
-        <Route path="/excel/:eventId" element={<ExcelList />} />
         <Route path="/formquest/:eventCode" element={<Form />} />
         {/* 역할 기반 라우트 */}
         <Route
           path="/form/:eventCode"
-          element={<RoleBasedRoute student={EventDetail} council={Event} />}
+          element={<RoleBasedRoute student={FormPage} council={Event} />}
         />
       </Routes>
     </div>

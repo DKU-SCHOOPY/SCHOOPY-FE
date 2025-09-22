@@ -1,131 +1,102 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./EventDetail.css";
-import Header from "../components/Header";
-import { API_BASE_URL } from "../config";
+import * as XLSX from "xlsx";
 
-function EventDetail() {
-  const navigate = useNavigate();
-  const { eventCode } = useParams();
-  const [eventData, setEventData] = useState(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
+const API_BASE_URL = "https://schoopy.co.kr";
+
+export default function EventDetail({ eventCode }) {
+  const [loading, setLoading] = useState(false);
+  const [eventName, setEventName] = useState("");
+  const [baseHeaders, setBaseHeaders] = useState([]);
+  const [questionColumns, setQuestionColumns] = useState([]);
+  const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    const fetchEvent = async () => {
+    async function fetchEventData() {
+      setLoading(true);
       try {
-        const payload = { eventCode: parseInt(eventCode) };
-
-        const response = await axios.post(`${API_BASE_URL}/home/get-event`, payload, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        });
-
-        if (response.data.code === "SU") {
-          console.log(response.data);
-          setEventData(response.data);
-        } else {
-          console.error("데이터 수신 실패:", response.data.message);
-        }
-      } catch (error) {
-        console.error("이벤트 불러오기 실패", error);
+        const res = await axios.get(
+          `${API_BASE_URL}/event/council/${eventCode}/export-data`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setEventName(res.data.eventName);
+        setBaseHeaders(res.data.baseHeaders || []);
+        setQuestionColumns(res.data.questions || []);
+        setRows(res.data.rows || []);
+      } catch (e) {
+        alert("데이터 조회 실패: " + (e.response?.data?.message || e.message));
+      } finally {
+        setLoading(false);
       }
-    };
-
-    fetchEvent();
+    }
+    if (eventCode) fetchEventData();
   }, [eventCode]);
 
-  const prevImage = () => {
-    if (!eventData || eventData.eventImages.length === 0) return;
-    setCurrentIndex((prev) =>
-      prev === 0 ? eventData.eventImages.length - 1 : prev - 1
-    );
-  };
+  // 엑셀로 내보내기
+  const exportExcel = () => {
+    if (!rows.length) {
+      alert("내보낼 데이터가 없습니다.");
+      return;
+    }
+    const excelData = rows.map((item) => {
+      const row = {};
+      baseHeaders.forEach((header) => {
+        row[header] = item[header];
+      });
+      questionColumns.forEach((q, idx) => {
+        row[q.questionText] = item.answers?.[idx] ?? "";
+      });
+      return row;
+    });
 
-  const nextImage = () => {
-    if (!eventData || eventData.eventImages.length === 0) return;
-    setCurrentIndex((prev) =>
-      prev === eventData.eventImages.length - 1 ? 0 : prev + 1
-    );
+    const ws = XLSX.utils.json_to_sheet(excelData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "신청자목록");
+    XLSX.writeFile(wb, `event_${eventCode}_신청자목록.xlsx`);
   };
-
-  if (!eventData) {
-    return <div className="container">이벤트 정보를 불러오는 중...</div>;
-  }
 
   return (
-    <div className="container">
-      <Header title="행사 안내" showBack />
-
-      <h1 className="event-title">{eventData.eventName}</h1>
-
-      <div className="department-profile">
-        <img
-          src={`/images/departments/${eventData.department}.png`}
-          alt={`${eventData.department} 로고`}
-          className="department-image"
-        />
-        <span className="department-name">{eventData.department}</span>
-      </div>
-
-
-
-      <div className="event-info-container-vertical">
-        <div className="event-info-row">
-          <span className="event-info-icon">📢</span>
-          <span className="event-info-label">주최</span>
-          <span className="event-info-value">{eventData.department}</span>
-        </div>
-        <div className="event-info-row">
-          <span className="event-info-icon">👥</span>
-          <span className="event-info-label">모집인원</span>
-          {/*<span className="event-info-value">100명</span>*/}
-          <span className="event-info-value">{eventData.maxParticipant}명</span>
-        </div>
-        <div className="event-info-row">
-          <span className="event-info-icon">📅</span>
-          <span className="event-info-label">행사 날짜</span>
-          {/*<span className="event-info-value">2025.08.20 ~ 2025.08.22</span>*/}
-          <span className="event-info-value">{eventData.eventStartDate} ~ {eventData.eventEndDate}</span>
-        </div>
-        <div className="event-info-row">
-          <span className="event-info-icon">📝</span>
-          <span className="event-info-label">신청 날짜</span>
-          <span className="event-info-value">{eventData.surveyStartDate} ~ {eventData.surveyEndDate}</span>
-        </div>
-      </div>
-
-
-
-      <div className="event-description">
-        {eventData.eventDescription?.split("\n").map((line, idx) => (
-          <p key={idx}>{line.trim()}</p>
-        ))}
-      </div>
-
-
-      {eventData.eventImages.length > 0 && (
-        <div className="carousel">
-          <button className="carousel-btn left" onClick={prevImage}>‹</button>
-          <img
-            src={eventData.eventImages[currentIndex]}
-            alt={`포스터 ${currentIndex + 1}`}
-            className="carousel-image"
-          />
-          <button className="carousel-btn right" onClick={nextImage}>›</button>
-        </div>
-      )}
-
-      {/* 신청하기 버튼: 최대 신청 인원이 1 이상일 때만 노출 */}
-      {eventData.maxParticipant > 0 && (
-        <button
-          className="big-button"
-          onClick={() => navigate(`/formquest/${eventData.eventCode}`)}
-        >
-          신청하기
-        </button>
+    <div style={{ padding: 32 }}>
+      <h2>{eventName} 신청자 엑셀 다운로드</h2>
+      <button onClick={exportExcel} disabled={loading || !rows.length}>
+        엑셀로 내보내기
+      </button>
+      {loading ? (
+        <div>불러오는 중...</div>
+      ) : rows.length > 0 ? (
+        <table border="1" cellPadding={6} style={{ marginTop: 24 }}>
+          <thead>
+            <tr>
+              {baseHeaders.map((header) => (
+                <th key={header}>{header}</th>
+              ))}
+              {questionColumns.map((q) => (
+                <th key={q.questionId}>{q.questionText}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((item, idx) => (
+              <tr key={idx}>
+                {baseHeaders.map((header) => (
+                  <td key={header}>{item[header]}</td>
+                ))}
+                {questionColumns.map((q, qidx) => (
+                  <td key={q.questionId}>
+                    {item.answers?.[qidx] ?? ""}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div style={{ marginTop: 24 }}>데이터가 없습니다.</div>
       )}
     </div>
   );
 }
-
-export default EventDetail;

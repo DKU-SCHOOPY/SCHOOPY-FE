@@ -1,15 +1,22 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import * as XLSX from "xlsx";
 import { API_BASE_URL } from "../config";
 import "./Event.css";
 
 export default function EventApplicants() {
-  const { id: eventId } = useParams();
+  const { eventId } = useParams();
   const navigate = useNavigate();
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
+
+  // 폼 질문 및 신청자 응답 상태 추가
+  const [eventName, setEventName] = useState("");
+  const [baseHeaders, setBaseHeaders] = useState([]);
+  const [questionColumns, setQuestionColumns] = useState([]);
+  const [rows, setRows] = useState([]);
 
   // 반려 모달 상태
   const [showRejectModal, setShowRejectModal] = useState(false);
@@ -18,22 +25,25 @@ export default function EventApplicants() {
 
   // 학과 정보: 참가자 중 첫 번째로 department가 있는 학생의 학과
   const department = useMemo(() => {
-    const found = participants.find((p) => p.user?.department);
+    const found = participants.find(p => p.user?.department);
     return found ? found.user.department : "";
   }, [participants]);
 
   const filteredParticipants = participants.filter((p) => {
-    const name = p.user?.name || "";
-    const dept = p.user?.department || "";
+    if (!p.user) return false;
+    const name = p.user.name || "";
+    const dept = p.user.department || "";
     return (
       name.toLowerCase().includes(searchText.toLowerCase()) ||
       dept.toLowerCase().includes(searchText.toLowerCase())
     );
   });
 
+  // 신청자 목록 및 폼 질문/응답 데이터 모두 불러오기
   useEffect(() => {
     const fetchEventData = async () => {
       try {
+        // 신청자 목록
         const res = await axios.get(
           `${API_BASE_URL}/event/council/submissions/${eventId}`,
           {
@@ -42,19 +52,12 @@ export default function EventApplicants() {
             },
           }
         );
-
         const data = res.data;
-        console.log(data);
         const submissions = Array.isArray(data)
           ? data
           : Array.isArray(data.data)
             ? data.data
             : [];
-
-        if (submissions.length === 0) {
-          alert("신청자 없음");
-        }
-
         const formatted = submissions.map((app) => ({
           applicationId: app.applicationId,
           user: app.user,
@@ -62,11 +65,24 @@ export default function EventApplicants() {
           councilFeePaid: app.councilFeePaid,
           isPaymentCompleted: app.isPaymentCompleted,
         }));
-
         setParticipants(formatted);
+
+        // 행사 폼 질문 및 신청자 응답
+        const excelRes = await axios.get(
+          `${API_BASE_URL}/event/council/${eventId}/export-data`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        setEventName(excelRes.data.eventName || "");
+        setBaseHeaders(excelRes.data.baseHeaders || []);
+        setQuestionColumns(excelRes.data.questions || []);
+        setRows(excelRes.data.rows || []);
       } catch (e) {
         console.error("조회 오류:", e);
-        alert("신청자 조회 중 오류");
+        alert("신청자/폼 데이터 조회 중 오류");
       } finally {
         setLoading(false);
       }
@@ -83,16 +99,15 @@ export default function EventApplicants() {
         {
           applicationId: Number(applicationId),
           choice: isAccept ? "True" : "False",
-          reason: isAccept ? null : reason, // 반려일 경우 사유 전달
+          reason: isAccept ? null : reason,
         },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
-        
       );
-      
+
       if (response.data.updatedStatus === true && isAccept) {
         alert("승인 완료");
         setParticipants((prev) =>
@@ -130,6 +145,29 @@ export default function EventApplicants() {
     setRejectReason("");
     setShowRejectModal(false);
     setRejectTarget(null);
+  };
+
+  // 엑셀로 내보내기
+  const exportExcel = () => {
+    if (!rows.length) {
+      alert("내보낼 데이터가 없습니다.");
+      return;
+    }
+    const excelData = rows.map((item) => {
+      const row = {};
+      baseHeaders.forEach((header) => {
+        row[header] = item[header];
+      });
+      questionColumns.forEach((q, idx) => {
+        row[q.questionText] = item.answers?.[idx] ?? "";
+      });
+      return row;
+    });
+
+    const ws = XLSX.utils.json_to_sheet(excelData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "신청자목록");
+    XLSX.writeFile(wb, `event_${eventId}_신청자목록.xlsx`);
   };
 
   return (
@@ -206,14 +244,9 @@ export default function EventApplicants() {
       {/* 오른쪽 하단 파일 다운 버튼 */}
       <button
         className="file-download-fab"
-        onClick={() => {
-          if (!department) {
-            alert("학과 정보가 없습니다.");
-            return;
-          }
-          navigate(`/excel?department=${encodeURIComponent(department)}`);
-        }}
+        onClick={exportExcel}
         title="엑셀 파일 다운로드"
+        disabled={loading || !rows.length}
       >
         파일
         <br />
