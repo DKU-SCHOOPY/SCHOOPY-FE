@@ -26,7 +26,7 @@ import NaverLinkCallback from "./pages/NaverLinkCallback";
 import Event from "./pages/Event";
 import FormPage from "./pages/Form"; //
 import Form from "./pages/Form";
-import Excel from "./pages/excel";
+import Excel from "./pages/Exceldown";
 
 import RoleBasedRoute from "./routes/RoleBasedRoute";
 import RoleBasedNavbar from "./components/RoleBasedNavbar";
