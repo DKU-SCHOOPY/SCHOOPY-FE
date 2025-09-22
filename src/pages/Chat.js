@@ -75,7 +75,9 @@ useEffect(() => {
     <Link
       key={chat.presidentStudentNum}
       to={`/chat/room/${chat.presidentStudentNum}`}
-      state={{ otherUserId: chat.presidentName }} 
+      state={{ otherUserId: chat.presidentStudentNum,
+        otherUserName: chat.department
+       }} 
     >
       <div className="chat-item">
         <FaUserCircle className="chat-avatar" />

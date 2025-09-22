@@ -1,5 +1,3 @@
-//chatting.js
-
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
@@ -17,23 +15,9 @@ function Chatting() {
   // 내 학번
   const myId = String(localStorage.getItem("studentNum") || "").trim();
 
-  // location.state 값은 “숫자면만” 초깃값으로 사용, 아니면 버림
-  const initOther = /^\d+$/.test(location.state?.otherUserId)
-    ? String(location.state.otherUserId).trim()
-    : null;
-  const [peerId, setPeerId] = useState(initOther);
-
-  // 메시지에서 상대 학번 계산
-  const pickPeerId = (list) => {
-    if (!/^\d+$/.test(myId)) return null;
-    for (let i = list.length - 1; i >= 0; i--) {
-      const s = String(list[i].senderId).trim();
-      const r = String(list[i].receiverId).trim();
-      if (s === myId && /^\d+$/.test(r)) return r;
-      if (r === myId && /^\d+$/.test(s)) return s;
-    }
-    return null;
-  };
+  // 이전 페이지에서 전달받은 상대 학번, 이름
+  const peerId = String(location.state?.otherUserId || "").trim();
+  const peerName = location.state?.otherUserName || "";
 
   const fetchMessages = async () => {
     try {
@@ -42,13 +26,6 @@ function Chatting() {
       });
       const data = Array.isArray(res.data) ? res.data : [];
       setMessages(data);
-
-      // 상대 학번 갱신
-      const derived = pickPeerId(data);
-      if (derived && derived !== peerId) {
-        setPeerId(derived);
-        console.log("🎯 상대 학번 확정:", derived);
-      }
     } catch (err) {
       console.error("채팅 불러오기 실패", err);
     }
@@ -63,11 +40,10 @@ function Chatting() {
 
     let socket = getSocket();
 
-    // 연결 없으면 먼저 연결하고 onopen에서 전송
     if (!socket || socket.readyState !== WebSocket.OPEN) {
       console.log("🔌 웹소켓 재연결 시도...", { myId, peerId });
       socket = connectSocket(myId, peerId);
-      if (!socket) return; // connect 실패 시 종료
+      if (!socket) return;
 
       socket.onopen = () => {
         console.log("✅ 웹소켓 재연결 완료");
@@ -79,7 +55,6 @@ function Chatting() {
       return;
     }
 
-    // 이미 연결됨
     socket.send(JSON.stringify({ message: message.trim(), receiverId: peerId }));
     setMessage("");
     fetchMessages();
@@ -90,10 +65,9 @@ function Chatting() {
     fetchMessages();
     const interval = setInterval(fetchMessages, 3000);
     return () => clearInterval(interval);
-    // roomId가 바뀌면 새로 불러옴
   }, [roomId]);
 
-  // 소켓 연결 수립/해제 (peerId 확정 후에만)
+  // 소켓 연결
   useEffect(() => {
     if (!/^\d+$/.test(myId) || !/^\d+$/.test(peerId)) return;
 
@@ -105,7 +79,6 @@ function Chatting() {
     ws.onmessage = (e) => {
       try {
         const msg = JSON.parse(e.data);
-        // 메시지 포맷 방어
         if (msg && (msg.message || msg.content)) {
           setMessages((prev) => [
             ...prev,
@@ -138,7 +111,7 @@ function Chatting() {
           〈
         </button>
         <span className="chatting-title">
-          {peerId === "32203027" ? "SW융합대학 학생회" : peerId || "-"}
+          {peerName || "-"}
         </span>
       </div>
 
