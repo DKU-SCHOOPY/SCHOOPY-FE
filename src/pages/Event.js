@@ -53,6 +53,7 @@ export default function EventApplicants() {
           }
         );
         const data = res.data;
+        console.log(data);
         const submissions = Array.isArray(data)
           ? data
           : Array.isArray(data.data)
