@@ -82,7 +82,7 @@ useEffect(() => {
       <div className="chat-item">
         <FaUserCircle className="chat-avatar" />
         <div className="chat-info">
-          <div className="chat-name">{chat.presidentName}</div>
+          <div className="chat-name">{chat.department}</div>
           <div className="chat-last-message">{chat.lastMessage}</div>
         </div>
       </div>
