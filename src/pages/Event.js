@@ -5,7 +5,7 @@ import { API_BASE_URL } from "../config";
 import "./Event.css";
 
 export default function EventApplicants() {
-  const { id: eventId } = useParams();
+  const { eventId } = useParams(); // 또는 props로 전달
   const navigate = useNavigate();
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);

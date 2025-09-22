@@ -24,9 +24,9 @@ import KakaoCallback from "./pages/KakaoCallback";
 import NaverCallback from "./pages/NaverCallback";
 import KakaoLinkCallback from "./pages/KakaoLinkCallback";
 import NaverLinkCallback from "./pages/NaverLinkCallback";
-
-import Form from "./pages/Form";
 import Event from "./pages/Event";
+import FormPage from "./pages/Form"; //
+import Form from "./pages/Form";
 
 import RoleBasedRoute from "./routes/RoleBasedRoute";
 import RoleBasedNavbar from "./components/RoleBasedNavbar";
@@ -80,7 +80,7 @@ function Layout() {
         {/* 역할 기반 라우트 */}
         <Route
           path="/form/:eventCode"
-          element={<RoleBasedRoute student={EventDetail} council={Event} />}
+          element={<RoleBasedRoute student={FormPage} council={Event} />}
         />
       </Routes>
     </div>
