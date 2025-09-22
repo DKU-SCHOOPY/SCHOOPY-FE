@@ -1,11 +1,28 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Select() {
   const navigate = useNavigate();
 
-  const handleSelect = (choice) => {
+  const handleSelect = async (choice) => {
   localStorage.setItem("role", choice); // STUDENT / COUNCIL 저장
+
+  if (choice === "COUNCIL") {
+      try {
+        const studentNum = localStorage.getItem("studentNum"); // 로그인 후 저장된 학번 가져오기
+        const res = await axios.post("http://api.schoopy.co.kr/auth/department-check", {
+          studentNum,
+        });
+
+        if (res.data && res.data.department) {
+          localStorage.setItem("department", res.data.department);
+        }
+      } catch (err) {
+        console.error("학과 조회 실패:", err);
+      }
+    }
+
   navigate("/home");                     // 이동은 항상 Home
 };
 
