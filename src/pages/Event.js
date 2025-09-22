@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as XLSX from "xlsx";
@@ -10,7 +10,6 @@ export default function EventApplicants() {
   const navigate = useNavigate();
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchText, setSearchText] = useState("");
 
   // 폼 질문 및 신청자 응답 상태
   const [eventName, setEventName] = useState("");
@@ -22,23 +21,6 @@ export default function EventApplicants() {
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [rejectReason, setRejectReason] = useState("");
   const [rejectTarget, setRejectTarget] = useState(null);
-
-  // 참가자 중 첫 번째 학과
-  const department = useMemo(() => {
-    const found = participants.find((p) => p.user?.department);
-    return found ? found.user.department : "";
-  }, [participants]);
-
-  const filteredParticipants = participants.filter((p) => {
-    if (!p.user) return false;
-    if (!searchText.trim()) return true;
-    const name = p.user.name || "";
-    const dept = p.user.department || "";
-    return (
-      name.toLowerCase().includes(searchText.toLowerCase()) ||
-      dept.toLowerCase().includes(searchText.toLowerCase())
-    );
-  });
 
   useEffect(() => {
     const fetchEventData = async () => {
@@ -56,24 +38,20 @@ export default function EventApplicants() {
         const data = res.data;
         const submissions = Array.isArray(data) ? data : data.data || [];
 
-        // user 매핑 수정
-        const formatted = submissions.map((app) => {
-          // user 객체가 app.user 안에 있음
-          const userData = app.user || {};
-          return {
-            applicationId: app.applicationId,
-            user: {
-              name: userData.name || "이름없음",
-              department: userData.department || "학과없음",
-              studentNum: userData.studentNum || "",
-              email: userData.email || "",
-            },
-            isStudent: app.isStudent ?? true,
-            councilFeePaid: app.councilPee ?? false,
-            isPaymentCompleted: app.isPaymentCompleted ?? false,
-            answers: app.answers || [],
-          };
-        });
+        // 서버 응답이 app.name, app.department 형태라고 가정
+        const formatted = submissions.map((app) => ({
+          applicationId: app.applicationId,
+          user: {
+            name: app.name || "이름없음",
+            department: app.department || "학과없음",
+            studentNum: app.studentNum || "",
+            email: app.email || "",
+          },
+          isStudent: app.isStudent ?? true,
+          councilFeePaid: app.councilFeePaid ?? false, // 오타 수정
+          isPaymentCompleted: app.isPaymentCompleted ?? false,
+          answers: app.answers || [],
+        }));
 
         setParticipants(formatted);
         console.log("Participants 상태:", formatted);
@@ -167,7 +145,7 @@ export default function EventApplicants() {
     birthDay: "생년월일",
     gender: "성별",
     phoneNum: "전화번호",
-    councilPee: "학생회비납부",
+    councilFeePaid: "학생회비납부",
   };
 
   const exportExcel = () => {
@@ -179,15 +157,16 @@ export default function EventApplicants() {
       const row = {};
       baseHeaders.forEach((header) => {
         const colName = headerMap[header] || header;
-        // 성별 한글 변환
         if (header === "gender") {
-          row[colName] = item.gender === "female" ? "여자" : item.gender === "male" ? "남자" : item.gender;
-        }
-        // 학생회비납부 O/X 변환
-        else if (header === "councilPee") {
-          row[colName] = item.councilPee ? "O" : "X";
-        }
-        else {
+          row[colName] =
+            item.gender === "female"
+              ? "여자"
+              : item.gender === "male"
+              ? "남자"
+              : item.gender;
+        } else if (header === "councilFeePaid") {
+          row[colName] = item.councilFeePaid ? "O" : "X";
+        } else {
           row[colName] = item[header];
         }
       });
@@ -213,23 +192,13 @@ export default function EventApplicants() {
         <div className="rightspace" />
       </div>
 
-      <div className="searchbox">
-        <input
-          className="searchinput"
-          type="text"
-          placeholder="이름 검색"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-        />
-      </div>
-
       <div className="userlist">
         {loading ? (
           <div>로딩중...</div>
-        ) : filteredParticipants.length === 0 ? (
+        ) : participants.length === 0 ? (
           <div className="noapplicants">신청자가 없습니다.</div>
         ) : (
-          filteredParticipants.map((p) => (
+          participants.map((p) => (
             <div
               key={p.applicationId}
               className="userrow"
@@ -284,7 +253,7 @@ export default function EventApplicants() {
         title="엑셀 파일 다운로드"
         disabled={loading || !rows.length}
       >
-        다운
+        엑셀 다운
       </button>
 
       {showRejectModal && (
