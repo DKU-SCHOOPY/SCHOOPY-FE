@@ -103,6 +103,7 @@ const AddSchedule = () => {
   };
 
   useEffect(() => {
+    console.log("FormPage에서 넘어온 state:", location.state);
     if (location.state) {
       setFormData(prev => ({
         ...prev,
@@ -209,6 +210,9 @@ const AddSchedule = () => {
       submitData.append("maxParticipants", formData.maxParticipants);
       submitData.append("currentParticipants", "0");
       submitData.append("eventDescription", formData.eventDescription);
+      formData.imageFiles.forEach(file => {
+        submitData.append("eventImages", file);
+      });
 
       // QR 코드 이미지 추가
       Object.entries(formData.qrCodeImages).forEach(([type, url]) => {
