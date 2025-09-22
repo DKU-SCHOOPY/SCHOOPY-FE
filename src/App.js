@@ -75,7 +75,7 @@ function Layout() {
         <Route path="/oauth2/authorization/naver/link" element={<NaverLinkCallback />} />
         <Route path="/eventdetail/:eventCode" element={<EventDetail />} />
         <Route path="/formquest/:eventCode" element={<Form />} />
-        <Route path="/excel/${eventCode}" element={<Excel />} />
+        <Route path="/excel/:eventCode" element={<Excel />} />
         {/* 역할 기반 라우트 */}
         <Route
           path="/form/:eventCode"

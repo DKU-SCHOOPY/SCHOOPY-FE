@@ -3,10 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {API_BASE_URL} from "../config";
 import "./Event.css";
-import Header from "../components/Header";
 
 export default function EventApplicants() {
-  const { id: eventCode } = useParams(); // id → eventCode로 명확히
+  const { id: eventId } = useParams(); // id → eventId로 명확히
   const navigate = useNavigate();
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +25,7 @@ export default function EventApplicants() {
     const fetchEventData = async () => {
       try {
         const res = await axios.get(
-          `${API_BASE_URL}/event/council/submissions/${eventCode}`,
+          `${API_BASE_URL}/event/council/submissions/${eventId}`,
   {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -44,6 +43,7 @@ export default function EventApplicants() {
           : Array.isArray(data.data)
             ? data.data
             : [];
+
         if (submissions.length === 0) {
           alert("신청자 없음");
         }
@@ -66,9 +66,9 @@ export default function EventApplicants() {
     };
 
 
-    if (eventCode) fetchEventData();
+    if (eventId) fetchEventData();
     else setLoading(false);
-  }, [eventCode]);
+  }, [eventId]);
 
   const handleApprove = async (applicationId, isAccept) => {
     try {
@@ -121,11 +121,11 @@ export default function EventApplicants() {
 
   return (
     <div className="container">
-     <Header title="신청자 목록" showBack>
-      <button className="read-all-btn" onClick={() => navigate("/excel/${eventCode}")}>
-        엑셀 다운
-      </button>
-      </Header>
+      <div className="topbar">
+        <button className="backbtn" onClick={() => navigate(-1)}>&larr;</button>
+        <h2 className="title">신청자 목록</h2>
+        <div className="rightspace" />
+      </div>
       <div className="searchbox">
         <input
           className="searchinput"
