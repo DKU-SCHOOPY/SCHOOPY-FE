@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import {API_BASE_URL} from "../config";
 import "./Event.css";
+import Header from "../components/Header";
 
 export default function EventApplicants() {
   const { id: eventId } = useParams(); // id → eventId로 명확히
