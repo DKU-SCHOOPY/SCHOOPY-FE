@@ -53,8 +53,9 @@ useEffect(() => {
 
 
   const filteredChats = chats.filter(chat =>
-    chat.name.toLowerCase().includes(search.toLowerCase())
-  );
+  (chat.name || "").toLowerCase().includes((search || "").toLowerCase())
+);
+
 
   return (
     <div className="container">
