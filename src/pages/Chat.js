@@ -73,14 +73,14 @@ useEffect(() => {
       <div className="chat-list">
   {filteredChats.map(chat => (
     <Link
-      key={chat.id}
-      to={`/chat/room/${chat.id}`}
-      state={{ otherUserId: chat.name }} 
+      key={chat.presidentStudentNum}
+      to={`/chat/room/${chat.presidentStudentNum}`}
+      state={{ otherUserId: chat.presidentName }} 
     >
       <div className="chat-item">
         <FaUserCircle className="chat-avatar" />
         <div className="chat-info">
-          <div className="chat-name">{chat.name}</div>
+          <div className="chat-name">{chat.presidentName}</div>
           <div className="chat-last-message">{chat.lastMessage}</div>
         </div>
       </div>
