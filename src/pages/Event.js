@@ -120,11 +120,11 @@ export default function EventApplicants() {
 
   return (
     <div className="container">
-      <div className="topbar">
-        <button className="backbtn" onClick={() => navigate(-1)}>&larr;</button>
-        <h2 className="title">신청자 목록</h2>
-        <div className="rightspace" />
-      </div>
+     <Header title="신청자 목록" showBack>
+      <button className="read-all-btn" onClick={handleReadAll}>
+        엑셀 다운
+      </button>
+      </Header>
       <div className="searchbox">
         <input
           className="searchinput"
