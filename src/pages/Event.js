@@ -208,6 +208,10 @@ export default function EventApplicants() {
       <button
         className="file-download-fab"
         onClick={() => {
+          if (!eventId || !department) {
+            alert("행사 또는 학과 정보가 없습니다.");
+            return;
+          }
           navigate(`/excel/${eventId}?department=${encodeURIComponent(department)}`);
         }}
         title="엑셀 파일 다운로드"
