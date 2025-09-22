@@ -15,7 +15,7 @@ export default function EventApplicants() {
     const fetchEventData = async () => {
       try {
         const res = await axios.get(
-          `${API_BASE_URL}/event/submissions/${eventCode}`,
+          `${API_BASE_URL}/event/council/submissions/${eventCode}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
