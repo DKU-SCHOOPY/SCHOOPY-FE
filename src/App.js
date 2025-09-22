@@ -18,7 +18,6 @@ import Alarm from "./pages/Alarm";
 import CreatePost from "./pages/CreatePost";
 import CreateForm from "./pages/CreateForm";
 import AddSchedule from "./pages/AddSchedule";
-import ExcelList from "./pages/ExcelList"; // 상단 import 추가
 
 import KakaoCallback from "./pages/KakaoCallback";
 import NaverCallback from "./pages/NaverCallback";
@@ -74,8 +73,6 @@ function Layout() {
         <Route path="/oauth2/authorization/kakao/link" element={<KakaoLinkCallback />} />
         <Route path="/oauth2/authorization/naver/link" element={<NaverLinkCallback />} />
         <Route path="/eventdetail/:eventCode" element={<EventDetail />} />
-        <Route path="/excel" element={<ExcelList />} />
-        <Route path="/excel/:eventId" element={<ExcelList />} />
         <Route path="/formquest/:eventCode" element={<Form />} />
         {/* 역할 기반 라우트 */}
         <Route
