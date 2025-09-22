@@ -33,12 +33,12 @@ export default function Alarm() {
 
       console.log("res", res.data);
 
-        const data = res.data.map((item) => ({
+        const data = (res.data.notices || []).map((item) => ({
           id: item.noticeId,
-          sender: item.sender,
+          sender: item.sender?.name || "알 수 없음",
           title: item.title,
           message: item.message,
-          read: item.check,
+          read: item.readCheck,
         }));
         setNotifications(data);
         console.log("불러온 데이터",data);
