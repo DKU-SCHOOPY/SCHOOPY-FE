@@ -54,18 +54,16 @@ export default function ExcelList() {
     setLoading(true);
     try {
       const res = await axios.get(
-        `{API_BASE_URL}/event/council/${selectedEventId}/export-data`,
+        `${API_BASE_URL}/event/council/${selectedEventId}/export-data`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
-      // baseHeaders, questions, rows 구조에 맞게 변환
       const { baseHeaders = [], questions = [], rows = [] } = res.data;
       setData(rows);
 
-      // 질문 컬럼 추출
       const columns = questions.map((q) => ({
         id: q.questionId,
         text: q.questionText,
