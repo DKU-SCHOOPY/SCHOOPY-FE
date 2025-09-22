@@ -23,16 +23,19 @@ useEffect(() => {
     }
   })
   .then((res) => {
-      // 응답이 배열인지 확인
-      if (Array.isArray(res.data)) {
-        setChats(res.data);
-      } else if (res.data.rooms && Array.isArray(res.data.rooms)) {
-        setChats(res.data.rooms);
+      if (res.data && Array.isArray(res.data.contacts)) {
+        setChats(res.data.contacts);
       } else {
-        console.warn("채팅방 응답이 배열이 아님:", res.data);
-        setChats([]); // 안전하게 빈 배열 세팅
+        console.warn("채팅방 응답이 예상과 다름:", res.data);
+        setChats([]); // fallback
       }
     })
+    .catch((err) => {
+      console.error(err);
+      setChats([]); // 에러 시에도 빈 배열 세팅
+    });
+}, []);
+
     // .then((res) => {
     //   const data = res.data.map((room) => ({
     //     id: room.roomId,
@@ -47,12 +50,6 @@ useEffect(() => {
     // })
     
     // .catch((err) => console.error("채팅방 목록 불러오기 실패", err));
-    .catch((err) => {
-      console.error(err);
-      setChats([]); // 에러 시에도 빈 배열 세팅
-    });
-
-}, [currentUser]);
 
 
   const filteredChats = chats.filter(chat =>
