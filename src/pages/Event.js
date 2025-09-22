@@ -90,9 +90,9 @@ export default function EventApplicants() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
-        
+
       );
-      
+
       if (response.data.updatedStatus === true && isAccept) {
         alert("승인 완료");
         setParticipants((prev) =>
@@ -207,10 +207,6 @@ export default function EventApplicants() {
       <button
         className="file-download-fab"
         onClick={() => {
-          if (!department) {
-            alert("학과 정보가 없습니다.");
-            return;
-          }
           navigate(`/excel?department=${encodeURIComponent(department)}`);
         }}
         title="엑셀 파일 다운로드"
