@@ -121,7 +121,7 @@ export default function EventApplicants() {
   return (
     <div className="container">
      <Header title="신청자 목록" showBack>
-      <button className="read-all-btn" onClick={handleReadAll}>
+      <button className="read-all-btn" onClick={() => navigate("/excel/${eventId}")}>
         엑셀 다운
       </button>
       </Header>
