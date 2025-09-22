@@ -61,12 +61,16 @@ export default function EventApplicants() {
             : [];
         const formatted = submissions.map((app) => ({
           applicationId: app.applicationId,
-          user: app.user,
+          user: {
+            name: app.user?.name ?? "이름없음",
+            department: app.user?.department ?? "학과없음",
+          },
           isStudent: app.isStudent,
-          councilFeePaid: app.councilFeePaid,
+          councilFeePaid: app.councilFeePaid ?? false,
           isPaymentCompleted: app.isPaymentCompleted,
         }));
         setParticipants(formatted);
+
 
         // 행사 폼 질문 및 신청자 응답
         const excelRes = await axios.get(
