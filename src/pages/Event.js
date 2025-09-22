@@ -12,7 +12,7 @@ export default function EventApplicants() {
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
 
-  // 폼 질문 및 신청자 응답 상태 추가
+  // 폼 질문 및 신청자 응답 상태
   const [eventName, setEventName] = useState("");
   const [baseHeaders, setBaseHeaders] = useState([]);
   const [questionColumns, setQuestionColumns] = useState([]);
@@ -23,9 +23,9 @@ export default function EventApplicants() {
   const [rejectReason, setRejectReason] = useState("");
   const [rejectTarget, setRejectTarget] = useState(null);
 
-  // 학과 정보: 참가자 중 첫 번째로 department가 있는 학생의 학과
+  // 참가자 중 첫 번째 학과
   const department = useMemo(() => {
-    const found = participants.find(p => p.user?.department);
+    const found = participants.find((p) => p.user?.department);
     return found ? found.user.department : "";
   }, [participants]);
 
@@ -39,7 +39,6 @@ export default function EventApplicants() {
     );
   });
 
-  // 신청자 목록 및 폼 질문/응답 데이터 모두 불러오기
   useEffect(() => {
     const fetchEventData = async () => {
       try {
@@ -52,27 +51,33 @@ export default function EventApplicants() {
             },
           }
         );
+
         const data = res.data;
-        console.log(data);
-        const submissions = Array.isArray(data)
-          ? data
-          : Array.isArray(data.data)
-            ? data.data
-            : [];
-        const formatted = submissions.map((app) => ({
-          applicationId: app.applicationId,
-          user: {
-            name: app.user?.name ?? "이름없음",
-            department: app.user?.department ?? "학과없음",
-          },
-          isStudent: app.isStudent,
-          councilFeePaid: app.councilFeePaid ?? false,
-          isPaymentCompleted: app.isPaymentCompleted,
-        }));
+        const submissions = Array.isArray(data) ? data : data.data || [];
+
+        // user 매핑 수정
+        const formatted = submissions.map((app) => {
+          // user 객체가 app.user 안에 있음
+          const userData = app.user || {};
+          return {
+            applicationId: app.applicationId,
+            user: {
+              name: userData.name || "이름없음",
+              department: userData.department || "학과없음",
+              studentNum: userData.studentNum || "",
+              email: userData.email || "",
+            },
+            isStudent: app.isStudent ?? true,
+            councilFeePaid: app.councilPee ?? false,
+            isPaymentCompleted: app.isPaymentCompleted ?? false,
+            answers: app.answers || [],
+          };
+        });
+
         setParticipants(formatted);
+        console.log("Participants 상태:", formatted);
 
-
-        // 행사 폼 질문 및 신청자 응답
+        // 폼 질문 및 신청자 응답
         const excelRes = await axios.get(
           `${API_BASE_URL}/event/council/${eventCode}/export-data`,
           {
@@ -81,6 +86,7 @@ export default function EventApplicants() {
             },
           }
         );
+
         setEventName(excelRes.data.eventName || "");
         setBaseHeaders(excelRes.data.baseHeaders || []);
         setQuestionColumns(excelRes.data.questions || []);
@@ -152,16 +158,17 @@ export default function EventApplicants() {
     setRejectTarget(null);
   };
 
-  // 엑셀로 내보내기
+  // 엑셀 내보내기
   const exportExcel = () => {
     if (!rows.length) {
       alert("내보낼 데이터가 없습니다.");
       return;
     }
+
     const excelData = rows.map((item) => {
       const row = {};
       baseHeaders.forEach((header) => {
-        row[header] = item[header];
+        row[header] = item[header] ?? "";
       });
       questionColumns.forEach((q, idx) => {
         row[q.questionText] = item.answers?.[idx] ?? "";
@@ -181,9 +188,10 @@ export default function EventApplicants() {
         <button className="backbtn" onClick={() => navigate(-1)}>
           &larr;
         </button>
-        <h2 className="title">신청자 목록</h2>
+        <h2 className="title">{eventName || "신청자 목록"}</h2>
         <div className="rightspace" />
       </div>
+
       <div className="searchbox">
         <input
           className="searchinput"
@@ -193,8 +201,11 @@ export default function EventApplicants() {
           onChange={(e) => setSearchText(e.target.value)}
         />
       </div>
+
       <div className="userlist">
-        {filteredParticipants.length === 0 ? (
+        {loading ? (
+          <div>로딩중...</div>
+        ) : filteredParticipants.length === 0 ? (
           <div className="noapplicants">신청자가 없습니다.</div>
         ) : (
           filteredParticipants.map((p) => (
@@ -207,8 +218,8 @@ export default function EventApplicants() {
               <div className="userinfo">
                 <div className="username">{p.user?.name}</div>
                 <div className="userstatus">
-                  {p.isStudent ? "재학생" : "휴학생"} |
-                  {p.councilFeePaid ? " 학생회비 납부" : " 학생회비 미납"} |
+                  {p.isStudent ? "재학생" : "휴학생"} |{" "}
+                  {p.councilFeePaid ? " 학생회비 납부" : " 학생회비 미납"} |{" "}
                   {p.isPaymentCompleted ? " 입금완료" : " 대기중"}
                 </div>
               </div>
@@ -246,7 +257,6 @@ export default function EventApplicants() {
         )}
       </div>
 
-      {/* 오른쪽 하단 파일 다운 버튼 */}
       <button
         className="file-download-fab"
         onClick={exportExcel}
@@ -258,7 +268,6 @@ export default function EventApplicants() {
         다운
       </button>
 
-      {/* 반려 사유 모달 */}
       {showRejectModal && (
         <div className="modal-overlay">
           <div className="modal">
