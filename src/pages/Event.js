@@ -169,7 +169,6 @@ export default function EventApplicants() {
     councilPee: "학생회비납부",
   };
 
-  // 엑셀 내보내기
   const exportExcel = () => {
     if (!rows.length) {
       alert("내보낼 데이터가 없습니다.");
@@ -178,9 +177,18 @@ export default function EventApplicants() {
     const excelData = rows.map((item) => {
       const row = {};
       baseHeaders.forEach((header) => {
-        // 한글 컬럼명 적용
         const colName = headerMap[header] || header;
-        row[colName] = item[header];
+        // 성별 한글 변환
+        if (header === "gender") {
+          row[colName] = item.gender === "female" ? "여자" : item.gender === "male" ? "남자" : item.gender;
+        }
+        // 학생회비납부 O/X 변환
+        else if (header === "councilPee") {
+          row[colName] = item.councilPee ? "O" : "X";
+        }
+        else {
+          row[colName] = item[header];
+        }
       });
       questionColumns.forEach((q, idx) => {
         row[q.questionText] = item.answers?.[idx] ?? "";
@@ -191,7 +199,7 @@ export default function EventApplicants() {
     const ws = XLSX.utils.json_to_sheet(excelData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "신청자목록");
-    XLSX.writeFile(wb, `event_${eventCode}_신청자목록.xlsx`);
+    XLSX.writeFile(wb, `event_${eventId}_신청자목록.xlsx`);
   };
 
   return (
@@ -275,8 +283,6 @@ export default function EventApplicants() {
         title="엑셀 파일 다운로드"
         disabled={loading || !rows.length}
       >
-        파일
-        <br />
         다운
       </button>
 
