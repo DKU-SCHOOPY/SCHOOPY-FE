@@ -200,7 +200,7 @@ export default function EventApplicants() {
     const ws = XLSX.utils.json_to_sheet(excelData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "신청자목록");
-    XLSX.writeFile(wb, `event_${eventId}_신청자목록.xlsx`);
+    XLSX.writeFile(wb, `event_${eventCode}_신청자목록.xlsx`);
   };
 
   return (
