@@ -31,6 +31,7 @@ export default function EventApplicants() {
 
   const filteredParticipants = participants.filter((p) => {
     if (!p.user) return false;
+    if (!searchText.trim()) return true;
     const name = p.user.name || "";
     const dept = p.user.department || "";
     return (
