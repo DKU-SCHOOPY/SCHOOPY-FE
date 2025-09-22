@@ -53,30 +53,24 @@ export default function EventApplicants() {
           }
         );
 
-        const data = res.data;
-        const submissions = Array.isArray(data) ? data : data.data || [];
+        console.log("Raw API Response:", res.data);
 
-        // user 매핑 수정
-        const formatted = submissions.map((app) => {
-          // user 객체가 app.user 안에 있음
-          const userData = app.user || {};
-          return {
-            applicationId: app.applicationId,
-            user: {
-              name: userData.name || "이름없음",
-              department: userData.department || "학과없음",
-              studentNum: userData.studentNum || "",
-              email: userData.email || "",
-            },
-            isStudent: app.isStudent ?? true,
-            councilFeePaid: app.councilPee ?? false,
-            isPaymentCompleted: app.isPaymentCompleted ?? false,
-            answers: app.answers || [],
-          };
-        });
+    // 응답이 배열일 때
+    const participantsData = Array.isArray(res.data)
+      ? res.data.map((item) => ({
+          id: item.applicationId,
+          studentNum: item.user?.studentNum,
+          name: item.user?.name,
+          department: item.user?.department,
+          email: item.user?.email,
+          isStudent: item.isStudent,
+          isPaymentCompleted: item.isPaymentCompleted,
+          answers: item.answers || [],
+        }))
+      : [];
 
-        setParticipants(formatted);
-        console.log("Participants 상태:", formatted);
+    console.log("Mapped Participants:", participantsData);
+    setParticipants(participantsData);
 
         // 폼 질문 및 신청자 응답
         const excelRes = await axios.get(
@@ -224,59 +218,57 @@ export default function EventApplicants() {
       </div>
 
       <div className="userlist">
-        {loading ? (
-          <div>로딩중...</div>
-        ) : filteredParticipants.length === 0 ? (
-          <div className="noapplicants">신청자가 없습니다.</div>
-        ) : (
-          filteredParticipants.map((p) => (
-            <div
-              key={p.applicationId}
-              className="userrow"
-              onClick={() => navigate(`/answer/${p.applicationId}`)}
-              style={{ cursor: "pointer" }}
-            >
-              <div className="userinfo">
-                <div className="username">{p.user?.name}</div>
-                <div className="userstatus">
-                  {p.isStudent ? "재학생" : "휴학생"} |{" "}
-                  {p.councilFeePaid ? " 학생회비 납부" : " 학생회비 미납"} |{" "}
-                  {p.isPaymentCompleted ? " 입금완료" : " 대기중"}
-                </div>
-              </div>
-              <div
-                className="actionbuttons"
-                onClick={(e) => e.stopPropagation()}
+  {loading ? (
+    <div>로딩중...</div>
+  ) : participants.length === 0 ? (
+    <div className="noapplicants">신청자가 없습니다.</div>
+  ) : (
+    participants.map((p) => (
+      <div
+        key={p.id}
+        className="userrow"
+        onClick={() => navigate(`/answer/${p.id}`)}
+        style={{ cursor: "pointer" }}
+      >
+        <div className="userinfo">
+          <div className="username">{p.name}</div>
+          <div className="userstatus">
+            {p.isStudent ? "재학생" : "휴학생"} |{" "}
+            {p.councilFeePaid ? " 학생회비 납부" : " 학생회비 미납"} |{" "}
+            {p.isPaymentCompleted ? " 입금완료" : " 대기중"}
+          </div>
+        </div>
+        <div className="actionbuttons" onClick={(e) => e.stopPropagation()}>
+          {p.isPaymentCompleted ? (
+            <div className="approvedtext">승인완료</div>
+          ) : (
+            <>
+              <button
+                className="acceptbtn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleApprove(p.id, true);
+                }}
               >
-                {p.isPaymentCompleted ? (
-                  <div className="approvedtext">승인완료</div>
-                ) : (
-                  <>
-                    <button
-                      className="acceptbtn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleApprove(p.applicationId, true);
-                      }}
-                    >
-                      승인
-                    </button>
-                    <button
-                      className="rejectbtn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openRejectModal(p.applicationId);
-                      }}
-                    >
-                      반려
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
-          ))
-        )}
+                승인
+              </button>
+              <button
+                className="rejectbtn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openRejectModal(p.id);
+                }}
+              >
+                반려
+              </button>
+            </>
+          )}
+        </div>
       </div>
+    ))
+  )}
+</div>
+
 
       <button
         className="file-download-fab"
