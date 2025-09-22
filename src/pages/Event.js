@@ -6,7 +6,7 @@ import "./Event.css";
 import Header from "../components/Header";
 
 export default function EventApplicants() {
-  const { id: eventId } = useParams(); // id → eventId로 명확히
+  const { id: eventCode } = useParams(); // id → eventCode로 명확히
   const navigate = useNavigate();
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +26,7 @@ export default function EventApplicants() {
     const fetchEventData = async () => {
       try {
         const res = await axios.get(
-          `${API_BASE_URL}/event/council/submissions/${eventId}`,
+          `${API_BASE_URL}/event/council/submissions/${eventCode}`,
   {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -66,9 +66,9 @@ export default function EventApplicants() {
     };
 
 
-    if (eventId) fetchEventData();
+    if (eventCode) fetchEventData();
     else setLoading(false);
-  }, [eventId]);
+  }, [eventCode]);
 
   const handleApprove = async (applicationId, isAccept) => {
     try {
@@ -122,7 +122,7 @@ export default function EventApplicants() {
   return (
     <div className="container">
      <Header title="신청자 목록" showBack>
-      <button className="read-all-btn" onClick={() => navigate("/excel/${eventId}")}>
+      <button className="read-all-btn" onClick={() => navigate("/excel/${eventCode}")}>
         엑셀 다운
       </button>
       </Header>
