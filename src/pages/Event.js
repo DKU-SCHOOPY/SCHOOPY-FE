@@ -158,17 +158,29 @@ export default function EventApplicants() {
     setRejectTarget(null);
   };
 
+  // 한글 컬럼명 매핑
+  const headerMap = {
+    studentNum: "학번",
+    name: "이름",
+    department: "학과",
+    birthDay: "생년월일",
+    gender: "성별",
+    phoneNum: "전화번호",
+    councilPee: "학생회비납부",
+  };
+
   // 엑셀 내보내기
   const exportExcel = () => {
     if (!rows.length) {
       alert("내보낼 데이터가 없습니다.");
       return;
     }
-
     const excelData = rows.map((item) => {
       const row = {};
       baseHeaders.forEach((header) => {
-        row[header] = item[header] ?? "";
+        // 한글 컬럼명 적용
+        const colName = headerMap[header] || header;
+        row[colName] = item[header];
       });
       questionColumns.forEach((q, idx) => {
         row[q.questionText] = item.answers?.[idx] ?? "";
