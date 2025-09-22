@@ -27,7 +27,7 @@ useEffect(() => {
         setChats(res.data.contacts);
       } else {
         console.warn("채팅방 응답이 예상과 다름:", res.data);
-        setChats([]); // fallback
+        setChats([]);
       }
     })
     .catch((err) => {
