@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as XLSX from "xlsx";
 import { API_BASE_URL } from "../config";
-import "./ExcelDownload.css"; // 필요하면 따로 스타일 작성
+
 
 export default function ExcelDownload() {
   const { eventCode } = useParams();
