@@ -40,7 +40,8 @@ const AddSchedule = () => {
       qr_toss_o: "",
       qr_kakaopay_x: "",
       qr_kakaopay_o: ""
-    }
+    },
+    imageFiles: [],
   });
 
   // ====== 폼 생성용 상태 및 함수 ======
@@ -107,7 +108,8 @@ const AddSchedule = () => {
         ...prev,
         eventName: location.state.eventName || "",
         department: location.state.department || "",
-        eventDescription: location.state.eventDescription || ""
+        eventDescription: location.state.eventDescription || "",
+        imageFiles: location.state.imageFile || [] // ← File 객체 배열 그대로 넣기
       }));
     }
   }, [location.state]);
