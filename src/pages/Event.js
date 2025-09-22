@@ -18,13 +18,14 @@ export default function EventApplicants() {
 
   // 학과 정보: 참가자 중 첫 번째로 department가 있는 학생의 학과
   const department = useMemo(() => {
-    const found = participants.find((p) => p.user?.department);
+    const found = participants.find(p => p.user?.department);
     return found ? found.user.department : "";
   }, [participants]);
 
   const filteredParticipants = participants.filter((p) => {
-    const name = p.user?.name || "";
-    const dept = p.user?.department || "";
+    if (!p.user) return false;
+    const name = p.user.name || "";
+    const dept = p.user.department || "";
     return (
       name.toLowerCase().includes(searchText.toLowerCase()) ||
       dept.toLowerCase().includes(searchText.toLowerCase())
@@ -207,7 +208,7 @@ export default function EventApplicants() {
       <button
         className="file-download-fab"
         onClick={() => {
-          navigate(`/excel?department=${encodeURIComponent(department)}`);
+          navigate(`/excel/${eventId}?department=${encodeURIComponent(department)}`);
         }}
         title="엑셀 파일 다운로드"
       >

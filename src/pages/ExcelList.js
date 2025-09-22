@@ -16,6 +16,7 @@ export default function ExcelList() {
   const [loading, setLoading] = useState(false);
   const [questionColumns, setQuestionColumns] = useState([]);
   const [events, setEvents] = useState([]); // 행사 목록
+  const [baseHeaders, setBaseHeaders] = useState([]); // 기본 헤더 추가
 
   // 행사 목록 불러오기 (실제 API 연동)
   useEffect(() => {
@@ -62,6 +63,7 @@ export default function ExcelList() {
         }
       );
       const { baseHeaders = [], questions = [], rows = [] } = res.data;
+      setBaseHeaders(baseHeaders); // baseHeaders 저장
       setData(rows);
 
       const columns = questions.map((q) => ({
@@ -84,15 +86,10 @@ export default function ExcelList() {
       return;
     }
     const excelData = data.map((item) => {
-      const row = {
-        학번: item.studentNum,
-        이름: item.name,
-        학과: item.department,
-        생년월일: item.birthDay,
-        성별: item.gender === "male" ? "남" : item.gender === "female" ? "여" : item.gender,
-        전화번호: item.phoneNum,
-        학생회비납부: item.councilPee ? "O" : "X",
-      };
+      const row = {};
+      baseHeaders.forEach((header) => {
+        row[header] = item[header];
+      });
       questionColumns.forEach((q, idx) => {
         row[q.text] = item.answers?.[idx] ?? "";
       });
@@ -104,6 +101,12 @@ export default function ExcelList() {
     XLSX.utils.book_append_sheet(wb, ws, "신청자목록");
     XLSX.writeFile(wb, `event_${eventId}_신청자목록.xlsx`);
   };
+
+  useEffect(() => {
+    if (eventId) {
+      fetchData(eventId);
+    }
+  }, [eventId]);
 
   return (
     <div className="excel-container">
@@ -118,8 +121,8 @@ export default function ExcelList() {
         >
           <option value="">행사를 선택하세요</option>
           {events.map((ev) => (
-            <option key={ev.id} value={ev.id}>
-              {ev.name}
+            <option key={ev.eventCode} value={ev.eventCode}>
+              {ev.eventName}
             </option>
           ))}
         </select>
