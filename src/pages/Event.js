@@ -42,6 +42,7 @@ export default function EventApplicants() {
           }
         );
 
+        console.log("데이터",res.data);
         const submissions = safeParseJSON(res.data);
 
         if (submissions.length === 0) {
