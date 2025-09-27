@@ -27,6 +27,7 @@ import Event from "./pages/Event";
 import FormPage from "./pages/Form"; //
 import Form from "./pages/Form";
 import Excel from "./pages/Exceldown";
+import Answer from "./pages/Answer";
 
 import RoleBasedRoute from "./routes/RoleBasedRoute";
 import RoleBasedNavbar from "./components/RoleBasedNavbar";
@@ -76,6 +77,7 @@ function Layout() {
         <Route path="/eventdetail/:eventCode" element={<EventDetail />} />
         <Route path="/formquest/:eventCode" element={<Form />} />
         <Route path="/excel/:eventCode" element={<Excel />} />
+        <Route path="/answer/:applicationId" element={<Answer />} />
         {/* 역할 기반 라우트 */}
         <Route
           path="/form/:eventCode"
