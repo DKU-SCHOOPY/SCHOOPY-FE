@@ -94,7 +94,7 @@ function Login() {
 
         <button className="login-button" onClick={handleLogin}>로그인
         </button>
-        <button className="login-button" onClick={() => navigate("/join")}>회원가입
+        <button className="join-button" onClick={() => navigate("/join")}>회원가입
         </button>
 
         <div className="login-divider">

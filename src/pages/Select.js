@@ -11,7 +11,7 @@ function Select() {
   if (choice === "COUNCIL") {
       try {
         const studentNum = localStorage.getItem("studentNum"); // 로그인 후 저장된 학번 가져오기
-        const res = await axios.post("http://api.schoopy.co.kr/auth/department-check", {
+        const res = await axios.post("https://api.schoopy.co.kr/auth/department-check", {
           studentNum,
         });
 
