@@ -5,7 +5,8 @@
 
 .form-row {
   display: flex;
-  gap: 5px; /* 항목 사이 간격 */
+  gap: 20px; /* 항목 사이 간격 */
+  margin-bottom: 16px; /* 행 간격 조절 */
 }
 
 .form-item {
@@ -14,9 +15,9 @@
   flex-direction: column; /* label 위, input 아래 */
 }
 
-.form-item label {
+/* .form-item label {
   margin-bottom: 8px; /* label과 input 사이 간격 */
-}
+/* } */
 
 
 /* .back-button {

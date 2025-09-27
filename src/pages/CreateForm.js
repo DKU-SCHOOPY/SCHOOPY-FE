@@ -324,7 +324,7 @@ const AddSchedule = () => {
           </div>
         </div>
 
-        <hr style={{ margin: '32px 0 24px 0', border: 'none', borderTop: '1.5px solid #e0e0e0' }} />
+        <hr style={{ margin: '20px 0 10px 0', border: 'none', borderTop: '1.5px solid #e0e0e0' }} />
 
         {/* ====== 수요조사 시작/종료일 ====== */}
         <div className="form-row">

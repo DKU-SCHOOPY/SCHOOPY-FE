@@ -92,10 +92,8 @@ function Login() {
           />
           <button className="login-forgot">Forgot Password?</button>
 
-        <button className="login-button" onClick={handleLogin}>로그인
-        </button>
-        <button className="join-button" onClick={() => navigate("/join")}>회원가입
-        </button>
+        <button className="login-button" onClick={handleLogin}>로그인</button>
+        <button  type="button"  className="join-button"  onClick={() => navigate("/join")}>회원가입</button>
 
         <div className="login-divider">
           <span>또는 소셜 로그인</span>
