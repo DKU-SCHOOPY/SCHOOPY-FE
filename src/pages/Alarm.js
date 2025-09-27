@@ -38,7 +38,7 @@ export default function Alarm() {
           sender: item.sender?.name || "알 수 없음",
           title: item.title,
           message: item.message,
-          read: item.readCheck,
+          read: item.check,
         }));
         setNotifications(data);
         console.log("불러온 데이터",data);
