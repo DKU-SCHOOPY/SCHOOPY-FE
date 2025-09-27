@@ -89,7 +89,7 @@ export default function ExcelDownload() {
   };
 
   return (
-    <button className="exceldown-btn" onClick={handleExcelDownload}>
+    <button className="exceldown-btn" onClick={exportExcel}>
       엑셀다운
     </button>
   );

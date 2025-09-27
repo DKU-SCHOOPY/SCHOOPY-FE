@@ -1,6 +1,6 @@
 /* EventApplicants.css */
 
-.topbar {
+/* .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -25,7 +25,7 @@
   margin: 0;
   flex: 1;
   text-align: center;
-}
+} */
 .rightspace {
   width: 32px;
 }
