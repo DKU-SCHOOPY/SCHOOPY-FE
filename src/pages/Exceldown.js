@@ -89,29 +89,8 @@ export default function ExcelDownload() {
   };
 
   return (
-    <div className="excel-container">
-      <div className="topbar">
-        <button className="backbtn" onClick={() => navigate(-1)}>
-          &larr;
-        </button>
-        <h2 className="title">{eventName || "엑셀 다운로드"}</h2>
-        <div className="rightspace" />
-      </div>
-
-      {loading ? (
-        <div>로딩중...</div>
-      ) : (
-        <div className="excel-content">
-          <p>총 {rows.length}명의 신청자 데이터가 있습니다.</p>
-          <button
-            className="file-download-btn"
-            onClick={exportExcel}
-            disabled={!rows.length}
-          >
-            엑셀 다운로드
-          </button>
-        </div>
-      )}
-    </div>
+    <button className="exceldown-btn" onClick={handleExcelDownload}>
+      엑셀다운
+    </button>
   );
 }

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
 import "./Event.css";
+import Exceldown from "./Exceldown";
 
 export default function EventApplicants() {
   const { eventCode } = useParams();
@@ -112,13 +113,9 @@ export default function EventApplicants() {
 
   return (
     <div className="container">
-      <div className="topbar">
-        <button className="backbtn" onClick={() => navigate(-1)}>
-          &larr;
-        </button>
-        <h2 className="title">신청자 목록</h2>
-        <div className="rightspace" />
-      </div>
+      <Header title="신청자 목록" showBack>
+        <Exceldown eventCode={eventCode} /> 
+      </Header>
 
       <div className="searchbox">
         <input
