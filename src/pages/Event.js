@@ -33,11 +33,14 @@ useEffect(() => {
 
       const formatted = submissions.map(app => ({
         applicationId: app.applicationId,
-        user: app.user,
-        isStudent: app.isStudent,
-        councilFeePaid: app.councilFeePaid,
-        isPaymentCompleted: app.isPaymentCompleted
+        name: app.name,
+        department: app.department,
+        gender: app.gender,
+        studentNum: app.studentNum,
+        councilFeePaid: app.councilPee,         // 백엔드에서 필드명 수정 안 해주면 이대로
+        isPaymentCompleted: app.paymentCompleted
       }));
+
 
       setParticipants(formatted);
     } catch (err) {
@@ -76,9 +79,9 @@ useEffect(() => {
                 style={{ cursor: "pointer" }}
               >
                 <div className="userinfo">
-                  <div className="username">{p.user?.name}</div>
+                  <div className="username">{p.name} ({p.studentNum})</div>
                   <div className="userstatus">
-                    {p.isStudent ? "재학생" : "휴학생"} |
+                    {p.department} | {p.gender === "female" ? "여학생" : "남학생"} |
                     {p.councilFeePaid ? " 학생회비 납부" : " 학생회비 미납"} |
                     {p.isPaymentCompleted ? " 입금완료" : " 대기중"}
                   </div>
