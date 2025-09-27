@@ -4,6 +4,7 @@ import axios from "axios";
 import { API_BASE_URL } from "../config";
 import "./Event.css";
 import ExcelDownload from "./Exceldown";
+import Header from "../components/Header";
 
 export default function EventApplicants() {
   const { eventCode } = useParams();
