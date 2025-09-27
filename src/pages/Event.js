@@ -5,7 +5,7 @@ import { API_BASE_URL } from "../config";
 import "./Event.css";
 
 export default function EventApplicants() {
-  const { id: eventId } = useParams();
+  const { eventCode } = useParams();
   const navigate = useNavigate();
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,7 +24,7 @@ export default function EventApplicants() {
     const fetchEventData = async () => {
       try {
         const res = await axios.get(
-          `${API_BASE_URL}/event/council/submissions/${eventId}`,
+          `${API_BASE_URL}/event/council/submissions/${eventCode}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -60,9 +60,9 @@ export default function EventApplicants() {
       }
     };
 
-    if (eventId) fetchEventData();
+    if (eventCode) fetchEventData();
     else setLoading(false);
-  }, [eventId]);
+  }, [eventCode]);
 
   const handleApprove = async (applicationId, isAccept) => {
     try {
