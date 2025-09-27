@@ -57,7 +57,7 @@ export default function Alarm() {
       const studentNum = localStorage.getItem("studentNum");
       const role = localStorage.getItem("role");
 
-      await axios.post(
+      const res = await axios.post(
         `${API_BASE_URL}/notice/all/readAll`,
         {
           studentNum,
@@ -69,6 +69,7 @@ export default function Alarm() {
           },
         }
       );
+      console.log("전체 읽음 응답", res.data);
 
       // 전체 읽음 상태로 업데이트
       setNotifications((prev) =>
@@ -83,7 +84,7 @@ export default function Alarm() {
   // 하나 읽음 처리
 const handleNotificationClick = async (id) => {
   try {
-    await axios.post(
+    const response = await axios.post(
       `${API_BASE_URL}/notice/all/justRead`,
       { noticeId: id }, // body에 noticeId 전달
       {
@@ -92,7 +93,7 @@ const handleNotificationClick = async (id) => {
         },
       }
     );
-
+    console.log("읽음 처리 응답", response.data);
     setNotifications((prev) =>
       prev.map((noti) =>
         noti.id === id ? { ...noti, read: true } : noti
