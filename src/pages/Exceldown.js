@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as XLSX from "xlsx";
 import { API_BASE_URL } from "../config";
 
-
-export default function ExcelDownload() {
-  const { eventCode } = useParams();
-  const navigate = useNavigate();
-
-  const [eventName, setEventName] = useState("");
+export default function ExcelDownload({ eventCode }) {
   const [baseHeaders, setBaseHeaders] = useState([]);
   const [questionColumns, setQuestionColumns] = useState([]);
   const [rows, setRows] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  // 한글 컬럼명 매핑
   const headerMap = {
     studentNum: "학번",
     name: "이름",
@@ -28,30 +20,24 @@ export default function ExcelDownload() {
 
   useEffect(() => {
     const fetchExcelData = async () => {
+      if (!eventCode) return;
       try {
         const res = await axios.get(
           `${API_BASE_URL}/event/council/${eventCode}/export-data`,
           {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
           }
         );
 
-        setEventName(res.data.eventName || "");
         setBaseHeaders(res.data.baseHeaders || []);
         setQuestionColumns(res.data.questions || []);
         setRows(res.data.rows || []);
       } catch (e) {
         console.error("엑셀 데이터 조회 오류:", e);
-        alert("엑셀 데이터 불러오기 실패");
-      } finally {
-        setLoading(false);
       }
     };
 
-    if (eventCode) fetchExcelData();
-    else setLoading(false);
+    fetchExcelData();
   }, [eventCode]);
 
   const exportExcel = () => {
@@ -59,6 +45,7 @@ export default function ExcelDownload() {
       alert("내보낼 데이터가 없습니다.");
       return;
     }
+
     const excelData = rows.map((item) => {
       const row = {};
       baseHeaders.forEach((header) => {
@@ -76,9 +63,11 @@ export default function ExcelDownload() {
           row[colName] = item[header];
         }
       });
+
       questionColumns.forEach((q, idx) => {
         row[q.questionText] = item.answers?.[idx] ?? "";
       });
+
       return row;
     });
 
