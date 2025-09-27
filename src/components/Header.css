@@ -34,7 +34,7 @@
   align-items: center;
 }
 
-.read-all-btn {
+.read-all-btn, .exceldown-btn {
   color: rgb(0, 0, 0);
   border: 1px;
   padding: 4px 6px;
@@ -44,6 +44,6 @@
   transition: background-color 0.2s ease;
 }
 
-.read-all-btn:hover {
+.read-all-btn:hover, .exceldown-btn:hover {
   background-color: #5634ff8b;
 }
