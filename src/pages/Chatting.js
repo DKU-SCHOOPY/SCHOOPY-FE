@@ -20,45 +20,75 @@ function Chatting() {
   const peerName = location.state?.otherUserName || "";
 
   const fetchMessages = async () => {
+  try {
+    if (!roomId) {
+      // 채팅방이 아직 없는 경우 → POST로 최초 메시지 전송용
+      console.log("roomId 없음 → 새로운 채팅방 생성 필요");
+      // 보통은 메시지를 보낼 때 POST를 쓰니까, 여기서는 불러오기 대신 빈 배열 리턴
+      setMessages([]);
+      return;
+    }
+
+    // 기존 채팅방이면 GET으로 불러오기
+    const res = await axios.get(`${API_BASE_URL}/chat/room/${roomId}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    const data = Array.isArray(res.data) ? res.data : [];
+    setMessages(data);
+  } catch (err) {
+    console.error("채팅 불러오기 실패", err);
+  }
+};
+
+
+  const sendMessage = async () => {
+  if (!message.trim()) return;
+
+  if (!roomId) {
+    // 채팅방이 없을 때 → POST /chat/message
     try {
-      const res = await axios.get(`${API_BASE_URL}/chat/room/${roomId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      const data = Array.isArray(res.data) ? res.data : [];
-      setMessages(data);
+      await axios.post(
+        `${API_BASE_URL}/chat/message`,
+        {
+          message: message.trim(),
+          receiverId: peerId,
+        },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      setMessage("");
+      // 메시지 다시 불러오기
+      fetchMessages();
     } catch (err) {
-      console.error("채팅 불러오기 실패", err);
+      console.error("새 채팅방 생성 실패", err);
     }
-  };
+    return;
+  }
 
-  const sendMessage = () => {
-    if (!message.trim()) return;
-    if (!/^\d+$/.test(myId) || !/^\d+$/.test(peerId)) {
-      console.error("❌ 학번 포맷 오류", { myId, peerId });
-      return;
-    }
+  // 기존 채팅방이면 소켓으로 보내기
+  let socket = getSocket();
 
-    let socket = getSocket();
+  if (!socket || socket.readyState !== WebSocket.OPEN) {
+    console.log("🔌 웹소켓 재연결 시도...", { myId, peerId });
+    socket = connectSocket(myId, peerId);
+    if (!socket) return;
 
-    if (!socket || socket.readyState !== WebSocket.OPEN) {
-      console.log("🔌 웹소켓 재연결 시도...", { myId, peerId });
-      socket = connectSocket(myId, peerId);
-      if (!socket) return;
+    socket.onopen = () => {
+      console.log("✅ 웹소켓 재연결 완료");
+      socket.send(JSON.stringify({ message: message.trim(), receiverId: peerId }));
+      setMessage("");
+      fetchMessages();
+    };
+    socket.onerror = (e) => console.error("웹소켓 오류", e);
+    return;
+  }
 
-      socket.onopen = () => {
-        console.log("✅ 웹소켓 재연결 완료");
-        socket.send(JSON.stringify({ message: message.trim(), receiverId: peerId }));
-        setMessage("");
-        fetchMessages();
-      };
-      socket.onerror = (e) => console.error("웹소켓 오류", e);
-      return;
-    }
+  socket.send(JSON.stringify({ message: message.trim(), receiverId: peerId }));
+  setMessage("");
+  fetchMessages();
+};
 
-    socket.send(JSON.stringify({ message: message.trim(), receiverId: peerId }));
-    setMessage("");
-    fetchMessages();
-  };
 
   // 최초 로드 + 폴링
   useEffect(() => {

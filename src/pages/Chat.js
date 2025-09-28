@@ -78,6 +78,7 @@ function ChatRoomList() {
               state={{
                 otherUserId: chat.counterpartId,
                 otherUserName: chat.counterpartName,
+                roomId: chat.roomId,
               }}
             >
               <div className="chat-item">
@@ -94,6 +95,7 @@ function ChatRoomList() {
               state={{
                 otherUserId: chat.presidentStudentNum,
                 otherUserName: chat.department,
+                roomId: chat.roomId,
               }}
             >
               <div className="chat-item">
