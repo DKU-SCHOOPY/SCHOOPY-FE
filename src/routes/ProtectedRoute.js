@@ -12,7 +12,7 @@ function isTokenExpired(token) {
 }
 
 export default function ProtectedRoute({ children }) {
-  const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem("token");
 
   if (!token || isTokenExpired(token)) {
     return <Navigate to="/login" replace />;
