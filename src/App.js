@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import './App.css';
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 import Welcome from "./pages/Welcome";
 import Select from "./pages/Select";
@@ -54,36 +55,40 @@ function Layout() {
       {/* 역할 기반 Navbar */}
       {!shouldHideUI && <RoleBasedNavbar />}
 
-      <Routes>
-        <Route path="/" element={<Welcome />} />
-        <Route path="/select" element={<Select />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/join" element={<Join />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/formlist" element={<FormList />} />
-        <Route path="/calendar" element={<Calendar />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/chat/room/:roomId" element={<Chatting />} />
-        <Route path="/mypage" element={<Mypage />} />
-        <Route path="/edit" element={<Edit />} />
-        <Route path="/alarm" element={<Alarm />} />
-        <Route path="/createform" element={<CreateForm />} />
-        <Route path="/addschedule" element={<AddSchedule />} />
-        <Route path="/createpost" element={<CreatePost />} />
-        <Route path="/oauth2/authorization/kakao" element={<KakaoCallback />} />
-        <Route path="/oauth2/callback/naver" element={<NaverCallback />} />
-        <Route path="/oauth2/authorization/kakao/link" element={<KakaoLinkCallback />} />
-        <Route path="/oauth2/authorization/naver/link" element={<NaverLinkCallback />} />
-        <Route path="/eventdetail/:eventCode" element={<EventDetail />} />
-        <Route path="/formquest/:eventCode" element={<Form />} />
-        <Route path="/excel/:eventCode" element={<Excel />} />
-        <Route path="/answer/:applicationId" element={<Answer />} />
-        {/* 역할 기반 라우트 */}
-        <Route
-          path="/form/:eventCode"
-          element={<RoleBasedRoute student={FormPage} council={Event} />}
-        />
-      </Routes>
+      
+
+<Routes>
+  <Route path="/" element={<Welcome />} />
+  <Route path="/select" element={<Select />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/join" element={<Join />} />
+
+  <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+  <Route path="/formlist" element={<ProtectedRoute><FormList /></ProtectedRoute>} />
+  <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />
+  <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+  <Route path="/chat/room/:roomId" element={<ProtectedRoute><Chatting /></ProtectedRoute>} />
+  <Route path="/mypage" element={<ProtectedRoute><Mypage /></ProtectedRoute>} />
+  <Route path="/edit" element={<ProtectedRoute><Edit /></ProtectedRoute>} />
+  <Route path="/alarm" element={<ProtectedRoute><Alarm /></ProtectedRoute>} />
+  <Route path="/createform" element={<ProtectedRoute><CreateForm /></ProtectedRoute>} />
+  <Route path="/addschedule" element={<ProtectedRoute><AddSchedule /></ProtectedRoute>} />
+  <Route path="/createpost" element={<ProtectedRoute><CreatePost /></ProtectedRoute>} />
+  <Route path="/oauth2/authorization/kakao" element={<ProtectedRoute><KakaoCallback /></ProtectedRoute>} />
+  <Route path="/oauth2/callback/naver" element={<ProtectedRoute><NaverCallback /></ProtectedRoute>} />
+  <Route path="/oauth2/authorization/kakao/link" element={<ProtectedRoute><KakaoLinkCallback /></ProtectedRoute>} />
+  <Route path="/oauth2/authorization/naver/link" element={<ProtectedRoute><NaverLinkCallback /></ProtectedRoute>} />
+  <Route path="/eventdetail/:eventCode" element={<ProtectedRoute><EventDetail /></ProtectedRoute>} />
+  <Route path="/formquest/:eventCode" element={<ProtectedRoute><Form /></ProtectedRoute>} />
+  <Route path="/excel/:eventCode" element={<ProtectedRoute><Excel /></ProtectedRoute>} />
+  <Route path="/answer/:applicationId" element={<ProtectedRoute><Answer /></ProtectedRoute>} />
+
+  <Route
+    path="/form/:eventCode"
+    element={<ProtectedRoute><RoleBasedRoute student={FormPage} council={Event} /></ProtectedRoute>}
+  />
+</Routes>
+
     </div>
   );
 }
