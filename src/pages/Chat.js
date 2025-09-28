@@ -12,13 +12,13 @@ function ChatRoomList() {
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const currentUser = { userId: localStorage.getItem("studentNum") }; // 임시 userId, 실제론 useSelector 사용
+  const role = localStorage.getItem("role");
 
 useEffect(() => {
   if (!currentUser || !currentUser.userId) return;
   const studentId = parseInt(currentUser.userId);
 
-  axios.get(`${API_BASE_URL}/chat/council/contacts/${studentId}`,
-    {studentNum : studentId}, {
+  axios.get(`${API_BASE_URL}/chat/${role}/contacts/${studentId}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     }
