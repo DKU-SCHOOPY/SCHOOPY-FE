@@ -35,8 +35,8 @@ export default function Navbar() {
         <MessageCircle size={24} />
       </NavItem>
       <NavItem
-        onClick={() => navigate("/mypage")}
-        active={currentPath.startsWith("/mypage")}
+        onClick={() => navigate("/councilfee")}
+        active={currentPath.startsWith("/councilfee")}
       >
         <User size={24} />
       </NavItem>

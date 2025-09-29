@@ -29,6 +29,7 @@ import FormPage from "./pages/Form"; //
 import Form from "./pages/Form";
 import Excel from "./pages/Exceldown";
 import Answer from "./pages/Answer";
+import CouncilFee from "./pages/CouncilFee";
 
 import RoleBasedRoute from "./routes/RoleBasedRoute";
 import RoleBasedNavbar from "./components/RoleBasedNavbar";
@@ -82,7 +83,7 @@ function Layout() {
   <Route path="/formquest/:eventCode" element={<ProtectedRoute><Form /></ProtectedRoute>} />
   <Route path="/excel/:eventCode" element={<ProtectedRoute><Excel /></ProtectedRoute>} />
   <Route path="/answer/:applicationId" element={<ProtectedRoute><Answer /></ProtectedRoute>} />
-
+  <Route path="/councilfee" element={<ProtectedRoute><CouncilFee /></ProtectedRoute>} />
   <Route
     path="/form/:eventCode"
     element={<ProtectedRoute><RoleBasedRoute student={FormPage} council={Event} /></ProtectedRoute>}
