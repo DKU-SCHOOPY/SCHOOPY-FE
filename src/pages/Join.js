@@ -3,6 +3,7 @@ import axios from "axios";
 import { API_BASE_URL } from '../config';
 import { useNavigate } from "react-router-dom";
 import "./Join.css";
+import { Check, X } from "lucide-react";
 
 function Join() {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ function Join() {
   const [studentNum, setStudentNum] = useState("");
   const [certificationNumber, setCertificationNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
   const [department, setDepartment] = useState("software");
   const [gender, setGender] = useState("");
@@ -56,6 +58,10 @@ function Join() {
   }
 };
 
+  const isMatch = confirmPassword.length > 0 && password === confirmPassword;
+  const isMismatch = confirmPassword.length > 0 && password !== confirmPassword;
+
+
   const handleJoin = async () => {
   try {
     const response = await axios.post(
@@ -99,7 +105,26 @@ function Join() {
       </div>
 
       <div className="input-row">
-        <input className="textarea" placeholder="비밀번호 12~18자리" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input className="textarea" placeholder="비밀번호 영문+숫자 12~18자리" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      </div>
+
+      <div className="input-row">
+        <input className="textarea" placeholder="비밀번호 재확인" type="password" value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)} />
+          {isMatch && (
+          <Check
+            size={18}
+            color="green"
+            style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)" }}
+          />
+        )}
+        {isMismatch && (
+          <X
+            size={18}
+            color="red"
+            style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)" }}
+          />
+        )}
       </div>
 
       <div className="input-row">

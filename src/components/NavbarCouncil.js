@@ -1,26 +1,43 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { Home, FileText, Plus, MessageCircle, User } from "lucide-react";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   return (
     <NavContainer>
-      <NavItem onClick={() => navigate("/home")}>
+      <NavItem
+        onClick={() => navigate("/home")}
+        active={currentPath.startsWith("/home") || currentPath === "/"}
+      >
         <Home size={24} />
       </NavItem>
-      <NavItem onClick={() => navigate("/formlist")}>
+      <NavItem
+        onClick={() => navigate("/formlist")}
+        active={currentPath.startsWith("/formlist")}
+      >
         <FileText size={24} />
       </NavItem>
-      <NavItem onClick={() => navigate("/createpost")}>
+      <NavItem
+        onClick={() => navigate("/createpost")}
+        active={currentPath.startsWith("/createpost")}
+      >
         <Plus size={24} />
       </NavItem>
-      <NavItem onClick={() => navigate("/chat")}>
+      <NavItem
+        onClick={() => navigate("/chat")}
+        active={currentPath.startsWith("/chat")}
+      >
         <MessageCircle size={24} />
       </NavItem>
-      <NavItem onClick={() => navigate("/mypage")}>
+      <NavItem
+        onClick={() => navigate("/mypage")}
+        active={currentPath.startsWith("/mypage")}
+      >
         <User size={24} />
       </NavItem>
     </NavContainer>
@@ -53,10 +70,14 @@ const NavItem = styled.button`
   border: none;
   cursor: pointer;
   padding: 10px;
-  color: black;
+  color: ${(props) => (props.active ? "#6a5af9" : "black")};
 
   @media (max-width: 600px) {
     padding: 6px;
+  }
+
+  svg {
+    stroke: ${(props) => (props.active ? "#6a5af9" : "black")};
   }
 `;
 

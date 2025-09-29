@@ -172,8 +172,12 @@ function Calendar() {
     });
 
     // 이번 주 전체 이벤트 중 상위 3개까지만 표시
-    // (긴 블록은 그대로 유지)
-    const eventsToShow = filteredEvents.filter((event, idx) => idx < 3);
+    // 월 걸쳐있는 이벤트도 고려
+    const eventsToShow = filteredEvents.filter((event) => {
+      const eventStart = parseISO(event.start);
+      const eventEnd = parseISO(event.end);
+      return eventEnd >= currentRowStart && eventStart <= addDays(currentRowStart, 6);
+    }).slice(0, 3); // 겹치는 것 중 상위 3개만 표시
 
     for (let i = 0; i < 7; i++) {
       const thisDay = day;
