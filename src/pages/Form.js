@@ -108,7 +108,7 @@ function FormPage() {
 
     const payload = {
       studentNum,
-      eventCode: Number(form.formId), // 숫자 타입으로 변환
+      eventCode: Number(eventCode), // 숫자 타입으로 변환
       isStudent,
       answer: answerArr
     };
