@@ -115,14 +115,14 @@ function Join() {
           <Check
             size={18}
             color="green"
-            style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)" }}
+            style={{ position: "absolute", right: "5px", top: "50%", transform: "translateY(-50%)" }}
           />
         )}
         {isMismatch && (
           <X
             size={18}
             color="red"
-            style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)" }}
+            style={{ position: "absolute", right: "5px", top: "50%", transform: "translateY(-50%)" }}
           />
         )}
       </div>
