@@ -94,6 +94,7 @@
 
 .logout-button {
   color: #6a5af9;
+  margin-top : 30px;
     text-decoration: none;
     border: none;
     cursor: pointer;
