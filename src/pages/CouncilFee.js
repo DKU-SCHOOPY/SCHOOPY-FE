@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import "./StudentList.css"; // 스타일 분리 권장
+import "./CouncilFee.css"; // 스타일 분리 권장
 
 export default function CouncilFee() {
   const navigate = useNavigate();

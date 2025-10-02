@@ -90,9 +90,19 @@ const Mypage = () => {
         </div>
       </div>
 
-      <button className="edit-button" onClick={() => navigate('/edit')}>
-        개인정보 수정 요청
+      <button
+        className="edit-button"
+        onClick={() =>
+          localStorage.getItem("role") === "COUNCIL"
+            ? navigate("/councilfee") // 👉 학생회비 관리 페이지 (예시 경로)
+            : navigate("/edit")        // 👉 개인정보 수정 요청
+        }
+      >
+        {localStorage.getItem("role") === "COUNCIL"
+          ? "학생회비 관리"
+          : "개인정보 수정 요청"}
       </button>
+
 
       <div className="login-divider">
         <span>SNS계정 연동하여 간편하게 로그인하기</span>
