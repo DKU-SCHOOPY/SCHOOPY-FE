@@ -91,3 +91,11 @@
   opacity: 0.5;           /* 회색처럼 보이게 */
   cursor: not-allowed;    /* 마우스 커서도 X */
 }
+
+.logout-button {
+  color: #6a5af9;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    background: white;
+}

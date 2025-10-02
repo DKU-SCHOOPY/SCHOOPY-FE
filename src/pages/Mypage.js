@@ -19,17 +19,17 @@ const Mypage = () => {
 
   useEffect(() => {
     const fetchUserInfo = async () => {
-
       try {
         const studentNum = localStorage.getItem('studentNum');
-        const res = await axios.post(`${API_BASE_URL}/mypage/check`, {
-          studentNum: studentNum,
-        },
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-  });
+        const res = await axios.post(
+          `${API_BASE_URL}/mypage/check`,
+          { studentNum: studentNum },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          }
+        );
         const data = res.data;
         console.log(data);
         if (data.code === 'SU') {
@@ -40,8 +40,8 @@ const Mypage = () => {
             birthDay: data.birthDay,
             phoneNum: data.phoneNum,
           });
-        setIsKakaoLinked(res.data.kakaoLogin === true);
-        setIsNaverLinked(res.data.naverLogin === true)
+          setIsKakaoLinked(res.data.kakaoLogin === true);
+          setIsNaverLinked(res.data.naverLogin === true);
         }
       } catch (err) {
         console.error('개인정보 불러오기 실패', err);
@@ -50,6 +50,16 @@ const Mypage = () => {
 
     fetchUserInfo();
   }, []);
+
+  // ✅ 로그아웃 함수
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("studentNum");
+    localStorage.removeItem("role");
+    localStorage.removeItem("noticeCount");
+
+    navigate("/login"); // 로그인 페이지로 이동
+  };
 
   return (
     <div className="container">
@@ -112,6 +122,10 @@ const Mypage = () => {
         </a>
       </div>
 
+      {/* ✅ 로그아웃 버튼 */}
+      <button className="logout-button" onClick={handleLogout}>
+        로그아웃
+      </button>
     </div>
   );
 };

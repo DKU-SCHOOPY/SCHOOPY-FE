@@ -35,12 +35,14 @@ const KakaoCallback = () => {
         } else {
           // 실패 처리
           console.error("❌ 소셜 로그인 실패", response.data);
+          alert("카카오 계정이 학번 계정과 연동되지 않았습니다.\n회원가입 후 소셜로그인 연동을 해주세요.");
           navigate("/login");
         }
         
       } catch (error) {
         console.log("KAKAO CLIENT_ID:", process.env.REACT_APP_REST_API_KEY_KAKAO);
         console.log("KAKAO REDIRECT:", process.env.REACT_APP_REDIRECT_URL_KAKAO);
+        alert("카카오 계정이 학번 계정과 연동되지 않았습니다.\n회원가입 후 소셜로그인 연동을 해주세요.");
         console.error("❌ 소셜 로그인 실패", error);
         navigate("/login");
       }
