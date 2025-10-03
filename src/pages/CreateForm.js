@@ -170,15 +170,25 @@ const AddSchedule = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    // 필수 필드 검증
+    // ===== 날짜 유효성 검증 =====
     if (!formData.surveyStartDate || !formData.surveyEndDate) {
       alert("수요 조사 시작일과 종료일을 모두 선택해주세요.");
       return;
     }
+    if (formData.surveyEndDate < formData.surveyStartDate) {
+      alert("수요 조사 종료일은 시작일 이후여야 합니다.");
+      return;
+    }
+
     if (!formData.eventStartDate || !formData.eventEndDate) {
       alert("행사 시작일과 종료일을 모두 선택해주세요.");
       return;
     }
+    if (formData.eventEndDate < formData.eventStartDate) {
+      alert("행사 종료일은 시작일 이후여야 합니다.");
+      return;
+    }
+
     if (!formData.maxParticipants || parseInt(formData.maxParticipants) <= 0) {
       alert("최대 수용 인원을 입력해주세요.");
       return;
@@ -339,7 +349,7 @@ const AddSchedule = () => {
               required
             />
           </div>
-          
+
           <div className="form-item">
             <label className="label">수요 조사 종료일</label>
             <DatePicker
@@ -357,41 +367,41 @@ const AddSchedule = () => {
         <div className="form-row">
           <div className="form-item">
             <label className="label">행사 시작일</label>
-              <DatePicker
-                className="textarea"
-                selected={formData.eventStartDate}
-                onChange={(date) => handleDateChange(date, "eventStartDate")}
-                dateFormat="yyyy-MM-dd"
-                placeholderText="시작일 선택"
-                required
-              />
+            <DatePicker
+              className="textarea"
+              selected={formData.eventStartDate}
+              onChange={(date) => handleDateChange(date, "eventStartDate")}
+              dateFormat="yyyy-MM-dd"
+              placeholderText="시작일 선택"
+              required
+            />
           </div>
           <div className="form-item">
             <label className="label">행사 종료일</label>
-              <DatePicker
-                className="textarea"
-                selected={formData.eventEndDate}
-                onChange={(date) => handleDateChange(date, "eventEndDate")}
-                dateFormat="yyyy-MM-dd"
-                placeholderText="종료일 선택"
-                required
-              />
+            <DatePicker
+              className="textarea"
+              selected={formData.eventEndDate}
+              onChange={(date) => handleDateChange(date, "eventEndDate")}
+              dateFormat="yyyy-MM-dd"
+              placeholderText="종료일 선택"
+              required
+            />
           </div>
         </div>
 
         {/* ====== 최대 수용 인원 ====== */}
-          <label className="label">최대 수용 인원</label>
-          <div>
-            <input
-              className="textarea"
-              type="number"
-              name="maxParticipants"
-              placeholder="최대 수용 인원"
-              value={formData.maxParticipants}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
+        <label className="label">최대 수용 인원</label>
+        <div>
+          <input
+            className="textarea"
+            type="number"
+            name="maxParticipants"
+            placeholder="최대 수용 인원"
+            value={formData.maxParticipants}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
 
         {/* ====== QR 추가 버튼 ====== */}
         <div style={{ margin: '10px 0 24px 0', textAlign: 'center' }}>
