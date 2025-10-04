@@ -10,6 +10,30 @@ function EventDetail() {
   const { eventCode } = useParams();
   const [eventData, setEventData] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [applicationStatus, setApplicationStatus] = useState(null); // 신청 상태
+
+  // 학생의 신청 상태 확인 함수
+  const checkApplicationStatus = async () => {
+    try {
+      const res = await axios.get(
+        `${API_BASE_URL}/event/student/application-status/${eventCode}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        }
+      );
+
+      if (res.data && res.data.status) {
+        setApplicationStatus(res.data.status);
+      } else {
+        setApplicationStatus('none');
+      }
+    } catch (error) {
+      console.error('신청 상태 확인 오류:', error);
+      setApplicationStatus('none');
+    }
+  };
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -32,6 +56,7 @@ function EventDetail() {
     };
 
     fetchEvent();
+    checkApplicationStatus();
   }, [eventCode]);
 
   const prevImage = () => {
@@ -117,12 +142,45 @@ function EventDetail() {
 
       {/* 신청하기 버튼: 최대 신청 인원이 1 이상일 때만 노출 */}
       {eventData.maxParticipant > 0 && (
-        <button
-          className="big-button"
-          onClick={() => navigate(`/formquest/${eventData.eventCode}`)}
-        >
-          신청하기
-        </button>
+        <>
+          {/* 신청 상태 메시지 */}
+          {applicationStatus === 'pending' && (
+            <div className="status-message info">
+              이미 신청하셨습니다. 관리자 승인을 기다리고 있습니다.
+            </div>
+          )}
+          {applicationStatus === 'approved' && (
+            <div className="status-message success">
+              신청이 승인되었습니다. 행사에 참여하실 수 있습니다.
+            </div>
+          )}
+          {applicationStatus === 'rejected' && (
+            <div className="status-message warning">
+              이전 신청이 반려되었습니다. 다시 신청할 수 있습니다.
+            </div>
+          )}
+
+          {/* 신청 가능한 상태일 때만 신청하기 버튼 표시 */}
+          {(applicationStatus === 'none' || applicationStatus === 'rejected') ? (
+            <button
+              className="big-button"
+              onClick={() => navigate(`/formquest/${eventData.eventCode}`)}
+            >
+              신청하기
+            </button>
+          ) : (
+            <div className="application-status-container">
+              <div className="status-icon">
+                {applicationStatus === 'pending' && '⏳'}
+                {applicationStatus === 'approved' && '✅'}
+              </div>
+              <div className="status-text">
+                {applicationStatus === 'pending' && '신청이 완료되었습니다. 관리자의 승인을 기다리고 있습니다.'}
+                {applicationStatus === 'approved' && '신청이 승인되었습니다. 행사에 참여하실 수 있습니다.'}
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
