@@ -4,7 +4,7 @@
 }
 
 .form>* {
-  margin-bottom: 6px;
+  margin-bottom: 0;
 }
 
 .form>*:last-child {
@@ -314,7 +314,7 @@
 }
 
 .qr-section-header {
-  margin: 6px 0 10px 0;
+  margin: 0;
   /* 간격 줄이기 */
   text-align: center;
 }
