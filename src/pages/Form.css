@@ -43,7 +43,7 @@
 
 .input,
 select.input {
-  width: 100%;
+  width: 50%;
   padding: 8px 12px;
   border: 1.5px solid #6a5af9;
   border-radius: 12px;
@@ -51,7 +51,7 @@ select.input {
   margin-bottom: 6px;
   background: #fafaff;
   transition: border 0.2s;
-  height: 36px;
+  height: 40px;
   resize: none;
   box-sizing: border-box;
 }
@@ -119,17 +119,12 @@ select.input:focus {
   transition: background 0.2s, color 0.2s, border 0.2s;
 }
 
-.payment-button.toss {
+.payment-button:hover {
+  background-color: #6a5af9; 
+  color: white;         
   border-color: #6a5af9;
 }
 
-.payment-button.kakao {
-  border-color: #ffe600;
-  background: #ffe600;
-  color: #222;
-}
-
-.payment-button.disabled,
 .payment-button:disabled {
   background: #e0e0e0;
   color: #aaa;

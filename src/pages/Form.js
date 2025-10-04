@@ -270,7 +270,7 @@ function FormPage() {
                 <div className="button-group">
                   <button
                     type="button"
-                    className={`payment-button toss ${councilFeePaid ? "disabled" : ""}`}
+                    className={`payment-button ${councilFeePaid ? "disabled" : ""}`}
                     onClick={() => handlePayment("토스")}
                     disabled={councilFeePaid}
                   >
@@ -278,7 +278,7 @@ function FormPage() {
                   </button>
                   <button
                     type="button"
-                    className={`payment-button kakao ${councilFeePaid ? "disabled" : ""}`}
+                    className={`payment-button ${councilFeePaid ? "disabled" : ""}`}
                     onClick={() => handlePayment("카카오페이")}
                     disabled={councilFeePaid}
                     style={{ background: '#ffe600', color: '#222' }}
