@@ -13,7 +13,7 @@ function FormPage() {
   const [answers, setAnswers] = useState({});
   const [loading, setLoading] = useState(true);
   const [studentNum, setStudentNum] = useState("");
-  const [isStudent, setIsStudent] = useState(false);
+  //const [isStudent, setIsStudent] = useState(false);
   const [councilFeePaid, setCouncilFeePaid] = useState(false);
 
   useEffect(() => {
@@ -109,7 +109,7 @@ function FormPage() {
     const payload = {
       studentNum,
       eventCode: Number(eventCode), // 숫자 타입으로 변환
-      isStudent,
+      //isStudent,
       answer: answerArr
     };
 
@@ -193,8 +193,7 @@ function FormPage() {
             </div>
           </div>
         ))}
-
-        {/* 재학생 여부 */}
+{/* 재학생 여부
         <div className="form-group">
           <label className="checkbox-label">
             <input
@@ -205,7 +204,7 @@ function FormPage() {
             재학생입니다
           </label>
         </div>
-
+*/}
         {/* 송금 버튼/신청 버튼 조건부 렌더링 */}
         {hasRemitQR ? (
           <>
