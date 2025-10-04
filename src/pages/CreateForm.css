@@ -1,7 +1,6 @@
 .form {
   display: block;
   padding: 0 16px;
-  /* 좌우 패딩 추가 */
 }
 
 .form>* {
@@ -25,7 +24,7 @@
 }
 
 .form-item label {
-  margin-bottom: 4px;
+  margin-bottom: 0;
   font-weight: 500;
   color: #333;
 }
@@ -42,7 +41,7 @@
 } */
 
 .qr-section {
-  margin: 6px 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 6px;
