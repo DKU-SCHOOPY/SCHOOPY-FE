@@ -269,3 +269,77 @@
     transform: translateY(0);
   }
 }
+
+/* 인라인 스타일 대체용 클래스들 */
+.question-select-narrow {
+  max-width: 120px;
+}
+
+.question-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.question-number {
+  font-weight: 600;
+}
+
+.question-delete-btn {
+  color: #e74c3c;
+}
+
+.question-options-container {
+  margin-top: 8px;
+  margin-left: 24px;
+}
+
+.option-delete-btn {
+  color: #e74c3c;
+}
+
+.add-option-btn {
+  margin-top: 4px;
+}
+
+.form-divider {
+  margin: 12px 0 8px 0;
+  border: none;
+  border-top: 1.5px solid #e0e0e0;
+}
+
+.qr-section-header {
+  margin: 8px 0 16px 0;
+  text-align: center;
+}
+
+.qr-upload-btn {
+  font-size: 15px;
+  padding: 10px 32px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 20px;
+  color: #6a5af9;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #6a5af9;
+}
+
+/* 숨김 클래스 */
+.hidden {
+  display: none;
+}

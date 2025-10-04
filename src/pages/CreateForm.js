@@ -276,7 +276,7 @@ const AddSchedule = () => {
         <div className="question-section">
           <h3 className="question-section-title">질문</h3>
           <div className="question-add-row">
-            <select value={newQuestionType} onChange={e => setNewQuestionType(e.target.value)} className="question-input" style={{ maxWidth: 120 }}>
+            <select value={newQuestionType} onChange={e => setNewQuestionType(e.target.value)} className="question-input question-select-narrow">
               <option value={QUESTION_TYPES.SUBJECTIVE}>주관식</option>
               <option value={QUESTION_TYPES.OBJECTIVE}>객관식</option>
             </select>
@@ -285,8 +285,8 @@ const AddSchedule = () => {
           <div>
             {questions.map((q, idx) => (
               <div key={q.id} className="question-card">
-                <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
-                  <span style={{ fontWeight: 600 }}>{idx + 1}.</span>
+                <div className="question-card-header">
+                  <span className="question-number">{idx + 1}.</span>
                   <input
                     type="text"
                     placeholder="질문을 입력하세요"
@@ -301,10 +301,10 @@ const AddSchedule = () => {
                       onChange={e => handleQuestionChange(q.id, "required", e.target.checked)}
                     /> 필수
                   </label>
-                  <button type="button" className="question-action-btn" onClick={() => handleDeleteQuestion(q.id)} style={{ color: "#e74c3c" }}>삭제</button>
+                  <button type="button" className="question-action-btn question-delete-btn" onClick={() => handleDeleteQuestion(q.id)}>삭제</button>
                 </div>
                 {q.type === QUESTION_TYPES.OBJECTIVE && (
-                  <div style={{ marginTop: 8, marginLeft: 24 }}>
+                  <div className="question-options-container">
                     <label className="question-label">
                       <input
                         type="checkbox"
@@ -322,10 +322,10 @@ const AddSchedule = () => {
                             onChange={e => handleOptionChange(q.id, optIdx, e.target.value)}
                             className="question-option-input"
                           />
-                          <button type="button" className="question-action-btn" onClick={() => handleDeleteOption(q.id, optIdx)} disabled={q.options.length <= 2} style={{ color: "#e74c3c" }}>삭제</button>
+                          <button type="button" className="question-action-btn option-delete-btn" onClick={() => handleDeleteOption(q.id, optIdx)} disabled={q.options.length <= 2}>삭제</button>
                         </div>
                       ))}
-                      <button type="button" className="question-action-btn" onClick={() => handleAddOption(q.id)} style={{ marginTop: 4 }}>선택지 추가</button>
+                      <button type="button" className="question-action-btn add-option-btn" onClick={() => handleAddOption(q.id)}>선택지 추가</button>
                     </div>
                   </div>
                 )}
@@ -334,7 +334,7 @@ const AddSchedule = () => {
           </div>
         </div>
 
-        <hr style={{ margin: '20px 0 10px 0', border: 'none', borderTop: '1.5px solid #e0e0e0' }} />
+        <hr className="form-divider" />
 
         {/* ====== 수요조사 시작/종료일 ====== */}
         <div className="form-row">
@@ -393,22 +393,22 @@ const AddSchedule = () => {
 
         {/* ====== 최대 수용 인원 ====== */}
         <label className="label">최대 수용 인원</label>
-        <div>
-          <input
-            className="textarea"
-            type="number"
-            name="maxParticipants"
-            placeholder="최대 수용 인원"
-            value={formData.maxParticipants}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
+        <input
+          className="textarea"
+          type="number"
+          name="maxParticipants"
+          placeholder="최대 수용 인원"
+          value={formData.maxParticipants}
+          onChange={handleInputChange}
+          required
+        />
 
         {/* ====== QR 추가 버튼 ====== */}
-        <div style={{ margin: '10px 0 24px 0', textAlign: 'center' }}>
-          <button type="button" className="question-action-btn" style={{ fontSize: 15, padding: '10px 32px' }} onClick={() => setQrModalOpen(true)}>
-            QR 추가
+        <div className="qr-section-header">
+          <button
+            type="button"
+            className="question-action-btn qr-upload-btn"
+            onClick={() => setQrModalOpen(true)}>
           </button>
         </div>
 
@@ -419,9 +419,9 @@ const AddSchedule = () => {
       {qrModalOpen && (
         <div className="qr-modal-backdrop" onClick={() => setQrModalOpen(false)}>
           <div className="qr-modal" onClick={e => e.stopPropagation()}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-              <h3 style={{ margin: 0, fontSize: 20, color: '#6a5af9' }}>QR 업로드</h3>
-              <button onClick={() => setQrModalOpen(false)} style={{ background: 'none', border: 'none', fontSize: 22, cursor: 'pointer', color: '#6a5af9' }}>×</button>
+            <div className="modal-header">
+              <h3 className="modal-title">QR 업로드</h3>
+              <button onClick={() => setQrModalOpen(false)} className="modal-close-btn">×</button>
             </div>
             <div className="qr-section">
               <div className="qr-upload-row">
@@ -435,7 +435,7 @@ const AddSchedule = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    style={{ display: "none" }}
+                    className="hidden"
                     ref={fileInputRefs.tossUnpaid}
                     onChange={e => handleQrImageUpload("qr_toss_x", e)}
                   />
@@ -453,7 +453,7 @@ const AddSchedule = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    style={{ display: "none" }}
+                    className="hidden"
                     ref={fileInputRefs.tossPaid}
                     onChange={e => handleQrImageUpload("qr_toss_o", e)}
                   />
@@ -473,7 +473,7 @@ const AddSchedule = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    style={{ display: "none" }}
+                    className="hidden"
                     ref={fileInputRefs.kakaoUnpaid}
                     onChange={e => handleQrImageUpload("qr_kakaopay_x", e)}
                   />
@@ -491,7 +491,7 @@ const AddSchedule = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    style={{ display: "none" }}
+                    className="hidden"
                     ref={fileInputRefs.kakaoPaid}
                     onChange={e => handleQrImageUpload("qr_kakaopay_o", e)}
                   />
