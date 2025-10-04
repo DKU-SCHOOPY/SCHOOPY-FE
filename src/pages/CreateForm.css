@@ -21,6 +21,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .form-item label {
@@ -44,7 +46,7 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 /* 한 줄에 두 개씩 배치 */
@@ -307,7 +309,7 @@
 }
 
 .form-divider {
-  margin: 8px 0 6px 0;
+  margin: 4px 0;
   /* 간격 줄이기 */
   border: none;
   border-top: 1.5px solid #e0e0e0;
