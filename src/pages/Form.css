@@ -44,17 +44,16 @@
 .input,
 select.input {
   width: 100%;
-  padding: 10px 12px;
+  padding: 8px 12px;
   border: 1.5px solid #6a5af9;
   border-radius: 12px;
   font-size: 1rem;
   margin-bottom: 6px;
   background: #fafaff;
   transition: border 0.2s;
-  height: 44px;
-  /* 주관식 답변 칸 높이 고정으로 더 짧게 */
+  height: 36px;
   resize: none;
-  /* 크기 조절 비활성화 */
+  box-sizing: border-box;
 }
 
 .input:focus,
@@ -209,8 +208,9 @@ select.input:focus {
 
 .back-button {
   padding: 12px 24px;
-  background-color: #6a5af9;
-  color: white;
+  background-color: white;
+  color: inherit;
+  /* 글자색 헤더 색상과 동일하게 */
   border: none;
   border-radius: 8px;
   font-size: 1rem;
@@ -220,5 +220,5 @@ select.input:focus {
 }
 
 .back-button:hover {
-  background-color: #5a4ae9;
+  background-color: white;
 }
