@@ -4,37 +4,28 @@
   /* 좌우 패딩 추가 */
 }
 
-/* 전체적인 간격 통일 */
 .form>* {
-  margin-bottom: 12px;
-  /* 기본 간격 줄이기 */
+  margin-bottom: 6px;
 }
 
 .form>*:last-child {
   margin-bottom: 0;
-  /* 마지막 요소는 하단 마진 제거 */
 }
 
 .form-row {
   display: flex;
   gap: 8px;
-  /* 더 촘촘하게 */
   margin-bottom: 8px;
-  /* 행 사이 간격 줄이기 */
 }
 
 .form-item {
   flex: 1;
-  /* 두 항목이 균등 너비 */
   display: flex;
   flex-direction: column;
-  /* label 위, input 아래 */
-
 }
 
 .form-item label {
   margin-bottom: 4px;
-  /* 라벨과 입력 필드 간격 줄이기 */
   font-weight: 500;
   color: #333;
 }
@@ -52,20 +43,16 @@
 
 .qr-section {
   margin: 6px 0;
-  /* 상하 간격 줄이기 */
   display: flex;
   flex-direction: column;
   gap: 6px;
-  /* 더 촘촘하게 */
 }
 
 /* 한 줄에 두 개씩 배치 */
 .qr-upload-row {
   display: flex;
   gap: 8px;
-  /* 더 촘촘하게 */
   margin-bottom: 6px;
-  /* 하단 간격 줄이기 */
 }
 
 .qr-upload-container {
