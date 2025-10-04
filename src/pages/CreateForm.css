@@ -1,20 +1,26 @@
 .form {
   display: block;
   padding: 0 16px;
+  /* 좌우 패딩 추가 */
 }
 
+/* 전체적인 간격 통일 */
 .form>* {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
+  /* 기본 간격 줄이기 */
 }
 
 .form>*:last-child {
   margin-bottom: 0;
+  /* 마지막 요소는 하단 마진 제거 */
 }
 
 .form-row {
   display: flex;
   gap: 8px;
-  margin-bottom: 12px;
+  /* 더 촘촘하게 */
+  margin-bottom: 8px;
+  /* 행 사이 간격 줄이기 */
 }
 
 .form-item {
@@ -27,7 +33,8 @@
 }
 
 .form-item label {
-  margin-bottom: 6px;
+  margin-bottom: 4px;
+  /* 라벨과 입력 필드 간격 줄이기 */
   font-weight: 500;
   color: #333;
 }
@@ -44,24 +51,28 @@
 } */
 
 .qr-section {
-  margin: 8px 0;
+  margin: 6px 0;
+  /* 상하 간격 줄이기 */
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
+  /* 더 촘촘하게 */
 }
 
 /* 한 줄에 두 개씩 배치 */
 .qr-upload-row {
   display: flex;
   gap: 8px;
-  margin-bottom: 8px;
+  /* 더 촘촘하게 */
+  margin-bottom: 6px;
+  /* 하단 간격 줄이기 */
 }
 
 .qr-upload-container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
+  gap: 0;
   flex: 1;
   min-width: 0;
 }
@@ -105,10 +116,10 @@
   color: white;
   border: none;
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  margin-top: 8px;
+  margin-top: 5px;
 }
 
 .submit-button:hover {
@@ -118,26 +129,31 @@
 /* ===== 질문 추가 UI 스타일 ===== */
 
 .question-section {
-  margin-top: 8px;
-  margin-bottom: 12px;
+  margin-top: 6px;
+  margin-bottom: 8px;
+  /* 간격 줄이기 */
   background: #f5f5ff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(106, 90, 249, 0.07);
-  padding: 8px 12px;
+  padding: 6px 10px;
+  /* 패딩 줄이기 */
 }
 
 .question-section-title {
   font-size: 18px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
+  /* 간격 줄이기 */
   color: #6a5af9;
 }
 
 .question-add-row {
   display: flex;
   gap: 6px;
+  /* 더 촘촘하게 */
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
+  /* 간격 줄이기 */
 }
 
 .question-card {
@@ -145,8 +161,10 @@
   border-radius: 10px;
   box-shadow: 0 1px 4px rgba(106, 90, 249, 0.08);
   border: 1px solid #e0e0e0;
-  padding: 10px 12px;
-  margin-bottom: 8px;
+  padding: 8px 10px;
+  /* 패딩 줄이기 */
+  margin-bottom: 6px;
+  /* 간격 줄이기 */
   transition: box-shadow 0.2s;
 }
 
@@ -214,7 +232,7 @@
 .question-option-row {
   display: flex;
   align-items: center;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .question-option-input {
@@ -303,13 +321,15 @@
 }
 
 .form-divider {
-  margin: 12px 0 8px 0;
+  margin: 8px 0 6px 0;
+  /* 간격 줄이기 */
   border: none;
   border-top: 1.5px solid #e0e0e0;
 }
 
 .qr-section-header {
-  margin: 8px 0 16px 0;
+  margin: 6px 0 10px 0;
+  /* 간격 줄이기 */
   text-align: center;
 }
 

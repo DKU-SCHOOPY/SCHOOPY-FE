@@ -392,16 +392,18 @@ const AddSchedule = () => {
         </div>
 
         {/* ====== 최대 수용 인원 ====== */}
-        <label className="label">최대 수용 인원</label>
-        <input
-          className="textarea"
-          type="number"
-          name="maxParticipants"
-          placeholder="최대 수용 인원"
-          value={formData.maxParticipants}
-          onChange={handleInputChange}
-          required
-        />
+        <div className="form-item">
+          <label className="label">최대 수용 인원</label>
+          <input
+            className="textarea"
+            type="number"
+            name="maxParticipants"
+            placeholder="최대 수용 인원"
+            value={formData.maxParticipants}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
 
         {/* ====== QR 추가 버튼 ====== */}
         <div className="qr-section-header">
@@ -409,6 +411,7 @@ const AddSchedule = () => {
             type="button"
             className="question-action-btn qr-upload-btn"
             onClick={() => setQrModalOpen(true)}>
+            QR 추가
           </button>
         </div>
 
