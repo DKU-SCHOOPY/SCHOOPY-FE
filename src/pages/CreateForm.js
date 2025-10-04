@@ -358,6 +358,7 @@ const AddSchedule = () => {
               onChange={(date) => handleDateChange(date, "surveyEndDate")}
               dateFormat="yyyy-MM-dd"
               placeholderText="종료일 선택"
+              minDate={formData.surveyStartDate} // 시작일 이후로 설정
               required
             />
           </div>
@@ -384,6 +385,7 @@ const AddSchedule = () => {
               onChange={(date) => handleDateChange(date, "eventEndDate")}
               dateFormat="yyyy-MM-dd"
               placeholderText="종료일 선택"
+              minDate={formData.eventStartDate}   // 행사 시작일 이후만 선택 가능
               required
             />
           </div>
