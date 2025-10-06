@@ -45,20 +45,23 @@ export default function Navbar() {
 }
 
 const NavContainer = styled.div`
-  width: 700px;
+  width: 700px;         /* 항상 700px */
   height: 56px;
   position: fixed;
   bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0 auto;    /* 중앙 정렬 */
+  left: 50%;
+  transform: translateX(-50%);
   background: white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   border-top: 1px solid #ddd;
   z-index: 1000;
-  box-sizing: content-box;
+  box-sizing: border-box;
+  padding: 0;           /* NavContainer 자체는 padding 없음 */
+
+  /* 내부 아이템 flex 처리 */
+  display: flex;
+  justify-content: flex-start; /* space-around 제거 */
+  gap: 40px;                  /* 아이템 간격은 gap으로 처리 */
+
 
   @media (max-width: 700px) {
     max-width: 100%;
