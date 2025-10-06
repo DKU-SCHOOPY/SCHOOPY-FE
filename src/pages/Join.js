@@ -17,6 +17,8 @@ function Join() {
   const [gender, setGender] = useState("");
   const [birthDay, setBirthDay] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
+  const [open, setOpen] = useState(false);
+
 
   const handleEmailCheck = async () => {
   try {
@@ -138,13 +140,31 @@ function Join() {
       </div>
 
       <div className="input-row">
-        <select className="textarea" value={department} onChange={(e) => setDepartment(e.target.value)}>
-          <option value="소프트웨어학과">소프트웨어학과</option>
-          <option value="컴퓨터공학과">컴퓨터공학과</option>
-          <option value="사이버보안학과">사이버보안학과</option>
-          <option value="통계데이터사이언스학과">통계데이터사이언스학과</option>
-        </select>
+        <div className="dropdown">
+          <div className="dropdown-selected" onClick={() => setOpen(!open)}>
+            {department || "학과 선택"}
+            <span className="arrow">{open ? "▲" : "▼"}</span>
+          </div>
+
+          {open && (
+            <div className="dropdown-menu">
+              {["소프트웨어학과", "컴퓨터공학과", "사이버보안학과", "통계데이터사이언스학과"].map((dept) => (
+                <div
+                  key={dept}
+                  className={`dropdown-item ${department === dept ? "selected" : ""}`}
+                  onClick={() => {
+                    setDepartment(dept);
+                    setOpen(false);
+                  }}
+                >
+                  {dept}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
+
 
       <div className="input-row">
         <input className="textarea" placeholder="생년월일 (YYYYMMDD)" value={birthDay} 

@@ -11,6 +11,8 @@ function Edit() {
   // 🔹 드롭다운 상태 추가
   const [open, setOpen] = useState(false);
   const [selectedDept, setSelectedDept] = useState('');
+  const [fieldOpen, setFieldOpen] = useState(false);
+
 
   const studentNum = localStorage.getItem('studentNum');
 
@@ -171,22 +173,34 @@ function Edit() {
 
       <form className="edit-form" onSubmit={handleSubmit}>
         <label className="label">수정 항목</label>
-        <select
-          className="textarea"
-          value={field}
-          onChange={(e) => {
-            setField(e.target.value);
-            setNewValue("");
-            setSelectedDept("");
-          }}
-          required
-        >
-          <option value="">선택하세요</option>
-          <option value="학과">학과</option>
-          <option value="전화번호">전화번호</option>
-          <option value="재학여부">재학 여부</option>
-          <option value="학생회비납부여부">학생회비 납부 여부</option>
-        </select>
+        <div className="dropdown">
+          <div
+            className="dropdown-selected"
+            onClick={() => setFieldOpen(!fieldOpen)}
+          >
+            {field || "선택하세요"}
+            <span className="arrow">{fieldOpen ? "▲" : "▼"}</span>
+          </div>
+
+          {fieldOpen && (
+            <div className="dropdown-menu">
+              {["학과", "전화번호", "재학여부", "학생회비납부여부"].map((option) => (
+                <div
+                  key={option}
+                  className={`dropdown-item ${field === option ? "selected" : ""}`}
+                  onClick={() => {
+                    setField(option);
+                    setNewValue("");
+                    setSelectedDept("");
+                    setFieldOpen(false);
+                  }}
+                >
+                  {option}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         <label className="label">변경 내용</label>
         {renderInputField()}

@@ -10,12 +10,7 @@ const KakaoCallback = () => {
   useEffect(() => {
     const params = new URL(window.location.href).searchParams;
     const code = params.get("code");
-
-    // 기존 토큰/정보 초기화
-    localStorage.removeItem("token");
-    localStorage.removeItem("studentNum");
-    localStorage.removeItem("role");
-
+    
     if (!code) {
       // code 없으면 카카오 로그아웃 후 재시도
       const logoutRedirect = encodeURIComponent(

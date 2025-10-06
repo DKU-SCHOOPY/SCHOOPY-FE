@@ -20,6 +20,7 @@ export default function FormPage() {
   const [department, setDepartment] = useState("");
   const [imageFileList, setImageFileList] = useState([]);
   const [imagePreview, setImagePreview] = useState([]);
+  const [deptOpen, setDeptOpen] = useState(false);
 
   const handleImageUpload = (e) => {
     const newFiles = Array.from(e.target.files);
@@ -118,18 +119,32 @@ export default function FormPage() {
       />
 
       <label className="label">학과 선택</label>
-      <select
-        className="textarea"
-        value={department}
-        onChange={(e) => setDepartment(e.target.value)}
-      >
-        <option value="">학과 선택</option>
-        <option value="SW융합대학학생회">SW융합대학</option>
-        <option value="소프트웨어학과">소프트웨어학과</option>
-        <option value="컴퓨터공학과">컴퓨터공학과</option>
-        <option value="통계데이터사이언스학과">통계데이터사이언스학과</option>
-        <option value="사이버보안학과">사이버보안학과</option>
-      </select>
+      <div className="dropdown">
+        <div
+          className="dropdown-selected"
+          onClick={() => setDeptOpen(!deptOpen)}
+        >
+          {department || "학과 선택"}
+          <span className="arrow">{deptOpen ? "▲" : "▼"}</span>
+        </div>
+
+        {deptOpen && (
+          <div className="dropdown-menu">
+            {["SW융합대학학생회","소프트웨어학과","컴퓨터공학과","통계데이터사이언스학과","사이버보안학과"].map((dept) => (
+              <div
+                key={dept}
+                className={`dropdown-item ${department === dept ? "selected" : ""}`}
+                onClick={() => {
+                  setDepartment(dept);
+                  setDeptOpen(false);
+                }}
+              >
+                {dept}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       <label className="label">사진 첨부</label>
       <label htmlFor="imageUpload" className="form-upload-button">

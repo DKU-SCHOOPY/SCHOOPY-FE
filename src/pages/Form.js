@@ -16,6 +16,7 @@ function FormPage() {
   //const [isStudent, setIsStudent] = useState(false);
   const [councilFeePaid, setCouncilFeePaid] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(null); // 신청 상태: null(확인중), 'none'(신청안함), 'pending'(대기중), 'approved'(승인됨), 'rejected'(반려됨)
+  const [answerOpenId, setAnswerOpenId] = useState(null);
 
   // 학생의 신청 상태 확인 함수
   const checkApplicationStatus = async () => {
@@ -228,16 +229,32 @@ function FormPage() {
                       </div>
                     ) : (
                       // 단일 선택 select
-                      <select
-                        className="input"
-                        value={answers[q.questionId] || ""}
-                        onChange={e => handleAnswerChange(q.questionId, e.target.value)}
-                      >
-                        <option value="">선택하세요</option>
-                        {q.choices.map(opt => (
-                          <option key={opt} value={opt}>{opt}</option>
-                        ))}
-                      </select>
+                      <div className="dropdown">
+                        <div
+                          className="dropdown-selected"
+                          onClick={() => setAnswerOpenId(answerOpenId === q.questionId ? null : q.questionId)}
+                        >
+                          {answers[q.questionId] || "선택하세요"}
+                          <span className="arrow">{answerOpenId === q.questionId ? "▲" : "▼"}</span>
+                        </div>
+
+                        {answerOpenId === q.questionId && (
+                          <div className="dropdown-menu">
+                            {q.choices.map(opt => (
+                              <div
+                                key={opt}
+                                className={`dropdown-item ${answers[q.questionId] === opt ? "selected" : ""}`}
+                                onClick={() => {
+                                  handleAnswerChange(q.questionId, opt);
+                                  setAnswerOpenId(null);
+                                }}
+                              >
+                                {opt}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     )
                   ) : (
                     <input
