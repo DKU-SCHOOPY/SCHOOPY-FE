@@ -4,6 +4,7 @@ import axios from "axios";
 import FilterBar from "../components/FilterBar";
 import './FormList.css';
 import { API_BASE_URL } from "../config";
+import Header from "../components/Header";
 
 const FILTERS = [
   "전체", "SW융합대학", "소프트웨어학과", "컴퓨터공학과", "통계데이터사이언스학과", "사이버보안학과"
@@ -81,7 +82,8 @@ const FormList = () => {
 
   return (
     <div className="container">
-      <h2 className="page-title">신청 폼 목록</h2>
+      <Header title="신청 폼 목록" />
+      {/* <h2 className="page-title">신청 폼 목록</h2> */}
 
       <div className="searchbox">
         <input
