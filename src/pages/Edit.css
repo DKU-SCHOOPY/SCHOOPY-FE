@@ -7,7 +7,7 @@
 .toggle-group {
   display: flex;
   gap: 10px;
-  margin-top: 8px;
+  margin-bottom: 16px;
 }
 
 .toggle-btn {
