@@ -8,6 +8,11 @@ const KakaoCallback = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // 기존 로그인 정보 초기화
+    localStorage.removeItem("token");
+    localStorage.removeItem("studentNum");
+    localStorage.removeItem("role");
+    
     const params = new URL(window.location.href).searchParams;
     const code = params.get("code");
 
