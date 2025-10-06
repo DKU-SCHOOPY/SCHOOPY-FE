@@ -45,22 +45,18 @@ export default function Navbar() {
 }
 
 const NavContainer = styled.div`
-  width: 800px;          /* 항상 700px */
+  width: 700px;
   height: 56px;
   position: fixed;
   bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0 auto;        /* 중앙 정렬 */
+  left: 50%;
+  transform: translateX(-50%);
   background: white;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* 내부 아이템 간격 독립 처리 */
+  justify-content: space-around;
   border-top: 1px solid #ddd;
   z-index: 1000;
-  box-sizing: border-box;
-  padding: 40px 20px;       /* 내부 아이템 padding */
-  min-width: 0;
 
   @media (max-width: 700px) {
     max-width: 100%;

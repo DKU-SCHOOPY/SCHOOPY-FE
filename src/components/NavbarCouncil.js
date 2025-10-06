@@ -46,8 +46,7 @@ export default function Navbar() {
 
 // 스타일
 const NavContainer = styled.div`
-  width: 100%;
-  max-width: 500px;
+  width: 700px;
   height: 56px;
   position: fixed;
   bottom: 0;
