@@ -106,19 +106,67 @@
   transition: background-color 0.2s;
 }
 
-/* 뒤로가기 버튼 */
-/* .back-button {
-  background: none;
-  border: none;
-  font-size: 24px;
-  margin: 18px;
-  color: black;
+/* 드롭다운 */
+.dropdown {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  margin-top: 5px;
+}
+
+.dropdown-selected {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px 14px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   cursor: pointer;
+  font-size: 16px;
+}
+
+.dropdown-menu {
   position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-} */
+  width: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.dropdown-item {
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f3f3f3;
+}
+
+.dropdown-item.selected {
+  background-color: #e0eaff;
+}
+
+.arrow {
+  margin-left: 8px;
+}
+
+@media (max-width: 600px) {
+  .dropdown-selected {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+
+  .dropdown-item {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
+}
 
 
 .app {
@@ -127,3 +175,4 @@
   align-items: center;
   height: 100vh;
 }
+

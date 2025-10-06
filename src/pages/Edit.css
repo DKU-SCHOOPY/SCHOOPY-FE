@@ -11,7 +11,7 @@
 }
 
 .toggle-btn {
-  all: unset; /* 브라우저 기본 스타일 완전히 제거 */
+  
   flex: 1;
   padding: 10px 0;
   border: 1px solid #ccc;

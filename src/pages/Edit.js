@@ -8,6 +8,10 @@ function Edit() {
   const [field, setField] = useState('');
   const [newValue, setNewValue] = useState('');
 
+  // 🔹 드롭다운 상태 추가
+  const [open, setOpen] = useState(false);
+  const [selectedDept, setSelectedDept] = useState('');
+
   const studentNum = localStorage.getItem('studentNum');
 
   const handleSubmit = async (e) => {
@@ -20,7 +24,7 @@ function Edit() {
       if (field === "학과") {
         response = await axios.post(`${API_BASE_URL}/mypage/change-dept`, {
           studentNum,
-          department: newValue,
+          department: selectedDept, // ✅ newValue 대신 selectedDept 사용
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
@@ -62,23 +66,33 @@ function Edit() {
     }
   };
 
-  // 조건별 입력 UI
+  // 🔹 조건별 입력 UI
   const renderInputField = () => {
     switch (field) {
       case "학과":
         return (
-          <select
-            className="textarea"
-            value={newValue}
-            onChange={(e) => setNewValue(e.target.value)}
-            required
-          >
-            <option value="">학과 선택</option>
-            <option value="소프트웨어학과">소프트웨어학과</option>
-            <option value="컴퓨터공학과">컴퓨터공학과</option>
-            <option value="사이버보안학과">사이버보안학과</option>
-            <option value="통계데이터사이언스학과">통계데이터사이언스학과</option>
-          </select>
+          <div className="dropdown">
+            <div className="dropdown-selected" onClick={() => setOpen(!open)}>
+              {selectedDept || "학과 선택"}
+              <span className="arrow">{open ? "▲" : "▼"}</span>
+            </div>
+            {open && (
+              <div className="dropdown-menu">
+                {["소프트웨어학과", "컴퓨터공학과", "사이버보안학과", "통계데이터사이언스학과"].map((dept) => (
+                  <div
+                    key={dept}
+                    className={`dropdown-item ${selectedDept === dept ? "selected" : ""}`}
+                    onClick={() => {
+                      setSelectedDept(dept);
+                      setOpen(false);
+                    }}
+                  >
+                    {dept}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         );
 
       case "전화번호":
@@ -154,7 +168,7 @@ function Edit() {
   return (
     <div className="container">
       <Header title="개인정보 수정" showBack />
-      
+
       <form className="edit-form" onSubmit={handleSubmit}>
         <label className="label">수정 항목</label>
         <select
@@ -162,7 +176,8 @@ function Edit() {
           value={field}
           onChange={(e) => {
             setField(e.target.value);
-            setNewValue(""); // 항목 변경 시 입력값 초기화
+            setNewValue("");
+            setSelectedDept("");
           }}
           required
         >
@@ -176,7 +191,9 @@ function Edit() {
         <label className="label">변경 내용</label>
         {renderInputField()}
 
-        <button className="big-button" type="submit">제출하기</button>
+        <button className="big-button" type="submit">
+          제출하기
+        </button>
       </form>
     </div>
   );
