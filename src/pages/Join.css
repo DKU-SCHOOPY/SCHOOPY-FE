@@ -1,5 +1,6 @@
     .input-row {
     display: flex;
+    position: relative;
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
@@ -38,3 +39,25 @@
     background-color: #6200ee;
     color: white;
   }
+
+  /* input 안쪽에 아이콘 들어갈 공간 확보 */
+.textarea.with-icon {
+  padding-right: 40px; /* 아이콘 크기+여유 -> 필요하면 값 조정 */
+  box-sizing: border-box;
+}
+
+/* 아이콘을 input 내부 오른쪽에 고정 */
+.input-icon {
+  position: absolute;
+  right: 10px;               /* input 안쪽으로 들여오는 거리 */
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;      /* 아이콘이 클릭을 막지 않게 */
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 색상: lucide 아이콘은 SVG가 currentColor를 사용하므로 color로 제어 가능 */
+.input-icon.success { color: #16a34a; } /* 녹색 체크 */
+.input-icon.error   { color: #ef4444; } /* 빨간 X */

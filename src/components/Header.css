@@ -26,7 +26,7 @@
   color: black;
   cursor: pointer;
   padding: 1px;
-  margin-left: 5px; /* 살짝 왼쪽 여백 */
+  margin-left: 1px; /* 살짝 왼쪽 여백 */
 }
 
 /* 오른쪽 버튼 (전체읽음 등) */

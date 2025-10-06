@@ -108,24 +108,23 @@ function Join() {
         <input className="textarea" placeholder="비밀번호 영문+숫자 12~18자리" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
 
-      <div className="input-row">
-        <input className="textarea" placeholder="비밀번호 재확인" type="password" value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)} />
-          {isMatch && (
-          <Check
-            size={18}
-            color="green"
-            style={{ position: "absolute", right: "5px", top: "50%", transform: "translateY(-50%)" }}
-          />
+      <div className="input-row"> {/* <-- CSS에서 position: relative 설정 필요 */}
+        <input
+          className="textarea with-icon"
+          placeholder="비밀번호 재확인"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+
+        {confirmPassword.length > 0 && isMatch && (
+          <Check className="input-icon success" size={18} />
         )}
-        {isMismatch && (
-          <X
-            size={18}
-            color="red"
-            style={{ position: "absolute", right: "5px", top: "50%", transform: "translateY(-50%)" }}
-          />
+        {confirmPassword.length > 0 && isMismatch && (
+          <X className="input-icon error" size={18} />
         )}
       </div>
+
 
       <div className="input-row">
         <input className="textarea" placeholder="이름" value={name} onChange={(e) => setName(e.target.value)} />
