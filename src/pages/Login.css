@@ -107,7 +107,6 @@
   display: flex;          /* 이미지와 내부 여백을 정렬 */
   justify-content: center; /* 이미지 중앙 정렬 */
   align-items: center;     
-  padding: 0 20px;        /* 버튼 좌우 여백 */
   margin-bottom: 10px;
   text-decoration: none;
   box-sizing: border-box;
@@ -125,6 +124,8 @@
 .kakaobtn img,
 .naverbtn img {
   width: auto;
-  height: 46px; /* 버튼 높이에 맞춤 */
+  height: 100%; /* 버튼 높이에 맞춤 */
   object-fit: contain; /* 이미지 비율 유지 */
+  flex-shrink: 0; /* 이미지가 줄어들지 않도록 설정 */
+  max-width: 100%;
 }
