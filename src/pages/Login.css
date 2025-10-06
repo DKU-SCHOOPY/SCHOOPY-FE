@@ -102,16 +102,30 @@
 
 .kakaobtn,
 .naverbtn {
-  width: 80%;              /* login-button과 동일한 너비 */
-  display: block;
+  width: 80%;             /* 버튼 전체 너비 */
+  display: flex;          /* 이미지와 내부 여백을 정렬 */
+  justify-content: center; /* 이미지 중앙 정렬 */
+  align-items: center;     
+  padding: 0 20px;        /* 버튼 좌우 여백 */
+  height: 50px;           /* 버튼 높이 */
   margin-bottom: 10px;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.kakaobtn {
+  background-color: #fee500; /* 예: 카카오 버튼 배경 */
+}
+
+.naverbtn {
+  background-color: #03c75a; /* 예: 네이버 버튼 배경 */
 }
 
 .kakaobtn img,
 .naverbtn img {
-  width: 100%;             /* 부모 a 태그 기준으로 채우기 */
-  height: auto;
-  display: block;
+  width: 24px;           /* 이미지 고정 */
+  height: 24px;          /* 이미지 고정 */
 }
+
 
 
