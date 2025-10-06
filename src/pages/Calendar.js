@@ -50,26 +50,40 @@ function Calendar() {
   }, []);
 
   const fetchEvents = useCallback(async (year, month) => {
-    try {
-      const token = localStorage.getItem("token");
+  try {
+    const token = localStorage.getItem("token");
     console.log("토큰 확인:", token);
 
-    const response = await axios.get(
-       `${API_BASE_URL}/event/all/calendar?year=${year}&month=${month}`,
-       {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }
+    // 현재 달 기준: 이전달, 현재달, 다음달 세 달 데이터 요청
+    const monthsToFetch = [month - 1, month, month + 1];
+    const yearAdjust = (m) => {
+      if (m < 1) return year - 1;
+      if (m > 12) return year + 1;
+      return year;
+    };
+    const monthAdjust = (m) => {
+      if (m < 1) return 12;
+      if (m > 12) return 1;
+      return m;
+    };
+
+    // 모든 월 병렬 요청
+    const responses = await Promise.all(
+      monthsToFetch.map((m) =>
+        axios.get(
+          `${API_BASE_URL}/event/all/calendar?year=${yearAdjust(m)}&month=${monthAdjust(m)}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        )
+      )
     );
 
-    console.log("응답 전체:", response);
-    console.log("응답 데이터:", response.data);
+    // 3개월치 이벤트 병합
+    const allEvents = responses.flatMap((res) => res.data);
 
-    const data = response.data;
+    console.log("3개월치 응답 데이터:", allEvents);
 
     setEvents(
-      data.map((event) => ({
+      allEvents.map((event) => ({
         id: event.eventCode,
         title: event.title,
         start: event.start,
@@ -77,11 +91,12 @@ function Calendar() {
         department: event.department,
         color: "#edebfd",
       }))
-      );
-    } catch (err) {
-      console.error("일정 로드 실패:", err.message);
-    }
-  }, []);
+    );
+  } catch (err) {
+    console.error("일정 로드 실패:", err.message);
+  }
+}, []);
+
 
   useEffect(() => {
     const year = currentDate.getFullYear();
