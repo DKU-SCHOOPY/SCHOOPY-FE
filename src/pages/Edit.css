@@ -4,6 +4,28 @@
   flex-direction: column;
 }
 
+.toggle-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-btn.selected {
+  background-color: #6a5af9;
+  color: white;
+  border-color: #6a5af9;
+}
+
 
 /* .edit-select,
 .edit-input,

@@ -148,7 +148,7 @@ export default function EventApplicants() {
                   </div>
                   <div className="userstatus">
                     {p.isStudent ? "재학생" : "휴학생"} | {p.department} |{" "}
-                    {p.councilFeePaid ? " 학생회비 납부" : " 학생회비 미납"} |{" "}
+                    {p.councilFeePaid ? " 학생회비 납부" : " 학생회비 미납"} {" "}
                     {/* {p.isPaymentCompleted ? " 입금완료" : " 대기중"} */}
                   </div>
                 </div>
