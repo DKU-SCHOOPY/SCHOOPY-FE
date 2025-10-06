@@ -96,7 +96,7 @@
   .event-row {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    height: 60px;
+    height: 100px;
     grid-auto-rows: 14px;
     row-gap: 1px;
     overflow: visible;

@@ -192,7 +192,7 @@ function Calendar() {
       const eventStart = parseISO(event.start);
       const eventEnd = parseISO(event.end);
       return eventEnd >= currentRowStart && eventStart <= addDays(currentRowStart, 6);
-    }).slice(0, 3); // 겹치는 것 중 상위 3개만 표시
+    }).slice(0, 5); // 겹치는 것 중 상위 5개만 표시
 
     for (let i = 0; i < 7; i++) {
       const thisDay = day;

@@ -58,10 +58,8 @@ const NavContainer = styled.div`
   justify-content: space-around;
   border-top: 1px solid #ddd;
   z-index: 1000;
-  box-sizing: border-box;
-  padding: 0 5%;
 
-  @media (max-width: 768px) {
+  @media (max-width: 500px) {
     max-width: 100%;
     left: 0;
     transform: none;
