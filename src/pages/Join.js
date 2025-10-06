@@ -100,7 +100,12 @@ function Join() {
       </div>
 
       <div className="input-row">
-        <input className="textarea" placeholder="인증코드 입력" value={certificationNumber} onChange={(e) => setCertificationNumber(e.target.value)} />
+        <input className="textarea" placeholder="인증코드 입력" value={certificationNumber}
+          maxLength={8}
+          onChange={(e) => {
+            const onlyId = e.target.value.replace(/[^0-9]/g, "").slice(0, 8);
+            setCertificationNumber(onlyId);
+          }} />
         <button className="join-outline-btn" onClick={handleCertificationCheck}>인증코드 확인</button>
       </div>
 
@@ -142,7 +147,13 @@ function Join() {
       </div>
 
       <div className="input-row">
-        <input className="textarea" placeholder="생년월일 (YYYYMMDD)" value={birthDay} onChange={(e) => setBirthDay(e.target.value)} />
+        <input className="textarea" placeholder="생년월일 (YYYYMMDD)" value={birthDay} 
+        maxLength={8}
+          onChange={(e) => {
+            const onlyBirth = e.target.value.replace(/[^0-9]/g, "").slice(0, 8);
+            setBirthDay(onlyBirth);
+          }}
+        />
       </div>
 
       <div className="input-row">
