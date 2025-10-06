@@ -82,7 +82,7 @@ const FormList = () => {
 
   return (
     <div className="container">
-      <Header title="신청 폼 목록" />
+      <Header title="신청 폼 목록" showBack={false} />
       {/* <h2 className="page-title">신청 폼 목록</h2> */}
 
       <div className="searchbox">

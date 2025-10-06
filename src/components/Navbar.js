@@ -49,8 +49,9 @@ const NavContainer = styled.div`
   height: 56px;
   position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
+  margin: 0 auto;    /* 중앙 정렬 */
   background: white;
   display: flex;
   align-items: center;
