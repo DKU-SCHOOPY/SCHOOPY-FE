@@ -7,10 +7,10 @@
     padding-top: 20px;
     padding-left: 5%;
     padding-right: 5%;
-    padding-bottom: 56px;
     font-family: sans-serif;
     max-width: 700px;
     margin: 0 auto;
+    box-sizing: border-box;
   }
 
 /* 페이지 상단 제목 */
