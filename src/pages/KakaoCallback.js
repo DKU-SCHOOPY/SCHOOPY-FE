@@ -8,18 +8,20 @@ const KakaoCallback = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 기존 로그인 정보 초기화
-    localStorage.removeItem("token");
-    localStorage.removeItem("studentNum");
-    localStorage.removeItem("role");
-    
     const params = new URL(window.location.href).searchParams;
     const code = params.get("code");
 
+    // 기존 토큰/정보 초기화
+    localStorage.removeItem("token");
+    localStorage.removeItem("studentNum");
+    localStorage.removeItem("role");
+
     if (!code) {
-      // 코드 없으면 로그인 실패 처리
-      alert("로그인 코드가 존재하지 않습니다. 다시 시도해주세요.");
-      navigate("/login");
+      // code 없으면 카카오 로그아웃 후 재시도
+      const logoutRedirect = encodeURIComponent(
+        process.env.REACT_APP_REDIRECT_URL_KAKAO
+      );
+      window.location.href = `https://kauth.kakao.com/oauth/logout?client_id=${process.env.REACT_APP_REST_API_KEY_KAKAO}&logout_redirect_uri=${logoutRedirect}`;
       return;
     }
 
@@ -27,7 +29,7 @@ const KakaoCallback = () => {
       try {
         const response = await axios.get(
           `${API_BASE_URL}/oauth/kakao/callback?code=${code}`,
-          { withCredentials: true } // 모바일 웹 안정화
+          { withCredentials: true } // 모바일 안정화
         );
 
         if (response.data.code === "SU" && response.data.token) {
@@ -36,14 +38,9 @@ const KakaoCallback = () => {
           localStorage.setItem("studentNum", response.data.studentNum);
           localStorage.setItem("role", response.data.role);
 
-          // 역할에 따라 이동
-          if (response.data.role === "COUNCIL") {
-            navigate("/select");
-          } else {
-            navigate("/home");
-          }
+          const path = response.data.role === "COUNCIL" ? "/select" : "/home";
+          navigate(path);
         } else {
-          // 로그인 실패
           alert(
             "카카오 계정이 학번 계정과 연동되지 않았습니다.\n회원가입 후 소셜로그인 연동을 해주세요."
           );
@@ -52,7 +49,7 @@ const KakaoCallback = () => {
       } catch (error) {
         console.error("카카오 로그인 오류:", error);
         alert(
-          "카카오 계정이 학번 계정과 연동되지 않았습니다.\n회원가입 후 소셜로그인 연동을 해주세요."
+          "로그인에 실패했습니다. 잠시 후 다시 시도해주세요."
         );
         navigate("/login");
       } finally {
