@@ -146,7 +146,16 @@ function Join() {
       </div>
 
       <div className="input-row">
-        <input className="textarea" placeholder="전화번호" value={phoneNum} onChange={(e) => setPhoneNum(e.target.value)} />
+        <input
+          className="textarea"
+          placeholder="전화번호"
+          value={phoneNum}
+          maxLength={11}
+          onChange={(e) => {
+            const onlyNums = e.target.value.replace(/[^0-9]/g, "").slice(0, 11);
+            setPhoneNum(onlyNums);
+          }}
+        />
       </div>
 
       <button className="big-button" onClick={handleJoin}>회원가입</button>
