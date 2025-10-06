@@ -46,7 +46,7 @@ export default function Navbar() {
 
 const NavContainer = styled.div`
   width: 100%;
-  width: 700px;
+  min-width: 700px;
   height: 56px;
   position: fixed;
   bottom: 0;
