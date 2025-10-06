@@ -59,7 +59,7 @@ const NavContainer = styled.div`
   border-top: 1px solid #ddd;
   z-index: 1000;
   box-sizing: border-box;
-  padding: 0 20px;       /* 내부 아이템 padding */
+  padding: 40px 20px;       /* 내부 아이템 padding */
   min-width: 0;
 
   @media (max-width: 700px) {
