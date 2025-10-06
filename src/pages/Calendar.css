@@ -1,5 +1,5 @@
 .calendar-container {
-    padding: 20px;
+    padding: 15px 20px 0 20px;
     max-width: 500px;
     margin: 0 auto;
     font-family: sans-serif;
@@ -12,12 +12,12 @@
   }
   
   .menu-button {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     background: none;
     border: none;
     cursor: pointer;
     color: #6a5af9;
-    margin-left: 8px;
+    margin-left: 6px;
   }
   
   .nav-compact {
@@ -53,7 +53,7 @@
   .day-label {
     width: 14.2%;
     text-align: center;
-    font-weight: bold;
+    font-weight: 500;
     font-size: 0.75rem;
     color: #666;
   }

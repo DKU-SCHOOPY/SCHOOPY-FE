@@ -46,7 +46,7 @@ export default function Navbar() {
 
 const NavContainer = styled.div`
   width: 100%;
-  max-width: 500px;
+  max-width: 700px;
   height: 56px;
   position: fixed;
   bottom: 0;
@@ -59,7 +59,7 @@ const NavContainer = styled.div`
   border-top: 1px solid #ddd;
   z-index: 1000;
 
-  @media (max-width: 500px) {
+  @media (max-width: 700px) {
     max-width: 100%;
     left: 0;
     transform: none;
