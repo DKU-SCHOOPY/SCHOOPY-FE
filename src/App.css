@@ -15,7 +15,7 @@
 /* 페이지 상단 제목 */
 .page-title {
   font-weight: 550;
-  margin: 0px 0 25px 0;
+  margin: 0px 0 20px 0;
   text-align: center;
   justify-content: center; /* 가운데 정렬 기본 */
   position: relative; /* 아이콘을 오른쪽에 배치하기 위해 기준 설정 */
