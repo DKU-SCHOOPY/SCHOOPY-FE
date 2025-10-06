@@ -73,7 +73,7 @@ const NavItem = styled.button`
   padding: 10px;
   color: ${(props) => (props.active ? "#6a5af9" : "black")};
 
-  @media (max-width: 600px) {
+  @media (max-width: 700px) {
     padding: 6px;
   }
 

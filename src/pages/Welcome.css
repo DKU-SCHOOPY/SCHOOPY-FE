@@ -56,7 +56,7 @@
   }
   
   /* 📌 모바일 화면: 세로 정렬 */
-  @media (max-width: 650px){
+  @media (max-width: 700px){
     .welcome-container {
       overflow: hidden; /* 스크롤 숨김 */
       height: 100%;
