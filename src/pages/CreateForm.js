@@ -286,8 +286,8 @@ const AddSchedule = () => {
                 {newQuestionType === QUESTION_TYPES.SUBJECTIVE
                   ? "주관식"
                   : newQuestionType === QUESTION_TYPES.OBJECTIVE
-                  ? "객관식"
-                  : "선택하세요"}
+                    ? "객관식"
+                    : "선택하세요"}
                 <span className="arrow">{questionTypeOpen ? "▲" : "▼"}</span>
               </div>
 
@@ -315,7 +315,7 @@ const AddSchedule = () => {
               )}
             </div>
 
-            <button type="button" className="question-action-btn" onClick={handleAddQuestion}>질문 추가</button>
+            <button type="button" className="question-action-btn add-question" onClick={handleAddQuestion}>질문{'\n'}추가</button>
           </div>
           <div>
             {questions.map((q, idx) => (
@@ -427,17 +427,19 @@ const AddSchedule = () => {
         </div>
 
         {/* ====== 최대 수용 인원 ====== */}
-        <div className="form-item">
-          <label className="label">최대 수용 인원</label>
-          <input
-            className="textarea"
-            type="number"
-            name="maxParticipants"
-            placeholder="최대 수용 인원"
-            value={formData.maxParticipants}
-            onChange={handleInputChange}
-            required
-          />
+        <div className="form-row">
+          <div className="form-item">
+            <label className="label">최대 수용 인원</label>
+            <input
+              className="textarea"
+              type="number"
+              name="maxParticipants"
+              placeholder="최대 수용 인원"
+              value={formData.maxParticipants}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
         </div>
 
         {/* ====== QR 추가 버튼 ====== */}
