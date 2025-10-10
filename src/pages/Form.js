@@ -18,7 +18,7 @@ function FormPage() {
   const [applicationStatus, setApplicationStatus] = useState(null); // 신청 상태: null(확인중), 'none'(신청안함), 'pending'(대기중), 'approved'(승인됨), 'rejected'(반려됨)
   const [answerOpenId, setAnswerOpenId] = useState(null);
   const { useCallback } = React;
-  
+
   // 학생의 신청 상태 확인 함수
   const checkApplicationStatus = useCallback(async () => {
     if (!eventCode) return; // eventCode가 없을 경우 실행 방지
@@ -291,18 +291,18 @@ function FormPage() {
                 <div className="button-group">
                   <button
                     type="button"
-                    className={`payment-button ${councilFeePaid ? "disabled" : ""}`}
+                    className={`payment-button toss ${councilFeePaid ? "disabled" : ""}`}
                     onClick={() => handlePayment("토스")}
                     disabled={councilFeePaid}
                   >
                     토스로 송금하기
                   </button>
+
                   <button
                     type="button"
-                    className={`payment-button ${councilFeePaid ? "disabled" : ""}`}
+                    className={`payment-button kakao ${councilFeePaid ? "disabled" : ""}`}
                     onClick={() => handlePayment("카카오페이")}
                     disabled={councilFeePaid}
-                    style={{ background: '#ffe600', color: '#222' }}
                   >
                     카카오페이로 송금하기
                   </button>

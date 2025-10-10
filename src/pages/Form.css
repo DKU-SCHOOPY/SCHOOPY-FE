@@ -105,35 +105,47 @@ select.input:focus {
   gap: 12px;
   margin-bottom: 10px;
 }
-
+/* 공통 버튼 */
 .payment-button {
   flex: 1;
   padding: 13px 0;
   border-radius: 15px;
-  border: 1.5px solid #6a5af9;
-  background-color: white;
-  color: #6a5af9;
+  border: none;
   font-weight: bold;
   font-size: 1.05rem;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s, border 0.2s;
+  transition: all 0.25s ease;
 }
 
+/* Toss 버튼 스타일 */
 .payment-button.toss {
-  background: #0064FF;
+  background: #0064FF;         /* Toss 메인 파랑 */
   color: #fff;
   border: 1.5px solid #0064FF;
 }
+
+.payment-button.toss:hover {
+  background: #0052d9;
+}
+
+/* KakaoPay 버튼 스타일 */
 .payment-button.kakao {
-  background: #fee500;
-  color: #3c1e1e;
-  border: 1.5px solid #fee500;
-} 
+  background: #FEE500;         /* KakaoPay 노랑 */
+  color: #3C1E1E;              /* 브랜드 텍스트 컬러 */
+  border: 1.5px solid #FEE500;
+}
+
+.payment-button.kakao:hover {
+  background: #fada00;
+}
+
+/* 비활성화 상태 */
 .payment-button:disabled {
   background: #e0e0e0;
   color: #aaa;
   border-color: #e0e0e0;
   cursor: not-allowed;
+  opacity: 0.7;
 }
 /* .big-button {
   width: 100%;
