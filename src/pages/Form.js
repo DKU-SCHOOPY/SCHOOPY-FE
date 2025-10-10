@@ -17,42 +17,46 @@ function FormPage() {
   const [councilFeePaid, setCouncilFeePaid] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(null); // 신청 상태: null(확인중), 'none'(신청안함), 'pending'(대기중), 'approved'(승인됨), 'rejected'(반려됨)
   const [answerOpenId, setAnswerOpenId] = useState(null);
-
+  const { useCallback } = React;
+  
   // 학생의 신청 상태 확인 함수
-  const checkApplicationStatus = async () => {
+  const checkApplicationStatus = useCallback(async () => {
+    if (!eventCode) return; // eventCode가 없을 경우 실행 방지
     try {
       const res = await axios.get(
         `${API_BASE_URL}/event/student/application-status/${eventCode}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
-
-      // 서버에서 반환하는 상태에 따라 설정
-      // 서버에서 반환하는 필드명에 따라 조정 필요
       if (res.data && res.data.status) {
-        setApplicationStatus(res.data.status); // 'none', 'pending', 'approved', 'rejected'
+        setApplicationStatus(res.data.status);
       } else {
-        setApplicationStatus('none'); // 신청하지 않은 상태
+        setApplicationStatus("none");
       }
     } catch (error) {
-      console.error('신청 상태 확인 오류:', error);
-      // API가 없거나 오류가 발생한 경우 신청 가능한 상태로 설정
-      setApplicationStatus('none');
+      console.error("신청 상태 확인 오류:", error);
+      setApplicationStatus("none");
     }
-  };
+  }, [eventCode]);
 
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/event/student/get-form/${eventCode}`,
-      {
+    if (!eventCode) return; // undefined 방지
+
+    axios
+      .get(`${API_BASE_URL}/event/student/get-form/${eventCode}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       })
-      .then(res => {
+      .then((res) => {
         setForm(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("폼 불러오기 실패:", err);
         setLoading(false);
       });
 
@@ -64,7 +68,7 @@ function FormPage() {
 
     // 신청 상태 확인
     checkApplicationStatus();
-  }, [eventCode]);
+  }, [eventCode, checkApplicationStatus]);
 
   if (loading) return <div>로딩중...</div>;
   if (!form) return <div>폼 정보를 불러올 수 없습니다.</div>;

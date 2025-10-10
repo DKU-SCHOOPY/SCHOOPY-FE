@@ -119,19 +119,22 @@ select.input:focus {
   transition: background 0.2s, color 0.2s, border 0.2s;
 }
 
-.payment-button:hover {
-  background-color: #6a5af9; 
-  color: white;         
-  border-color: #6a5af9;
+.payment-button.toss {
+  background: #0064FF;
+  color: #fff;
+  border: 1.5px solid #0064FF;
 }
-
+.payment-button.kakao {
+  background: #fee500;
+  color: #3c1e1e;
+  border: 1.5px solid #fee500;
+} 
 .payment-button:disabled {
   background: #e0e0e0;
   color: #aaa;
   border-color: #e0e0e0;
   cursor: not-allowed;
 }
-
 /* .big-button {
   width: 100%;
   padding: 16px 0;
