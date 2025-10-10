@@ -15,8 +15,13 @@ function EventDetail() {
   // 학생의 신청 상태 확인 함수
   const checkApplicationStatus = async () => {
     try {
-      const res = await axios.get(
-        `${API_BASE_URL}/event/student/application-status/${eventCode}`,
+      const studentNum = localStorage.getItem("studentNum");
+      const res = await axios.post(
+        `${API_BASE_URL}/event/student/application-status`,
+        {
+          eventCode: Number(eventCode),
+          studentNum: studentNum
+        },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -24,10 +29,11 @@ function EventDetail() {
         }
       );
 
-      if (res.data && res.data.status) {
-        setApplicationStatus(res.data.status);
+      // 서버에서 반환하는 상태에 따라 설정
+      if (res.data && res.data.applicationStatus === true) {
+        setApplicationStatus('pending'); // 이미 신청한 상태
       } else {
-        setApplicationStatus('none');
+        setApplicationStatus('none'); // 신청하지 않은 상태
       }
     } catch (error) {
       console.error('신청 상태 확인 오류:', error);
@@ -149,19 +155,9 @@ function EventDetail() {
               이미 신청하셨습니다. 관리자 승인을 기다리고 있습니다.
             </div>
           )}
-          {applicationStatus === 'approved' && (
-            <div className="status-message success">
-              신청이 승인되었습니다. 행사에 참여하실 수 있습니다.
-            </div>
-          )}
-          {applicationStatus === 'rejected' && (
-            <div className="status-message warning">
-              이전 신청이 반려되었습니다. 다시 신청할 수 있습니다.
-            </div>
-          )}
 
           {/* 신청 가능한 상태일 때만 신청하기 버튼 표시 */}
-          {(applicationStatus === 'none' || applicationStatus === 'rejected') ? (
+          {applicationStatus === 'none' ? (
             <button
               className="big-button"
               onClick={() => navigate(`/formquest/${eventData.eventCode}`)}
@@ -171,12 +167,10 @@ function EventDetail() {
           ) : (
             <div className="application-status-container">
               <div className="status-icon">
-                {applicationStatus === 'pending' && '⏳'}
-                {applicationStatus === 'approved' && '✅'}
+                ⏳
               </div>
               <div className="status-text">
-                {applicationStatus === 'pending' && '신청이 완료되었습니다. 관리자의 승인을 기다리고 있습니다.'}
-                {applicationStatus === 'approved' && '신청이 승인되었습니다. 행사에 참여하실 수 있습니다.'}
+                신청이 완료되었습니다. 관리자의 승인을 기다리고 있습니다.
               </div>
             </div>
           )}
