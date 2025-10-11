@@ -315,7 +315,7 @@ const AddSchedule = () => {
               )}
             </div>
 
-            <button type="button" className="question-action-btn add-question" onClick={handleAddQuestion}>질문{'\n'}추가</button>
+            <button type="button" className="question-action-btn" onClick={handleAddQuestion}>질문추가</button>
           </div>
           <div>
             {questions.map((q, idx) => (
@@ -371,58 +371,60 @@ const AddSchedule = () => {
 
         <hr className="form-divider" />
 
-        {/* ====== 수요조사 시작/종료일 ====== */}
-        <div className="form-row">
-          <div className="form-item">
-            <label className="label">수요 조사 시작일</label>
-            <DatePicker
-              className="textarea"
-              selected={formData.surveyStartDate}
-              onChange={(date) => handleDateChange(date, "surveyStartDate")}
-              dateFormat="yyyy-MM-dd"
-              placeholderText="시작일 선택"
-              required
-            />
+        {/* ====== 날짜 입력 필드들 (2x2 그리드) ====== */}
+        <div className="date-grid">
+          {/* 왼쪽 열 */}
+          <div className="date-column">
+            <div className="form-item">
+              <label className="label">수요 조사 시작일</label>
+              <DatePicker
+                className="textarea"
+                selected={formData.surveyStartDate}
+                onChange={(date) => handleDateChange(date, "surveyStartDate")}
+                dateFormat="yyyy-MM-dd"
+                placeholderText="시작일 선택"
+                required
+              />
+            </div>
+            <div className="form-item">
+              <label className="label">행사 시작일</label>
+              <DatePicker
+                className="textarea"
+                selected={formData.eventStartDate}
+                onChange={(date) => handleDateChange(date, "eventStartDate")}
+                dateFormat="yyyy-MM-dd"
+                placeholderText="시작일 선택"
+                required
+              />
+            </div>
           </div>
 
-          <div className="form-item">
-            <label className="label">수요 조사 종료일</label>
-            <DatePicker
-              className="textarea"
-              selected={formData.surveyEndDate}
-              onChange={(date) => handleDateChange(date, "surveyEndDate")}
-              dateFormat="yyyy-MM-dd"
-              placeholderText="종료일 선택"
-              minDate={formData.surveyStartDate} // 시작일 이후로 설정
-              required
-            />
-          </div>
-        </div>
-
-        {/* ====== 행사 시작/종료일 ====== */}
-        <div className="form-row">
-          <div className="form-item">
-            <label className="label">행사 시작일</label>
-            <DatePicker
-              className="textarea"
-              selected={formData.eventStartDate}
-              onChange={(date) => handleDateChange(date, "eventStartDate")}
-              dateFormat="yyyy-MM-dd"
-              placeholderText="시작일 선택"
-              required
-            />
-          </div>
-          <div className="form-item">
-            <label className="label">행사 종료일</label>
-            <DatePicker
-              className="textarea"
-              selected={formData.eventEndDate}
-              onChange={(date) => handleDateChange(date, "eventEndDate")}
-              dateFormat="yyyy-MM-dd"
-              placeholderText="종료일 선택"
-              minDate={formData.eventStartDate}   // 행사 시작일 이후만 선택 가능
-              required
-            />
+          {/* 오른쪽 열 */}
+          <div className="date-column">
+            <div className="form-item">
+              <label className="label">수요 조사 종료일</label>
+              <DatePicker
+                className="textarea"
+                selected={formData.surveyEndDate}
+                onChange={(date) => handleDateChange(date, "surveyEndDate")}
+                dateFormat="yyyy-MM-dd"
+                placeholderText="종료일 선택"
+                minDate={formData.surveyStartDate} // 시작일 이후로 설정
+                required
+              />
+            </div>
+            <div className="form-item">
+              <label className="label">행사 종료일</label>
+              <DatePicker
+                className="textarea"
+                selected={formData.eventEndDate}
+                onChange={(date) => handleDateChange(date, "eventEndDate")}
+                dateFormat="yyyy-MM-dd"
+                placeholderText="종료일 선택"
+                minDate={formData.eventStartDate}   // 행사 시작일 이후만 선택 가능
+                required
+              />
+            </div>
           </div>
         </div>
 
