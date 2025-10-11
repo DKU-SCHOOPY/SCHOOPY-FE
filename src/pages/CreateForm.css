@@ -70,13 +70,13 @@ input[type="number"]:focus,
   gap: 2px;
 }
 
-/* ===== 드롭다운 스타일 ===== */
-.dropdown {
+/* ===== 드롭다운 스타일 (질문 타입 선택용) ===== */
+.question-add-row .dropdown {
   max-width: 80px;
   position: relative;
 }
 
-.dropdown-selected {
+.question-add-row .dropdown-selected {
   width: 80px;
   padding: 6px 8px;
   border: 1px solid #e0e0e0;
