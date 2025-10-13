@@ -18,12 +18,11 @@ export default function Home() {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const res = await axios.get(`${API_BASE_URL}/home/feedback`,
-  {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`
-    }
-  });
+        const res = await axios.get(`${API_BASE_URL}/home/feedback`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        });
         setPosts(res.data);
         console.log(res);
       } catch (err) {
@@ -50,7 +49,7 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* 필터바 (공통 컴포넌트 사용) */}
+      {/* 필터바 */}
       <FilterBar
         filters={FILTERS}
         selected={selected}
@@ -65,11 +64,13 @@ export default function Home() {
             key={post.eventCode}
             onClick={() => navigate(`/eventdetail/${post.eventCode}`)}
           >
-            <img
-              className="home-event-image"
-              src={post.eventImages?.[0] || "/003.jpg"}
-              alt={post.eventName}
-            />
+            {post.eventImages && post.eventImages.length > 0 ? (
+              <img
+                className="home-event-image"
+                src={post.eventImages[0]}
+                alt={post.eventName}
+              />
+            ) : null }
             <div className="home-event-info">
               <div className="home-event-title">{post.eventName}</div>
               <div className="home-event-sub">{post.department}</div>

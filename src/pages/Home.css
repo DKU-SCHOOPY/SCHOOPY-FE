@@ -90,15 +90,11 @@
 }
 
 .home-event-desc {
-  font-size: 14px;
-  color: #666;
-  line-height: 1.5;
-  margin: 4px;
-  margin-bottom: 0px;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* 최대 3줄 */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: pre-line; /* \n 줄바꿈 유지 */
+
+  line-clamp: 2;
+  box-orient: vertical;
 }
