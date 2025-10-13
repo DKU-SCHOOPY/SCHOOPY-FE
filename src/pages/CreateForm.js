@@ -132,48 +132,53 @@ const AddSchedule = () => {
     }));
   };
 
-  const handleQrImageUpload = (type, e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const context = canvas.getContext('2d');
-          canvas.width = img.width;
-          canvas.height = img.height;
-          context.drawImage(img, 0, 0);
+const handleQrImageUpload = (type, e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        context.drawImage(img, 0, 0);
 
-          const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-          const code = jsQR(imageData.data, imageData.width, imageData.height);
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
 
-          if (code) {
-            let qrData = code.data;
+        if (code) {
+          let qrData = code.data.trim(); // ✅ 공백 제거
 
-            // ✅ KakaoPay QR 변환 로직 추가
-            if (qrData.startsWith("https://qr.kakaopay.com/")) {
-              const qrCodeId = qrData.replace("https://qr.kakaopay.com/", "");
-              qrData = `kakaotalk://kakaopay/money/to/qr?qr_code=${qrCodeId}`;
-            }
-
-            setFormData(prev => ({
-              ...prev,
-              qrCodeImages: {
-                ...prev.qrCodeImages,
-                [type]: code.data
-              }
-            }));
-            alert(`${type} QR 코드가 인식되었습니다: ${code.data}`);
-          } else {
-            alert('QR 코드를 인식할 수 없습니다. 다른 이미지를 시도해주세요.');
+          // ✅ KakaoPay QR 변환 처리 (http, https 모두 대응)
+          if (qrData.startsWith("https://qr.kakaopay.com/") || qrData.startsWith("http://qr.kakaopay.com/")) {
+            const qrCodeId = qrData.split("/").pop();
+            qrData = `kakaotalk://kakaopay/money/to/qr?qr_code=${qrCodeId}`;
           }
-        };
-        img.src = reader.result;
+
+          console.log("변환된 QR 데이터:", qrData);
+
+          setFormData(prev => ({
+            ...prev,
+            qrCodeImages: {
+              ...prev.qrCodeImages,
+              [type]: qrData
+            }
+          }));
+
+          alert(`${type} QR 코드가 인식되었습니다: ${qrData}`);
+        } else {
+          alert('QR 코드를 인식할 수 없습니다. 다른 이미지를 시도해주세요.');
+        }
       };
-      reader.readAsDataURL(file);
-    }
-  };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+
 
 
 
