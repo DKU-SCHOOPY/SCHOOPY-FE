@@ -22,7 +22,7 @@ const Mypage = () => {
       try {
         const studentNum = localStorage.getItem('studentNum');
         const res = await axios.post(
-          `${API_BASE_URL}/mypage/student/check`,
+          `${API_BASE_URL}/mypage/all/check`,
           { studentNum: studentNum },
           {
             headers: {

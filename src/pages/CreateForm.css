@@ -25,7 +25,7 @@
 .question-option-input,
 input[type="date"],
 input[type="number"],
-.textarea {
+.form-textarea {
   flex: 1;
   font-size: 14px;
   padding: 6px 8px;
@@ -43,7 +43,7 @@ input[type="number"],
 .question-option-input:focus,
 input[type="date"]:focus,
 input[type="number"]:focus,
-.textarea:focus {
+.form-textarea:focus {
   border: 1.5px solid #6a5af9;
 }
 

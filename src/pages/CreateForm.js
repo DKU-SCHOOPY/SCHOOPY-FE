@@ -378,7 +378,7 @@ const AddSchedule = () => {
             <div className="form-item">
               <label className="label">수요 조사 시작일</label>
               <DatePicker
-                className="textarea"
+                className="form-textarea"
                 selected={formData.surveyStartDate}
                 onChange={(date) => handleDateChange(date, "surveyStartDate")}
                 dateFormat="yyyy-MM-dd"
@@ -389,7 +389,7 @@ const AddSchedule = () => {
             <div className="form-item">
               <label className="label">행사 시작일</label>
               <DatePicker
-                className="textarea"
+                className="form-textarea"
                 selected={formData.eventStartDate}
                 onChange={(date) => handleDateChange(date, "eventStartDate")}
                 dateFormat="yyyy-MM-dd"
@@ -404,7 +404,7 @@ const AddSchedule = () => {
             <div className="form-item">
               <label className="label">수요 조사 종료일</label>
               <DatePicker
-                className="textarea"
+                className="form-textarea"
                 selected={formData.surveyEndDate}
                 onChange={(date) => handleDateChange(date, "surveyEndDate")}
                 dateFormat="yyyy-MM-dd"
@@ -416,7 +416,7 @@ const AddSchedule = () => {
             <div className="form-item">
               <label className="label">행사 종료일</label>
               <DatePicker
-                className="textarea"
+                className="form-textarea"
                 selected={formData.eventEndDate}
                 onChange={(date) => handleDateChange(date, "eventEndDate")}
                 dateFormat="yyyy-MM-dd"
@@ -433,7 +433,7 @@ const AddSchedule = () => {
           <div className="form-item">
             <label className="label">최대 수용 인원</label>
             <input
-              className="textarea"
+              className="form-textarea"
               type="number"
               name="maxParticipants"
               placeholder="최대 수용 인원"
