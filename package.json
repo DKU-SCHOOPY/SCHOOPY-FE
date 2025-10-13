@@ -29,6 +29,7 @@
     "react-router-dom": "^7.4.1",
     "react-scripts": "5.0.1",
     "styled-components": "^6.1.18",
+    "swagger-ui": "^5.29.4",
     "web-vitals": "^2.1.4",
     "xlsx": "^0.18.5"
   },

@@ -24,30 +24,28 @@ function Edit() {
       console.log("axios 요청 직전");
 
       if (field === "학과") {
-        response = await axios.post(`${API_BASE_URL}/mypage/change-dept`, {
+        response = await axios.post(`${API_BASE_URL}/mypage/student/change-dept`, {
           studentNum,
           department: selectedDept, // ✅ newValue 대신 selectedDept 사용
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
       } else if (field === "전화번호") {
-        response = await axios.post(`${API_BASE_URL}/mypage/change-phone-num`, {
+        response = await axios.post(`${API_BASE_URL}/mypage/student/change-phone-num`, {
           studentNum,
           phoneNum: newValue,
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
       } else if (field === "재학여부") {
-        response = await axios.post(`${API_BASE_URL}/mypage/change-enrollment`, {
-          studentNum,
-          status: newValue,
+        response = await axios.post(`${API_BASE_URL}/mypage/change-enroll`, {
+          studentNum
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
       } else if (field === "학생회비납부여부") {
-        response = await axios.post(`${API_BASE_URL}/mypage/change-dues`, {
-          studentNum,
-          duesStatus: newValue,
+        response = await axios.post(`${API_BASE_URL}/mypage/change-council-pee`, {
+          studentNum
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });

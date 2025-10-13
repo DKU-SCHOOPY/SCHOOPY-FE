@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import "./CouncilFee.css"; // 스타일 분리 권장
+import axios from "axios";
+import { API_BASE_URL } from "../config";
+import "./CouncilFee.css";
 
 export default function CouncilFee() {
   const navigate = useNavigate();
@@ -9,42 +11,77 @@ export default function CouncilFee() {
   const [students, setStudents] = useState([]);
   const [searchText, setSearchText] = useState("");
 
-  // 학생 데이터 불러오기 (가상)
+  // ✅ 학생 리스트 불러오기
   useEffect(() => {
-    // TODO: 실제 API 요청으로 대체 예정
-    const fakeData = [
-      {
-        id: 1,
-        name: "김민수",
-        studentNum: "20210001",
-        department: "컴퓨터공학과",
-        isStudent: true,
-        councilFeePaid: false,
-      },
-      {
-        id: 2,
-        name: "이영희",
-        studentNum: "20210002",
-        department: "경영학과",
-        isStudent: false,
-        councilFeePaid: true,
-      },
-    ];
-    setStudents(fakeData);
-    setLoading(false);
+    const fetchCouncilStudents = async () => {
+      try {
+        const department = localStorage.getItem("department");
+
+        const res = await axios.post(
+          `${API_BASE_URL}/mypage/council/check`,
+          { department },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        console.log("학생회비 관리 데이터:", res.data);
+
+        if (res.data.code === "SU" && Array.isArray(res.data.students)) {
+          setStudents(res.data.students);
+        } else {
+          console.warn("학생 데이터 형식이 올바르지 않음:", res.data);
+          setStudents([]);
+        }
+      } catch (err) {
+        console.error("학생 데이터 불러오기 실패:", err);
+        setStudents([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCouncilStudents();
   }, []);
 
-  // 상태 변경 (재학여부 / 납부여부 토글)
-  const handleStatusChange = (id, field) => {
-    setStudents(prev =>
-      prev.map(s =>
-        s.id === id ? { ...s, [field]: !s[field] } : s
-      )
-    );
-    // TODO: API 호출로 실제 상태 업데이트
-    console.log(`학생 ${id}의 ${field} 상태 변경`);
+  // ✅ 재학 여부 / 납부 여부 변경 핸들러
+  const handleStatusChange = async (studentNum, field) => {
+    try {
+      // 프론트에서 먼저 토글 적용
+      setStudents(prev =>
+        prev.map(s =>
+          s.studentNum === studentNum ? { ...s, [field]: !s[field] } : s
+        )
+      );
+
+      // 변경할 API 엔드포인트 선택
+      let endpoint = "";
+      if (field === "isStudent") {
+        endpoint = `${API_BASE_URL}/mypage/council/change-enroll`;
+      } else if (field === "councilFeePaid") {
+        endpoint = `${API_BASE_URL}/mypage/council/change-council-pee`;
+      }
+
+      // ✅ 서버로 상태 변경 요청
+      await axios.post(
+        endpoint,
+        { studentNum },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      console.log(`${studentNum}의 ${field} 상태 변경 완료`);
+    } catch (err) {
+      console.error(`${studentNum}의 ${field} 상태 변경 실패:`, err);
+    }
   };
 
+  // ✅ 검색 필터
   const filteredStudents = students.filter(
     s =>
       s.name.includes(searchText) ||
@@ -74,32 +111,27 @@ export default function CouncilFee() {
             <div className="noapplicants">학생이 없습니다.</div>
           ) : (
             filteredStudents.map(s => (
-              <div
-                key={s.id}
-                className="userrow"
-                style={{ cursor: "default" }}
-              >
+              <div key={s.studentNum} className="userrow" style={{ cursor: "default" }}>
                 <div className="userinfo">
                   <div className="username">
                     {s.name} ({s.studentNum})
                   </div>
-                  <div className="userstatus">
-                    {s.department}
-                  </div>
+                  <div className="userstatus">{s.department}</div>
                 </div>
+
                 <div className="actionbuttons">
-                  {/* 재학 여부 버튼 */}
+                  {/* ✅ 재학 여부 버튼 */}
                   <button
                     className={s.isStudent ? "activebtn" : "inactivebtn"}
-                    onClick={() => handleStatusChange(s.id, "isStudent")}
+                    onClick={() => handleStatusChange(s.studentNum, "isStudent")}
                   >
                     {s.isStudent ? "재학생" : "휴학생"}
                   </button>
 
-                  {/* 납부 여부 버튼 */}
+                  {/* ✅ 납부 여부 버튼 */}
                   <button
                     className={s.councilFeePaid ? "activebtn" : "inactivebtn"}
-                    onClick={() => handleStatusChange(s.id, "councilFeePaid")}
+                    onClick={() => handleStatusChange(s.studentNum, "councilFeePaid")}
                   >
                     {s.councilFeePaid ? "납부" : "미납부"}
                   </button>
