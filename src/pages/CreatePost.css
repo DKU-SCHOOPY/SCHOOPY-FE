@@ -43,7 +43,7 @@
   color: white;
 }
 
-/* 학과 선택 드롭다운 스타일 */
+/* 학과 선택 드롭다운 스타일
 .dropdown {
   position: relative;
   width: 100%;
@@ -88,4 +88,4 @@
 
 .dropdown-item:hover {
   background: #f5f5f5;
-}
+} */

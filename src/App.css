@@ -117,7 +117,7 @@
 .dropdown-selected {
   border: 1px solid #ddd;
   border-radius: 12px;
-  padding: 12px;
+  padding: 14px;
   background-color: white;
   display: flex;
   justify-content: space-between;
