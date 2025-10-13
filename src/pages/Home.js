@@ -11,12 +11,10 @@ const FILTERS = [
 ];
 
 export default function Home() {
-  const [posts, setPosts] = useState([]);
+  const [post, setPosts] = useState([]);
   const [selected, setSelected] = useState(FILTERS[0]);
-  const [openDropdownId, setOpenDropdownId] = useState(null);
   const navigate = useNavigate();
 
-  // 이벤트 가져오기
   useEffect(() => {
     async function fetchEvents() {
       try {
@@ -26,6 +24,7 @@ export default function Home() {
           }
         });
         setPosts(res.data);
+        console.log(res);
       } catch (err) {
         console.error("이벤트 불러오기 실패", err);
       }
@@ -33,22 +32,7 @@ export default function Home() {
     fetchEvents();
   }, []);
 
-  // 삭제
-  const handleDelete = async (eventCode) => {
-    if (!window.confirm("정말 삭제하시겠습니까?")) return;
-
-    try {
-      await axios.delete(`${API_BASE_URL}/events/${eventCode}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      setPosts((prev) => prev.filter(post => post.eventCode !== eventCode));
-    } catch (err) {
-      console.error("삭제 실패", err);
-      alert("삭제에 실패했습니다.");
-    }
-  };
-
-  const filteredPosts = posts.filter(
+  const filteredPosts = post.filter(
     post => selected === "전체" || post.department === selected
   );
 
@@ -89,40 +73,6 @@ export default function Home() {
               <div className="home-event-title">{post.eventName}</div>
               <div className="home-event-sub">{post.department}</div>
               <div className="home-event-desc">{post.eventDescription}</div>
-            </div>
-
-            {/* 우측 상단 드롭다운 버튼 */}
-            <div
-              className="dropdown-wrapper"
-              onClick={(e) => e.stopPropagation()} // 카드 클릭 막기
-            >
-              <button
-                className="dropdown-btn"
-                onClick={() =>
-                  setOpenDropdownId(
-                    openDropdownId === post.eventCode ? null : post.eventCode
-                  )
-                }
-              >
-                ⋮
-              </button>
-
-              {openDropdownId === post.eventCode && (
-                <div className="dropdown-menu">
-                  <div
-                    className="dropdown-item"
-                    onClick={() => navigate(`/edit-event/${post.eventCode}`)}
-                  >
-                    수정
-                  </div>
-                  <div
-                    className="dropdown-item"
-                    onClick={() => handleDelete(post.eventCode)}
-                  >
-                    삭제
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         ))}
