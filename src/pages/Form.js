@@ -105,15 +105,17 @@ function FormPage() {
     } else if (remitType === "카카오페이") {
       url = form.qr_kakaopay_x; // 카카오페이 QR URL
     }
+    
+    const newWindow = window.open(url, "_blank");
 
-    if (url) {
-      window.open(url, "_blank"); // 새 창 열기
-      setCouncilFeePaid(true);
+    if (newWindow && !newWindow.closed) {
+    // 팝업이 정상적으로 열림
+    setCouncilFeePaid(true);
 
-      // alert를 다음 이벤트 루프로 넘겨 새 창이 먼저 열리도록 함
-      setTimeout(() => {
-        alert(remitType + " 송금 완료");
-      }, 100);
+    // 팝업이 뜨는 걸 보장하기 위해 requestAnimationFrame으로 한 프레임 뒤로 미룸
+    requestAnimationFrame(() => {
+      alert(remitType + " 송금 완료");
+    });
     } else {
       alert(remitType + " QR 코드가 등록되어 있지 않습니다.");
     }
