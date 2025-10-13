@@ -12,7 +12,7 @@ function EventDetail() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [applicationStatus, setApplicationStatus] = useState(null); // 신청 상태
   const role = localStorage.getItem("role");
-  
+
   useEffect(() => {
     const fetchEvent = async () => {
       try {
@@ -22,7 +22,6 @@ function EventDetail() {
         });
 
         if (response.data.code === "SU") {
-          console.log(response.data);
           setEventData(response.data);
         } else {
           console.error("데이터 수신 실패:", response.data.message);
@@ -31,35 +30,35 @@ function EventDetail() {
         console.error("이벤트 불러오기 실패", error);
       }
     };
-// 학생의 신청 상태 확인 함수
-  const checkApplicationStatus = async () => {
-    
-    try {
-      const studentNum = localStorage.getItem("studentNum");
-      const res = await axios.post(
-        `${API_BASE_URL}/event/student/application-status`,
-        {
-          eventCode: Number(eventCode),
-          studentNum: studentNum
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
-        }
-      );
 
-      // 서버에서 반환하는 상태에 따라 설정
-      if (res.data && res.data.applicationStatus === true) {
-        setApplicationStatus('pending'); // 이미 신청한 상태
-      } else {
-        setApplicationStatus('none'); // 신청하지 않은 상태
+    // 학생의 신청 상태 확인 함수
+    const checkApplicationStatus = async () => {
+      try {
+        const studentNum = localStorage.getItem("studentNum");
+        const res = await axios.post(
+          `${API_BASE_URL}/event/student/application-status`,
+          {
+            eventCode: Number(eventCode),
+            studentNum: studentNum
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          }
+        );
+
+        // 서버에서 반환하는 상태에 따라 설정
+        if (res.data && res.data.applicationStatus === true) {
+          setApplicationStatus('pending'); // 이미 신청한 상태
+        } else {
+          setApplicationStatus('none'); // 신청하지 않은 상태
+        }
+      } catch (error) {
+        console.error('신청 상태 확인 오류:', error);
+        setApplicationStatus('none');
       }
-    } catch (error) {
-      console.error('신청 상태 확인 오류:', error);
-      setApplicationStatus('none');
-    }
-  };
+    };
 
     fetchEvent();
     checkApplicationStatus();
@@ -77,6 +76,24 @@ function EventDetail() {
     setCurrentIndex((prev) =>
       prev === eventData.eventImages.length - 1 ? 0 : prev + 1
     );
+  };
+
+  // 게시물 삭제 함수
+  const handleDelete = async () => {
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+
+    try {
+      await axios.delete(`${API_BASE_URL}/events/${eventData.eventCode}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      alert("게시물이 삭제되었습니다.");
+      navigate(-1); // 이전 페이지로 이동
+    } catch (error) {
+      console.error("삭제 실패:", error);
+      alert("삭제에 실패했습니다.");
+    }
   };
 
   if (!eventData) {
@@ -98,8 +115,6 @@ function EventDetail() {
         <span className="department-name">{eventData.department}</span>
       </div>
 
-
-
       <div className="event-info-container-vertical">
         <div className="event-info-row">
           <span className="event-info-icon">📢</span>
@@ -109,13 +124,11 @@ function EventDetail() {
         <div className="event-info-row">
           <span className="event-info-icon">👥</span>
           <span className="event-info-label">모집인원</span>
-          {/*<span className="event-info-value">100명</span>*/}
           <span className="event-info-value">{eventData.maxParticipant}명</span>
         </div>
         <div className="event-info-row">
           <span className="event-info-icon">📅</span>
           <span className="event-info-label">행사 날짜</span>
-          {/*<span className="event-info-value">2025.08.20 ~ 2025.08.22</span>*/}
           <span className="event-info-value">{eventData.eventStartDate} ~ {eventData.eventEndDate}</span>
         </div>
         <div className="event-info-row">
@@ -125,16 +138,13 @@ function EventDetail() {
         </div>
       </div>
 
-
-
       <div className="event-description">
         {eventData.eventDescription?.split("\n").map((line, idx) => (
           <p key={idx}>{line.trim()}</p>
         ))}
       </div>
 
-
-      {eventData.eventImages.length > 0 && (
+      {eventData.eventImages && eventData.eventImages.length > 0 && (
         <div className="carousel">
           <button className="carousel-btn left" onClick={prevImage}>‹</button>
           <img
@@ -146,35 +156,32 @@ function EventDetail() {
         </div>
       )}
 
-      {/* 신청하기 버튼: 최대 신청 인원이 1 이상일 때만 노출 */}
+      {/* 신청하기 버튼: STUDENT만 */}
       {eventData.maxParticipant > 0 && role === "STUDENT" && (
         <>
-          {/* 신청 상태 메시지 */}
           {applicationStatus === 'pending' && (
             <div className="status-message info">
               이미 신청하셨습니다. 관리자 승인을 기다리고 있습니다.
             </div>
           )}
-
-          {/* 신청 가능한 상태일 때만 신청하기 버튼 표시 */}
-          {applicationStatus === 'none' ? (
+          {applicationStatus === 'none' && (
             <button
               className="big-button"
               onClick={() => navigate(`/formquest/${eventData.eventCode}`)}
             >
               신청하기
             </button>
-          ) : (
-            <div className="application-status-container">
-              <div className="status-icon">
-                ⏳
-              </div>
-              <div className="status-text">
-                신청이 완료되었습니다. 관리자의 승인을 기다리고 있습니다.
-              </div>
-            </div>
           )}
         </>
+      )}
+
+      {(role === "ADMIN" || role === "OFFICER") && (
+        <button
+          className="big-button delete-button"
+          onClick={handleDelete}
+        >
+          게시물 삭제
+        </button>
       )}
     </div>
   );

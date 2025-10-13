@@ -64,11 +64,13 @@ export default function Home() {
             key={post.eventCode}
             onClick={() => navigate(`/eventdetail/${post.eventCode}`)}
           >
-            <img
-              className="home-event-image"
-              src={post.eventImages?.[0] || "/003.jpg"}
-              alt={post.eventName}
-            />
+            {post.eventImages && post.eventImages.length > 0 ? (
+              <img
+                className="home-event-image"
+                src={post.eventImages[0]}
+                alt={post.eventName}
+              />
+            ) : null }
             <div className="home-event-info">
               <div className="home-event-title">{post.eventName}</div>
               <div className="home-event-sub">{post.department}</div>
