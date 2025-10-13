@@ -7,7 +7,6 @@ import { connectSocket, getSocket, closeSocket } from "../socket";
 
 function Chatting() {
   const location = useLocation();
-  const { roomId } = useParams();
   const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
@@ -18,6 +17,7 @@ function Chatting() {
   // 이전 페이지에서 전달받은 상대 학번, 이름
   const peerId = String(location.state?.otherUserId || "").trim();
   const peerName = location.state?.otherUserName || "";
+  const roomId = location.state?.roomId || "";
 
   const fetchMessages = async () => {
     if (!roomId) return; // roomId 없으면 불러오기 API 안 호출
