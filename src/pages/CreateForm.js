@@ -149,6 +149,14 @@ const AddSchedule = () => {
           const code = jsQR(imageData.data, imageData.width, imageData.height);
 
           if (code) {
+            let qrData = code.data;
+
+            // ✅ KakaoPay QR 변환 로직 추가
+            if (qrData.startsWith("https://qr.kakaopay.com/")) {
+              const qrCodeId = qrData.replace("https://qr.kakaopay.com/", "");
+              qrData = `kakaotalk://kakaopay/money/to/qr?qr_code=${qrCodeId}`;
+            }
+
             setFormData(prev => ({
               ...prev,
               qrCodeImages: {
