@@ -182,3 +182,28 @@
   margin-bottom: 30px;
   line-height: 1.5;
 }
+.big-button {
+  display: inline-block;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #4f46e5; /* 기본 파란색 */
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.big-button:hover {
+  background-color: #3730a3; /* 호버 색상 */
+}
+
+.delete-button {
+  background-color: #e53e3e; /* 빨간색 */
+}
+
+.delete-button:hover {
+  background-color: #9b2c2c;
+}
