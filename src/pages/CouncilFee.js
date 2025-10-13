@@ -15,7 +15,13 @@ export default function CouncilFee() {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const res = await axios.post("/mypage/council/check", { department });
+        const res = await axios.post("/mypage/council/check", { department },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
+          
         if (res.data.code === "SU" && Array.isArray(res.data.councilMembers)) {
           const mapped = res.data.councilMembers.map((m, index) => ({
             id: index + 1,
