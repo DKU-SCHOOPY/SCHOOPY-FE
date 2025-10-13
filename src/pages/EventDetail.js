@@ -15,6 +15,7 @@ function EventDetail() {
   // 학생의 신청 상태 확인 함수
   const checkApplicationStatus = async () => {
     try {
+      const role = localStorage.getItem("role");
       const studentNum = localStorage.getItem("studentNum");
       const res = await axios.post(
         `${API_BASE_URL}/event/student/application-status`,
@@ -147,7 +148,7 @@ function EventDetail() {
       )}
 
       {/* 신청하기 버튼: 최대 신청 인원이 1 이상일 때만 노출 */}
-      {eventData.maxParticipant > 0 && (
+      {eventData.maxParticipant > 0 && role === "STUDENT" && (
         <>
           {/* 신청 상태 메시지 */}
           {applicationStatus === 'pending' && (
