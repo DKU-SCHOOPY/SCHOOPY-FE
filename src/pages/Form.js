@@ -108,8 +108,10 @@ function FormPage() {
     if (url) {
       window.open(url, "_blank");
       setCouncilFeePaid(true);
+      } else {
       alert(remitType + " QR 코드가 등록되어 있지 않습니다.");
-  };
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -344,6 +346,6 @@ function FormPage() {
       )}
     </div>
   );
-}
+};
 
 export default FormPage;
