@@ -11,11 +11,30 @@ function EventDetail() {
   const [eventData, setEventData] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [applicationStatus, setApplicationStatus] = useState(null); // 신청 상태
+  const role = localStorage.getItem("role");
+  
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const payload = { eventCode: parseInt(eventCode) };
+        const response = await axios.post(`${API_BASE_URL}/home/get-event`, payload, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        });
 
-  // 학생의 신청 상태 확인 함수
+        if (response.data.code === "SU") {
+          console.log(response.data);
+          setEventData(response.data);
+        } else {
+          console.error("데이터 수신 실패:", response.data.message);
+        }
+      } catch (error) {
+        console.error("이벤트 불러오기 실패", error);
+      }
+    };
+// 학생의 신청 상태 확인 함수
   const checkApplicationStatus = async () => {
+    
     try {
-      const role = localStorage.getItem("role");
       const studentNum = localStorage.getItem("studentNum");
       const res = await axios.post(
         `${API_BASE_URL}/event/student/application-status`,
@@ -41,26 +60,6 @@ function EventDetail() {
       setApplicationStatus('none');
     }
   };
-
-  useEffect(() => {
-    const fetchEvent = async () => {
-      try {
-        const payload = { eventCode: parseInt(eventCode) };
-
-        const response = await axios.post(`${API_BASE_URL}/home/get-event`, payload, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        });
-
-        if (response.data.code === "SU") {
-          console.log(response.data);
-          setEventData(response.data);
-        } else {
-          console.error("데이터 수신 실패:", response.data.message);
-        }
-      } catch (error) {
-        console.error("이벤트 불러오기 실패", error);
-      }
-    };
 
     fetchEvent();
     checkApplicationStatus();

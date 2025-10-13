@@ -91,12 +91,12 @@
 
 .home-event-desc {
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* 벤더 프리픽스 */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 
-  line-clamp: 2; /* 표준 속성 추가 */
-  box-orient: vertical; /* 표준 속성 추가 */
+  line-clamp: 2;
+  box-orient: vertical;
 }
 
 .dropdown-wrapper {
