@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import axios from "axios";
-import { API_BASE_URL } from "../config";
 import "./CouncilFee.css";
 
 export default function CouncilFee() {
@@ -10,74 +9,56 @@ export default function CouncilFee() {
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const department = localStorage.getItem("department"); // 예: "소프트웨어학과"
 
-  // ✅ 학생 리스트 불러오기
+  // ✅ 학생회비 정보 불러오기
   useEffect(() => {
-    const fetchCouncilStudents = async () => {
+    const fetchStudents = async () => {
       try {
-        const department = localStorage.getItem("department");
-
-        const res = await axios.post(
-          `${API_BASE_URL}/mypage/council/check`,
-          { department },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-
-        console.log("학생회비 관리 데이터:", res.data);
-
-        if (res.data.code === "SU" && Array.isArray(res.data.students)) {
-          setStudents(res.data.students);
+        const res = await axios.post("/mypage/council/check", { department });
+        if (res.data.code === "SU" && Array.isArray(res.data.councilMembers)) {
+          const mapped = res.data.councilMembers.map((m, index) => ({
+            id: index + 1,
+            name: m.name,
+            studentNum: m.studentNum,
+            department: m.department,
+            isStudent: m.enrolled,
+            councilFeePaid: m.councilPee,
+          }));
+          setStudents(mapped);
         } else {
-          console.warn("학생 데이터 형식이 올바르지 않음:", res.data);
-          setStudents([]);
+          console.error("데이터 형식 오류:", res.data);
         }
       } catch (err) {
-        console.error("학생 데이터 불러오기 실패:", err);
-        setStudents([]);
+        console.error("학생회비 데이터 요청 실패:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCouncilStudents();
-  }, []);
+    fetchStudents();
+  }, [department]);
 
-  // ✅ 재학 여부 / 납부 여부 변경 핸들러
+  // ✅ 상태 변경 핸들러 (재학 여부 / 납부 여부)
   const handleStatusChange = async (studentNum, field) => {
     try {
-      // 프론트에서 먼저 토글 적용
-      setStudents(prev =>
-        prev.map(s =>
-          s.studentNum === studentNum ? { ...s, [field]: !s[field] } : s
-        )
-      );
-
-      // 변경할 API 엔드포인트 선택
-      let endpoint = "";
       if (field === "isStudent") {
-        endpoint = `${API_BASE_URL}/mypage/council/change-enroll`;
+        await axios.post("/mypage/council/change-enroll", { studentNum });
       } else if (field === "councilFeePaid") {
-        endpoint = `${API_BASE_URL}/mypage/council/change-council-pee`;
+        await axios.post("/mypage/council/change-council-pee", { studentNum });
       }
 
-      // ✅ 서버로 상태 변경 요청
-      await axios.post(
-        endpoint,
-        { studentNum },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
+      // 프론트엔드 상태 즉시 반영
+      setStudents(prev =>
+        prev.map(s =>
+          s.studentNum === studentNum
+            ? { ...s, [field]: !s[field] }
+            : s
+        )
       );
-
-      console.log(`${studentNum}의 ${field} 상태 변경 완료`);
     } catch (err) {
-      console.error(`${studentNum}의 ${field} 상태 변경 실패:`, err);
+      console.error(`상태 변경 실패 (${field}):`, err);
+      alert("상태 변경에 실패했습니다.");
     }
   };
 
@@ -118,9 +99,8 @@ export default function CouncilFee() {
                   </div>
                   <div className="userstatus">{s.department}</div>
                 </div>
-
                 <div className="actionbuttons">
-                  {/* ✅ 재학 여부 버튼 */}
+                  {/* 재학 여부 버튼 */}
                   <button
                     className={s.isStudent ? "activebtn" : "inactivebtn"}
                     onClick={() => handleStatusChange(s.studentNum, "isStudent")}
@@ -128,7 +108,7 @@ export default function CouncilFee() {
                     {s.isStudent ? "재학생" : "휴학생"}
                   </button>
 
-                  {/* ✅ 납부 여부 버튼 */}
+                  {/* 납부 여부 버튼 */}
                   <button
                     className={s.councilFeePaid ? "activebtn" : "inactivebtn"}
                     onClick={() => handleStatusChange(s.studentNum, "councilFeePaid")}
