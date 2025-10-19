@@ -177,7 +177,7 @@ function FormPage() {
           }
         }
       );
-      alert(res.data.message);
+      alert("신청이 완료되었습니다! 🎉");
       navigate('/formlist');
     } catch (err) {
       alert("신청 중 오류: " + (err.response?.data?.message || err.message));
@@ -186,6 +186,17 @@ function FormPage() {
 
   // 송금 QR URL이 있는지 확인
   const hasRemitQR = !!(form.qr_toss_x || form.qr_kakaopay_x);
+// 신청 가능 여부 판단 함수
+  const isApplicationPeriod = () => {
+    if (!form?.surveyStartDate || !form?.surveyEndDate) return false;
+
+    const now = new Date();
+    const start = new Date(form.surveyStartDate);
+    const end = new Date(form.surveyEndDate);
+
+    return now >= start && now <= end;
+  };
+
 
   return (
     <div className="container">
@@ -317,13 +328,17 @@ function FormPage() {
                   {councilFeePaid ? "신청하기" : "송금 후 신청 가능"}
                 </button>
               </>
-            ) : (
+            ) : isApplicationPeriod() ? (
               <button
                 className="big-button"
                 type="submit"
               >
                 신청하기
               </button>
+            ) : (
+              <div className="status-message warning">
+                 현재는 신청 기간이 아닙니다.
+              </div>
             )}
           </form>
         </>
