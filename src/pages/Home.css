@@ -91,10 +91,36 @@
 
 .home-event-desc {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  display: box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
-  overflow: hidden;
-
-  line-clamp: 2;
   box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #444;
+  font-size: 14px;
+  line-height: 1.4em;
+  transition: all 0.2s ease;
+}
+
+.home-event-desc.expanded {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  overflow: visible;
+}
+
+.show-more-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 4px;
+  padding: 0;
+  text-align: left;
+}
+.show-more-btn:hover {
+  text-decoration: underline;
 }

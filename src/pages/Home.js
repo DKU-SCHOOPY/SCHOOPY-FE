@@ -12,6 +12,7 @@ const FILTERS = [
 
 export default function Home() {
   const [post, setPosts] = useState([]);
+  const [expanded, setExpanded] = useState({}); // ✅ 각 게시물의 더보기 상태 저장
   const [selected, setSelected] = useState(FILTERS[0]);
   const navigate = useNavigate();
 
@@ -24,7 +25,6 @@ export default function Home() {
           }
         });
         setPosts(res.data);
-        console.log(res);
       } catch (err) {
         console.error("이벤트 불러오기 실패", err);
       }
@@ -37,6 +37,14 @@ export default function Home() {
   );
 
   const noticeCount = localStorage.getItem("noticeCount");
+
+  // ✅ 더보기 버튼 클릭 시 상태 토글
+  const toggleExpand = (eventCode) => {
+    setExpanded(prev => ({
+      ...prev,
+      [eventCode]: !prev[eventCode]
+    }));
+  };
 
   return (
     <div className="container">
@@ -62,19 +70,37 @@ export default function Home() {
           <div
             className="home-event-card"
             key={post.eventCode}
-            onClick={() => navigate(`/eventdetail/${post.eventCode}`)}
           >
-            {post.eventImages && post.eventImages.length > 0 ? (
+            {post.eventImages && post.eventImages.length > 0 && (
               <img
                 className="home-event-image"
                 src={post.eventImages[0]}
                 alt={post.eventName}
+                onClick={() => navigate(`/eventdetail/${post.eventCode}`)}
               />
-            ) : null }
+            )}
             <div className="home-event-info">
-              <div className="home-event-title">{post.eventName}</div>
+              <div className="home-event-title" onClick={() => navigate(`/eventdetail/${post.eventCode}`)}>
+                {post.eventName}
+              </div>
               <div className="home-event-sub">{post.department}</div>
-              <div className="home-event-desc">{post.eventDescription}</div>
+
+              {/* 설명 부분 */}
+              <div
+                className={`home-event-desc ${expanded[post.eventCode] ? 'expanded' : ''}`}
+              >
+                {post.eventDescription}
+              </div>
+
+              {/* 더보기 / 접기 버튼 */}
+              {post.eventDescription?.length > 100 && (
+                <button
+                  className="show-more-btn"
+                  onClick={() => toggleExpand(post.eventCode)}
+                >
+                  {expanded[post.eventCode] ? "접기 ▲" : "더보기 ▼"}
+                </button>
+              )}
             </div>
           </div>
         ))}
