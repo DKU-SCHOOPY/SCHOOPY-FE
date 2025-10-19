@@ -92,8 +92,8 @@
 .home-event-desc {
   display: -webkit-box;
   display: box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
   -webkit-box-orient: vertical;
   box-orient: vertical;
   overflow: hidden;
@@ -106,8 +106,8 @@
 
 .home-event-desc.expanded {
   display: block;
-  -webkit-line-clamp: unset;
-  line-clamp: unset;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
   overflow: visible;
 }
 

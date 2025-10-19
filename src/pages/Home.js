@@ -12,7 +12,7 @@ const FILTERS = [
 
 export default function Home() {
   const [post, setPosts] = useState([]);
-  const [expanded, setExpanded] = useState({}); // ✅ 각 게시물의 더보기 상태 저장
+  const [expanded, setExpanded] = useState({});
   const [selected, setSelected] = useState(FILTERS[0]);
   const navigate = useNavigate();
 
