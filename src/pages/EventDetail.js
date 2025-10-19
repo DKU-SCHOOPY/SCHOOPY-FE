@@ -99,6 +99,16 @@ function EventDetail() {
   if (!eventData) {
     return <div className="container">이벤트 정보를 불러오는 중...</div>;
   }
+  // 신청 가능 여부 판단 함수
+const isApplicationPeriod = () => {
+  if (!eventData?.surveyStartDate || !eventData?.surveyEndDate) return false;
+
+  const now = new Date();
+  const start = new Date(eventData.surveyStartDate);
+  const end = new Date(eventData.surveyEndDate);
+
+  return now >= start && now <= end;
+};
 
   return (
     <div className="container">
@@ -164,16 +174,25 @@ function EventDetail() {
               이미 신청하셨습니다. 관리자 승인을 기다리고 있습니다.
             </div>
           )}
-          {applicationStatus === 'none' && (
-            <button
-              className="big-button"
-              onClick={() => navigate(`/formquest/${eventData.eventCode}`)}
-            >
-              신청하기
-            </button>
-          )}
-        </>
-      )}
+         {applicationStatus === 'none' && (
+          <>
+            {isApplicationPeriod() ? (
+              <button
+                className="big-button"
+                onClick={() => navigate(`/formquest/${eventData.eventCode}`)}
+              >
+                신청하기
+              </button>
+            ) : (
+              <div className="status-message warning">
+                현재는 신청 기간이 아닙니다.
+              </div>
+            )}
+          </>
+        )}
+      </>
+    )}
+
 
       {(role === "ADMIN" || role === "OFFICER") && (
         <button

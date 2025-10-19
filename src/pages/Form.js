@@ -108,7 +108,7 @@ function FormPage() {
     if (url) {
       window.open(url, "_blank");
       setCouncilFeePaid(true);
-      } else {
+    } else {
       alert(remitType + " QR 코드가 등록되어 있지 않습니다.");
     }
   }
@@ -186,18 +186,28 @@ function FormPage() {
 
   // 송금 QR URL이 있는지 확인
   const hasRemitQR = !!(form.qr_toss_x || form.qr_kakaopay_x);
-// 신청 가능 여부 판단 함수
-  const isApplicationPeriod = () => {
-    if (!form?.surveyStartDate || !form?.surveyEndDate) return false;
 
+  // 신청 가능 여부 판단
+  const isApplicationPeriod = form && (() => {
     const now = new Date();
     const start = new Date(form.surveyStartDate);
     const end = new Date(form.surveyEndDate);
-
     return now >= start && now <= end;
-  };
+  })();
 
-
+  if (form && !isApplicationPeriod) {
+    return (
+      <div className="container">
+        <Header title="행사 신청" showBack />
+        <div className="status-message warning">
+          현재는 신청 기간이 아닙니다.
+        </div>
+        <button className="back-button" onClick={() => navigate('/formlist')}>
+          목록으로 돌아가기
+        </button>
+      </div>
+    );
+  }
   return (
     <div className="container">
       <Header title="행사 신청" showBack />
@@ -328,17 +338,13 @@ function FormPage() {
                   {councilFeePaid ? "신청하기" : "송금 후 신청 가능"}
                 </button>
               </>
-            ) : isApplicationPeriod() ? (
+            ) : (
               <button
                 className="big-button"
                 type="submit"
               >
                 신청하기
               </button>
-            ) : (
-              <div className="status-message warning">
-                 현재는 신청 기간이 아닙니다.
-              </div>
             )}
           </form>
         </>
