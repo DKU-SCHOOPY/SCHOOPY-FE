@@ -16,13 +16,13 @@ export default function Home() {
   const [selected, setSelected] = useState(FILTERS[0]);
   const navigate = useNavigate();
   const studentNum = localStorage.getItem("studentNum");
-  const isPresident = localStorage.getItem("role") === "COUNCIL";
+  const president = localStorage.getItem("role") === "COUNCIL";
 
   useEffect(() => {
     async function fetchEvents() {
       try {
         const res = await axios.post(`${API_BASE_URL}/home/feedback`,
-          { studentNum, isPresident }, {
+          { studentNum, president }, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }
@@ -39,6 +39,7 @@ export default function Home() {
     post => selected === "전체" || post.department === selected
   );
 
+  localStorage.setItem("noticeCount", res.data.noticeCount);
   const noticeCount = localStorage.getItem("noticeCount");
 
   // ✅ 더보기 버튼 클릭 시 상태 토글
