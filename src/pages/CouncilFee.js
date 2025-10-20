@@ -128,7 +128,7 @@ export default function CouncilFee() {
             <option value="studentNum">학번</option>
           </select>
           <button className="sort-btn" onClick={toggleSortOrder}>
-            {sortOrder === "asc" ? "▲ 오름차순" : "▼ 내림차순"}
+            {sortOrder === "asc" ? "▲" : "▼"}
           </button>
         </div>
       </div>

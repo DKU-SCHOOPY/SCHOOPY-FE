@@ -109,23 +109,15 @@
 }
 
 .sort-select {
-  padding: 6px 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
   background-color: white;
-  font-size: 14px;
+  color: rgb(119, 119, 119);
+  font-size: 8px;
 }
 
 .sort-btn {
-  padding: 6px 10px;
   border: none;
-  border-radius: 6px;
-  background-color: #4e73df;
-  color: white;
-  font-size: 13px;
+  background-color: white;
+  color: rgb(119, 119, 119);
+  font-size: 8px;
   cursor: pointer;
-}
-
-.sort-btn:hover {
-  background-color: #3b5ccc;
 }

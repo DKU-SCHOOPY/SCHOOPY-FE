@@ -72,34 +72,38 @@ export default function Alarm() {
   };
 
   // ✅ 알림 클릭 시: 팝업 먼저 띄우기
-  const handleNotificationClick = async (id) => {
-    try {
-      // 상세 내용 조회
-      const res = await axios.post(
-        `${API_BASE_URL}/notice/all/read`,
-        { noticeId: id },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+const handleNotificationClick = async (id) => {
+  try {
+    // 상세 내용 조회
+    const res = await axios.post(
+      `${API_BASE_URL}/notice/all/read`,
+      { noticeId: id },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
 
-      console.log("알림 상세 응답", res.data);
+    console.log("알림 상세 응답", res.data);
 
-      // 팝업에 보여줄 데이터 저장
-      setSelectedNotice({
-        id,
-        sender: res.data.sender,
-        title: res.data.title,
-        message: res.data.message,
-      });
+    const notice = res.data.notice;
+    if (!notice) return;
 
-      // 팝업이 닫힐 때 실제 읽음 처리 호출
-    } catch (err) {
-      console.error("알림 상세 불러오기 실패", err);
-    }
-  };
+    // ✅ 팝업에 보여줄 데이터 저장
+    setSelectedNotice({
+      id: notice.noticeId,
+      sender: notice.sender?.name || "알 수 없음",
+      title: notice.title,
+      message: notice.message,
+    });
+
+    // 팝업 닫을 때 읽음 처리 실행됨
+  } catch (err) {
+    console.error("알림 상세 불러오기 실패", err);
+  }
+};
+
 
   // ✅ 팝업 닫기 + 읽음 처리
   const handleClosePopup = async () => {
