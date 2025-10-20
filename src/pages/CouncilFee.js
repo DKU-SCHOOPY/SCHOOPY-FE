@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
+import { FiArrowDownRight, FiArrowUpRight  } from "react-icons/fi";
 import "./CouncilFee.css";
 
 export default function CouncilFee() {
@@ -128,7 +129,7 @@ export default function CouncilFee() {
             <option value="studentNum">학번</option>
           </select>
           <button className="sort-btn" onClick={toggleSortOrder}>
-            {sortOrder === "asc" ? "▲" : "▼"}
+            {sortOrder === "asc" ? FiArrowUpRight : FiArrowDownRight }
           </button>
         </div>
       </div>

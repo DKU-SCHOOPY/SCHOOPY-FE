@@ -75,7 +75,7 @@
 .popup {
   background: white;
   border-radius: 12px;
-  padding: 20px 25px;
+  padding: 20px 15px;
   max-width: 350px;
   width: 80%;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -83,38 +83,38 @@
 }
 
 .popup-title {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .popup-sender {
   font-size: 14px;
   color: #666;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .popup-message {
-  font-size: 15px;
+  font-size: 14px;
   color: #333;
   white-space: pre-line;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .popup-close {
   display: block;
   width: 100%;
-  background-color: #4e73df;
+  background-color: #6a5af9;
   color: white;
   border: none;
   border-radius: 8px;
   padding: 8px 0;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .popup-close:hover {
-  background-color: #3b5ccc;
+  background-color: #6a5af9;
 }
 
 @keyframes fadeIn {

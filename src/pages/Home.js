@@ -15,11 +15,14 @@ export default function Home() {
   const [expanded, setExpanded] = useState({});
   const [selected, setSelected] = useState(FILTERS[0]);
   const navigate = useNavigate();
+  const studentNum = localStorage.getItem("studentNum");
+  const isPresident = localStorage.getItem("role") === "COUNCIL";
 
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const res = await axios.get(`${API_BASE_URL}/home/feedback`, {
+        const res = await axios.post(`${API_BASE_URL}/home/feedback`,
+          { studentNum, isPresident }, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }

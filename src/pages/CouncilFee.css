@@ -104,20 +104,22 @@
 
 .sort-controls {
   display: flex;
-  align-items: center;
+  align-items: right;
   gap: 6px;
 }
 
 .sort-select {
+  padding: 4px 6px;
   background-color: white;
-  color: rgb(119, 119, 119);
-  font-size: 8px;
+  color: #ddd;
+  font-size: 12px;
+  border : 1px solid #ddd;
 }
 
 .sort-btn {
   border: none;
   background-color: white;
-  color: rgb(119, 119, 119);
-  font-size: 8px;
+  color: #ddd;
+  font-size: 14px;
   cursor: pointer;
 }
