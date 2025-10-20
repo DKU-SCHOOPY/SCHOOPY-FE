@@ -57,6 +57,14 @@
   color: #000000;
 }
 
+.alarm-message {
+  overflow: hidden;            /* 넘치는 텍스트 숨기기 */
+  white-space: nowrap;         /* 한 줄로 표시 */
+  text-overflow: ellipsis;     /* 넘치는 부분에 ... 표시 */
+  display: block;              /* text-overflow 적용되려면 block 또는 inline-block이어야 함 */
+}
+
+
 /* 팝업 오버레이 */
 .popup-overlay {
   position: fixed;

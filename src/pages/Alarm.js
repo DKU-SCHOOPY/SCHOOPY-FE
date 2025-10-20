@@ -166,9 +166,9 @@ const handleNotificationClick = async (id) => {
       {selectedNotice && (
         <div className="popup-overlay">
           <div className="popup">
-            <h3 className="popup-title">{selectedNotice.title}</h3>
-            <p className="popup-sender">보낸 사람: {selectedNotice.sender}</p>
-            <p className="popup-message">{selectedNotice.message}</p>
+            <div className="popup-title">{selectedNotice.title}</div>
+            <div className="popup-sender">보낸 사람: {selectedNotice.sender}</div>
+            <div className="popup-message">{selectedNotice.message}</div>
             <button className="popup-close" onClick={handleClosePopup}>
               확인
             </button>
