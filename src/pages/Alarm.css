@@ -57,3 +57,74 @@
   color: #000000;
 }
 
+/* 팝업 오버레이 */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+/* 팝업 본체 */
+.popup {
+  background: white;
+  border-radius: 12px;
+  padding: 20px 25px;
+  max-width: 350px;
+  width: 80%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.popup-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.popup-sender {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.popup-message {
+  font-size: 15px;
+  color: #333;
+  white-space: pre-line;
+  margin-bottom: 20px;
+}
+
+.popup-close {
+  display: block;
+  width: 100%;
+  background-color: #4e73df;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 0;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.popup-close:hover {
+  background-color: #3b5ccc;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

@@ -100,3 +100,32 @@
   font-size: 15px;
   font-weight: 500;
 }
+
+
+.sort-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sort-select {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 14px;
+}
+
+.sort-btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background-color: #4e73df;
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.sort-btn:hover {
+  background-color: #3b5ccc;
+}
