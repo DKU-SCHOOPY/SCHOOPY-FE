@@ -36,7 +36,7 @@ function EventDetail() {
       try {
         const studentNum = localStorage.getItem("studentNum");
         const res = await axios.post(
-          `${API_BASE_URL}/student/application-status`,
+          `${API_BASE_URL}/event/student/application-status`,
           {
             eventCode: Number(eventCode),
             studentNum: studentNum
