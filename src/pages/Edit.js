@@ -44,20 +44,20 @@ function Edit() {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
       } else if (field === "재학여부") {
-        response = await axios.post(`${API_BASE_URL}/mypage/change-enroll`, {
+        response = await axios.post(`${API_BASE_URL}/mypage/student/change-enroll`, {
           studentNum,
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
       } else if (field === "총학생회비 납부 여부") {
-        response = await axios.post(`${API_BASE_URL}/mypage/change-council-pee`, {
+        response = await axios.post(`${API_BASE_URL}/mypage/student/change-council-pee`, {
           studentNum,
           sw: true, 
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
       } else if (field === "과학생회비 납부 여부") {
-        response = await axios.post(`${API_BASE_URL}/mypage/change-council-pee`, {
+        response = await axios.post(`${API_BASE_URL}/mypage/student/change-council-pee`, {
           studentNum,
           sw: false, 
         }, {
