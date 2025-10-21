@@ -10,12 +10,12 @@
 }
 
 /* === 제목 및 설명 === */
-.page-title {
-  font-size: 1.8rem;
+/* .form-page-title {
+  font-size: 1rem;
   font-weight: bold;
   color: #6a5af9;
-  margin-bottom: 18px;
-}
+  margin-bottom: 10px;
+} */
 
 .form-description {
   color: #555;
