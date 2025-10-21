@@ -18,25 +18,32 @@ function FormPage() {
 
 
   const checkApplicationStatus = useCallback(async () => {
-    if (!eventCode) return;
-    try {
-      const studentNum = localStorage.getItem("studentNum");
-      const res = await axios.post(
-        `${API_BASE_URL}/event/student/application-status`,
-        { eventCode: Number(eventCode), studentNum },
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-      );
+  if (!eventCode) return;
+  try {
+    const studentNum = localStorage.getItem("studentNum");
+    const res = await axios.post(
+      `${API_BASE_URL}/event/student/application-status`,
+      { eventCode: Number(eventCode), studentNum },
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+    );
 
-      if (res.data && res.data.applicationStatus === true) {
-        setApplicationStatus("pending");
+    if (res.data.exists) {
+      if (res.data.approved === true || res.data.status === "APPROVED") {
+        setApplicationStatus("completed");
+      } else if (res.data.approved === false || res.data.status === "PENDING") {
+        setApplicationStatus("pending"); 
       } else {
         setApplicationStatus("none");
       }
-    } catch (error) {
-      console.error("신청 상태 확인 오류:", error);
+    } else {
       setApplicationStatus("none");
     }
-  }, [eventCode]);
+  } catch (error) {
+    console.error("신청 상태 확인 오류:", error);
+    setApplicationStatus("none");
+  }
+}, [eventCode]);
+
 
 
   useEffect(() => {
