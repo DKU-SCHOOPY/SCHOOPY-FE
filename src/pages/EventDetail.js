@@ -14,55 +14,56 @@ function EventDetail() {
   const role = localStorage.getItem("role");
 
   useEffect(() => {
-    const fetchEvent = async () => {
-      try {
-        const payload = { eventCode: parseInt(eventCode) };
-        const response = await axios.post(`${API_BASE_URL}/home/get-event`, payload, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        });
+  const fetchEvent = async () => {
+    try {
+      const payload = { eventCode: parseInt(eventCode) };
+      const response = await axios.post(`${API_BASE_URL}/home/get-event`, payload, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
 
-        if (response.data.code === "SU") {
-          setEventData(response.data);
-        } else {
-          console.error("데이터 수신 실패:", response.data.message);
-        }
-      } catch (error) {
-        console.error("이벤트 불러오기 실패", error);
+      if (response.data.code === "SU") {
+        setEventData(response.data);
+      } else {
+        console.error("데이터 수신 실패:", response.data.message);
       }
-    };
+    } catch (error) {
+      console.error("이벤트 불러오기 실패", error);
+    }
+  };
 
-    // 학생의 신청 상태 확인 함수
-    const checkApplicationStatus = async () => {
-      try {
-        const studentNum = localStorage.getItem("studentNum");
-        const res = await axios.post(
-          `${API_BASE_URL}/event/student/application-status`,
-          {
-            eventCode: Number(eventCode),
-            studentNum: studentNum
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          }
-        );
-
-        // 서버에서 반환하는 상태에 따라 설정
-        if (res.data && res.data.applicationStatus === true) {
-          setApplicationStatus('pending'); // 이미 신청한 상태
-        } else {
-          setApplicationStatus('none'); // 신청하지 않은 상태
+  // 신청 상태 확인 (GET 방식)
+  const checkApplicationStatus = async () => {
+    try {
+      const studentNum = localStorage.getItem("studentNum");
+      const res = await axios.get(`${API_BASE_URL}/student/application-status`, {
+        params: {
+          eventCode: Number(eventCode),
+          studentNum: studentNum
+        },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
         }
-      } catch (error) {
-        console.error('신청 상태 확인 오류:', error);
-        setApplicationStatus('none');
-      }
-    };
+      });
 
-    fetchEvent();
-    checkApplicationStatus();
-  }, [eventCode]);
+      if (res.data.exists) {
+        if (res.data.status === "APPROVED") {
+          setApplicationStatus("approved"); // 승인됨
+        } else if (res.data.status === "PENDING") {
+          setApplicationStatus("pending"); // 신청 중
+        }
+      } else {
+        setApplicationStatus("none"); // 없음 (신청 안함 또는 반려됨)
+      }
+    } catch (error) {
+      console.error("신청 상태 확인 오류:", error);
+      setApplicationStatus("none");
+    }
+  };
+
+  fetchEvent();
+  checkApplicationStatus();
+}, [eventCode]);
+
 
   const prevImage = () => {
     if (!eventData || eventData.eventImages.length === 0) return;
@@ -169,29 +170,37 @@ const isApplicationPeriod = () => {
       {/* 신청하기 버튼: STUDENT만 */}
       {eventData.maxParticipant > 0 && role === "STUDENT" && (
         <>
-          {applicationStatus === 'pending' && (
-            <div className="status-message info">
-              이미 신청하셨습니다. 관리자 승인을 기다리고 있습니다.
+          {applicationStatus === "approved" && (
+            <div className="status-message success">
+              🎉 행사 신청 승인 되었습니다. 신청해주셔서 감사합니다.
             </div>
           )}
-         {applicationStatus === 'none' && (
-          <>
-            {isApplicationPeriod() ? (
-              <button
-                className="big-button"
-                onClick={() => navigate(`/formquest/${eventData.eventCode}`)}
-              >
-                신청하기
-              </button>
-            ) : (
-              <div className="status-message warning">
-                현재는 신청 기간이 아닙니다.
-              </div>
-            )}
-          </>
-        )}
-      </>
-    )}
+
+          {applicationStatus === "pending" && (
+            <div className="status-message info">
+              ⏳ 이미 신청하셨습니다. 관리자 승인을 기다리고 있습니다.
+            </div>
+          )}
+
+          {applicationStatus === "none" && (
+            <>
+              {isApplicationPeriod() ? (
+                <button
+                  className="big-button"
+                  onClick={() => navigate(`/formquest/${eventData.eventCode}`)}
+                >
+                  신청하기
+                </button>
+              ) : (
+                <div className="status-message warning">
+                  현재는 신청 기간이 아닙니다.
+                </div>
+              )}
+            </>
+          )}
+        </>
+      )}
+
 
 
       {(role === "ADMIN" || role === "OFFICER") && (
