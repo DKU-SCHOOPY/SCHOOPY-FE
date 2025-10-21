@@ -15,6 +15,9 @@ const Mypage = () => {
     department: '',
     birthDay: '',
     phoneNum: '',
+    councilPee: false,              // ✅ 총학생회비
+    departmentCouncilPee: false,    // ✅ 과학생회비
+    enrolled: false,                // ✅ 재학 여부
   });
 
   useEffect(() => {
@@ -26,22 +29,28 @@ const Mypage = () => {
           { studentNum: studentNum },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
         );
+
         const data = res.data;
         console.log(data);
-        if (data.code === 'SU') {
+
+        if (data.code === 'SU' && data.user) {
+          const u = data.user;
           setUserInfo({
-            name: data.name,
-            studentNum: data.studentNum,
-            department: data.department,
-            birthDay: data.birthDay,
-            phoneNum: data.phoneNum,
+            name: u.name,
+            studentNum: u.studentNum,
+            department: u.department,
+            birthDay: u.birthDay,
+            phoneNum: u.phoneNum,
+            councilPee: u.councilPee,
+            departmentCouncilPee: u.departmentCouncilPee,
+            enrolled: u.enrolled,
           });
-          setIsKakaoLinked(res.data.kakaoLogin === true);
-          setIsNaverLinked(res.data.naverLogin === true);
+          setIsKakaoLinked(data.kakaoLogin === true);
+          setIsNaverLinked(data.naverLogin === true);
         }
       } catch (err) {
         console.error('개인정보 불러오기 실패', err);
@@ -57,8 +66,7 @@ const Mypage = () => {
     localStorage.removeItem("studentNum");
     localStorage.removeItem("role");
     localStorage.removeItem("noticeCount");
-
-    navigate("/login"); // 로그인 페이지로 이동
+    navigate("/login");
   };
 
   return (
@@ -87,6 +95,20 @@ const Mypage = () => {
             <span className="my-label">전화번호</span>
             <span className="value">{userInfo.phoneNum}</span>
           </div>
+
+          {/* ✅ 추가 정보 표시 */}
+          <div className="info-row">
+            <span className="my-label">총학생회비 납부</span>
+            <span className="value">{userInfo.councilPee ? "납부" : "미납부"}</span>
+          </div>
+          <div className="info-row">
+            <span className="my-label">과학생회비 납부</span>
+            <span className="value">{userInfo.departmentCouncilPee ? "납부" : "미납부"}</span>
+          </div>
+          <div className="info-row">
+            <span className="my-label">재학 상태</span>
+            <span className="value">{userInfo.enrolled ? "재학" : "휴학"}</span>
+          </div>
         </div>
       </div>
 
@@ -94,15 +116,14 @@ const Mypage = () => {
         className="edit-button"
         onClick={() =>
           localStorage.getItem("role") === "COUNCIL"
-            ? navigate("/councilfee") // 👉 학생회비 관리 페이지 (예시 경로)
-            : navigate("/edit")        // 👉 개인정보 수정 요청
+            ? navigate("/councilfee")
+            : navigate("/edit")
         }
       >
         {localStorage.getItem("role") === "COUNCIL"
           ? "학생회비 관리"
           : "개인정보 수정 요청"}
       </button>
-
 
       <div className="login-divider">
         <span>SNS계정 연동하여 간편하게 로그인하기</span>
