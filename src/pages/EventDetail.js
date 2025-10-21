@@ -182,7 +182,7 @@ function EventDetail() {
         </>
       )}
       {/* 학생회 버튼 */}
-      {role === "STUDENT_COUNCIL" && (
+       {eventData.maxParticipant > 0 && role === "COUNCIL" && (
         <div className="admin-buttons">
           <button
             className="big-button edit"
@@ -195,7 +195,7 @@ function EventDetail() {
             onClick={async () => {
               if (window.confirm("정말 이 이벤트를 삭제하시겠습니까?")) {
                 try {
-                  await axios.delete(`${API_BASE_URL}/home/delete-event/${eventData.eventCode}`, {
+                  await axios.delete(`${API_BASE_URL}event/council/delete-event/${eventData.eventCode}`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
                   });
                   alert("이벤트가 삭제되었습니다.");
