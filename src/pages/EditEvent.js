@@ -35,7 +35,7 @@ export default function EditEvent() {
 
       console.log("수정 완료:", response.data);
       alert("행사 정보가 성공적으로 수정되었습니다.");
-      navigate(`/event/${eventCode}`);
+      navigate(`/`);
     } catch (error) {
       console.error("행사 수정 실패:", error);
       alert("행사 수정 중 오류가 발생했습니다.");
