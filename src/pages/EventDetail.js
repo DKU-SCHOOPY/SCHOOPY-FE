@@ -10,60 +10,73 @@ function EventDetail() {
   const { eventCode } = useParams();
   const [eventData, setEventData] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [applicationStatus, setApplicationStatus] = useState(null); // 신청 상태
+  const [applicationStatus, setApplicationStatus] = useState(null);
   const role = localStorage.getItem("role");
 
   useEffect(() => {
-  const fetchEvent = async () => {
-    try {
-      const payload = { eventCode: parseInt(eventCode) };
-      const response = await axios.post(`${API_BASE_URL}/home/get-event`, payload, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+    const fetchEvent = async () => {
+      try {
+        const token = localStorage.getItem("accessToken") || localStorage.getItem("token");
+        const payload = { eventCode: parseInt(eventCode) };
+        const response = await axios.post(`${API_BASE_URL}/home/get-event`, payload, {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        });
 
-      if (response.data.code === "SU") {
-        setEventData(response.data);
-      } else {
-        console.error("데이터 수신 실패:", response.data.message);
-      }
-    } catch (error) {
-      console.error("이벤트 불러오기 실패", error);
-    }
-  };
-
-  // 신청 상태 확인 (GET 방식)
-  const checkApplicationStatus = async () => {
-    try {
-      const studentNum = localStorage.getItem("studentNum");
-      const res = await axios.get(`${API_BASE_URL}/student/application-status`, {
-        params: {
-          eventCode: Number(eventCode),
-          studentNum: studentNum
-        },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+        if (response.data.code === "SU") {
+          setEventData(response.data);
+        } else {
+          console.error("데이터 수신 실패:", response.data.message);
         }
-      });
-
-      if (res.data.exists) {
-        if (res.data.status === "APPROVED") {
-          setApplicationStatus("approved"); // 승인됨
-        } else if (res.data.status === "PENDING") {
-          setApplicationStatus("pending"); // 신청 중
-        }
-      } else {
-        setApplicationStatus("none"); // 없음 (신청 안함 또는 반려됨)
+      } catch (error) {
+        console.error("이벤트 불러오기 실패:", error);
       }
-    } catch (error) {
-      console.error("신청 상태 확인 오류:", error);
-      setApplicationStatus("none");
-    }
-  };
+    };
 
-  fetchEvent();
-  checkApplicationStatus();
-}, [eventCode]);
+    const checkApplicationStatus = async () => {
+      try {
+        const token = localStorage.getItem("accessToken") || localStorage.getItem("token");
+        const studentNum = localStorage.getItem("studentNum");
 
+        if (!studentNum || !eventCode) {
+          console.warn("학번 또는 eventCode가 유효하지 않습니다.");
+          setApplicationStatus("none");
+          return;
+        }
+
+        const res = await axios.get(`${API_BASE_URL}/student/application-status`, {
+          params: { eventCode: Number(eventCode), studentNum },
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
+        });
+
+        console.log("✅ 신청 상태 응답:", res.data);
+
+        if (res.data.exists) {
+          if (res.data.status === "APPROVED") {
+            setApplicationStatus("approved");
+          } else if (res.data.status === "PENDING") {
+            setApplicationStatus("pending");
+          } else {
+            setApplicationStatus("none");
+          }
+        } else {
+          setApplicationStatus("none");
+        }
+      } catch (error) {
+        console.error("🚨 신청 상태 확인 오류:", error.response?.status, error.response?.data);
+
+        if (error.response?.status === 403) {
+          alert("인증이 만료되었거나 접근 권한이 없습니다. 다시 로그인해주세요.");
+        }
+
+        setApplicationStatus("none");
+      }
+    };
+
+    fetchEvent();
+    checkApplicationStatus();
+  }, [eventCode]);
 
   const prevImage = () => {
     if (!eventData || eventData.eventImages.length === 0) return;
@@ -79,18 +92,17 @@ function EventDetail() {
     );
   };
 
-  // 게시물 삭제 함수
   const handleDelete = async () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
     try {
+      const token = localStorage.getItem("accessToken") || localStorage.getItem("token");
       await axios.delete(`${API_BASE_URL}/events/${eventData.eventCode}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
       });
       alert("게시물이 삭제되었습니다.");
-      navigate(-1); // 이전 페이지로 이동
+      navigate(-1);
     } catch (error) {
       console.error("삭제 실패:", error);
       alert("삭제에 실패했습니다.");
@@ -100,21 +112,18 @@ function EventDetail() {
   if (!eventData) {
     return <div className="container">이벤트 정보를 불러오는 중...</div>;
   }
-  // 신청 가능 여부 판단 함수
-const isApplicationPeriod = () => {
-  if (!eventData?.surveyStartDate || !eventData?.surveyEndDate) return false;
 
-  const now = new Date();
-  const start = new Date(eventData.surveyStartDate);
-  const end = new Date(eventData.surveyEndDate);
-
-  return now >= start && now <= end;
-};
+  const isApplicationPeriod = () => {
+    if (!eventData?.surveyStartDate || !eventData?.surveyEndDate) return false;
+    const now = new Date();
+    const start = new Date(eventData.surveyStartDate);
+    const end = new Date(eventData.surveyEndDate);
+    return now >= start && now <= end;
+  };
 
   return (
     <div className="container">
       <Header title="행사 안내" showBack />
-
       <h1 className="event-title">{eventData.eventName}</h1>
 
       <div className="department-profile">
@@ -167,12 +176,11 @@ const isApplicationPeriod = () => {
         </div>
       )}
 
-      {/* 신청하기 버튼: STUDENT만 */}
       {eventData.maxParticipant > 0 && role === "STUDENT" && (
         <>
           {applicationStatus === "approved" && (
             <div className="status-message success">
-              🎉 행사 신청 승인 되었습니다. 신청해주셔서 감사합니다.
+              🎉 행사 신청이 승인되었습니다. 신청해주셔서 감사합니다.
             </div>
           )}
 
@@ -201,13 +209,8 @@ const isApplicationPeriod = () => {
         </>
       )}
 
-
-
       {(role === "ADMIN" || role === "OFFICER") && (
-        <button
-          className="big-button delete-button"
-          onClick={handleDelete}
-        >
+        <button className="big-button delete-button" onClick={handleDelete}>
           게시물 삭제
         </button>
       )}
