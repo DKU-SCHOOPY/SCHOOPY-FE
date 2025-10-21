@@ -19,27 +19,31 @@ export default function Home() {
   const president = localStorage.getItem("role") === "COUNCIL";
 
   useEffect(() => {
-    async function fetchEvents() {
-      try {
-        const res = await axios.post(`${API_BASE_URL}/home/feedback`,
-          { studentNum, president }, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
-        });
-        setPosts(res.data);
-      } catch (err) {
-        console.error("이벤트 불러오기 실패", err);
+  async function fetchEvents() {
+    try {
+      const res = await axios.post(`${API_BASE_URL}/home/feedback`,
+        { studentNum, president }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      });
+
+      setPosts(res.data.events || res.data); // 데이터 구조에 따라 조정
+      if (res.data.noticeCount !== undefined) {
+        localStorage.setItem("noticeCount", res.data.noticeCount);
       }
+    } catch (err) {
+      console.error("이벤트 불러오기 실패", err);
     }
-    fetchEvents();
-  }, []);
+  }
+  fetchEvents();
+}, []);
+
 
   const filteredPosts = post.filter(
     post => selected === "전체" || post.department === selected
   );
 
-  localStorage.setItem("noticeCount", res.data.noticeCount);
   const noticeCount = localStorage.getItem("noticeCount");
 
   // ✅ 더보기 버튼 클릭 시 상태 토글
