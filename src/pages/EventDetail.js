@@ -5,7 +5,7 @@ import "./EventDetail.css";
 import Header from "../components/Header";
 import { API_BASE_URL } from "../config";
 import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
+import 'react-confirm-alert/dist/react-confirm-alert.css';
 
 function EventDetail() {
   const navigate = useNavigate();
