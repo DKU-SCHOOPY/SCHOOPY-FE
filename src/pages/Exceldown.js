@@ -47,13 +47,10 @@ export default function ExcelDownload({ eventCode }) {
       return;
     }
 
-    // 승인된 사람만 필터링
-    const approvedRows = rows.filter(item => item.approved);
-
-    const excelData = approvedRows.map((item) => {
+    const excelData = rows.map((item) => {
       const row = {};
 
-      // baseHeaders에 enrolled가 없으면 강제로 추가
+      // baseHeaders에 enrolled가 없으면 추가
       const headersToUse = [...baseHeaders];
       if (!headersToUse.includes("enrolled")) headersToUse.push("enrolled");
 
