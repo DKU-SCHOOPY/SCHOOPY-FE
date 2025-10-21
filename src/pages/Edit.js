@@ -44,20 +44,20 @@ function Edit() {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
       } else if (field === "재학여부") {
-        response = await axios.post(`${API_BASE_URL}/mypage/change-enroll`, {
+        response = await axios.post(`${API_BASE_URL}/mypage/student/change-enroll`, {
           studentNum,
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
       } else if (field === "총학생회비 납부 여부") {
-        response = await axios.post(`${API_BASE_URL}/mypage/change-council-pee`, {
+        response = await axios.post(`${API_BASE_URL}/mypage/student/change-council-pee`, {
           studentNum,
           sw: true, 
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
       } else if (field === "과학생회비 납부 여부") {
-        response = await axios.post(`${API_BASE_URL}/mypage/change-council-pee`, {
+        response = await axios.post(`${API_BASE_URL}/mypage/student/change-council-pee`, {
           studentNum,
           sw: false, 
         }, {
@@ -127,21 +127,21 @@ function Edit() {
 
       case "재학여부":
         return (
-          <div className="status-text">
+          <div className="edit-text">
             현재 <b>{enrolled ? "재학" : "휴학"}</b> 상태입니다. 변경하시겠습니까?
           </div>
         );
 
       case "총학생회비 납부 여부":
         return (
-          <div className="status-text">
+          <div className="edit-text">
             현재 <b>{councilPee === "납부" ? "납부" : "미납부"}</b> 상태입니다. 변경하시겠습니까?
           </div>
         );
 
       case "과학생회비 납부 여부":
         return (
-          <div className="status-text">
+          <div className="edit-text">
             현재 <b>{departmentCouncilPee === "납부" ? "납부" : "미납부"}</b> 상태입니다. 변경하시겠습니까?
           </div>
         );
