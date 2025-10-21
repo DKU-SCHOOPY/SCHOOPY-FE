@@ -47,21 +47,30 @@ export default function ExcelDownload({ eventCode }) {
       return;
     }
 
-    const excelData = rows.map((item) => {
+    // 승인된 사람만 필터링
+    const approvedRows = rows.filter(item => item.approved);
+
+    const excelData = approvedRows.map((item) => {
       const row = {};
-      baseHeaders.forEach((header) => {
+
+      // baseHeaders에 enrolled가 없으면 강제로 추가
+      const headersToUse = [...baseHeaders];
+      if (!headersToUse.includes("enrolled")) headersToUse.push("enrolled");
+
+      headersToUse.forEach((header) => {
         const colName = headerMap[header] || header;
+
         if (header === "gender") {
           row[colName] =
             item.gender === "female"
               ? "여자"
               : item.gender === "male"
-              ? "남자"
-              : item.gender;
+                ? "남자"
+                : item.gender;
         } else if (header === "councilPee") {
           row[colName] = item.councilPee ? "O" : "X";
-        } else if (header == "enrolled") {
-          row[colName] = item.enrolled ? "재학생":"휴학생";
+        } else if (header === "enrolled") {
+          row[colName] = item.enrolled ? "재학생" : "휴학생";
         } else {
           row[colName] = item[header];
         }
@@ -79,6 +88,7 @@ export default function ExcelDownload({ eventCode }) {
     XLSX.utils.book_append_sheet(wb, ws, "신청자목록");
     XLSX.writeFile(wb, `event_${eventCode}_신청자목록.xlsx`);
   };
+
 
   return (
     <button className="exceldown-btn" onClick={exportExcel}>
