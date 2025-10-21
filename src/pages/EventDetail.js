@@ -31,13 +31,14 @@ function EventDetail() {
       }
     };
 
+  
     const checkApplicationStatus = async () => {
       try {
         const studentNum = localStorage.getItem("studentNum");
-        const res = await axios.get(`${API_BASE_URL}/student/application-status`, {
+        const res = await axios.post(`${API_BASE_URL}/student/application-status`, {
           params: {
             eventCode: Number(eventCode),
-            studentNum: Number(studentNum)
+            studentNum: studentNum
           },
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -144,7 +145,7 @@ function EventDetail() {
         </div>
       )}
 
-      {/* 신청하기 버튼*/}
+      {/* 신청하기 버튼: STUDENT만 */}
       {eventData.maxParticipant > 0 && role === "STUDENT" && (
         <>
           {applicationStatus === "approved" && (
