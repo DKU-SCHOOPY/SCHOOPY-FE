@@ -14,55 +14,51 @@ function EventDetail() {
   const role = localStorage.getItem("role");
 
   useEffect(() => {
-  const fetchEvent = async () => {
-    try {
-      const payload = { eventCode: parseInt(eventCode) };
-      const response = await axios.post(`${API_BASE_URL}/home/get-event`, payload, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+    const fetchEvent = async () => {
+      try {
+        const payload = { eventCode: parseInt(eventCode) };
+        const response = await axios.post(`${API_BASE_URL}/home/get-event`, payload, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        });
 
-      if (response.data.code === "SU") {
-        setEventData(response.data);
-      } else {
-        console.error("데이터 수신 실패:", response.data.message);
-      }
-    } catch (error) {
-      console.error("이벤트 불러오기 실패", error);
-    }
-  };
-
-  // 신청 상태 확인 (GET 방식)
-  const checkApplicationStatus = async () => {
-    try {
-      const studentNum = localStorage.getItem("studentNum");
-      const res = await axios.get(`${API_BASE_URL}/student/application-status`, {
-        params: {
-          eventCode: Number(eventCode),
-          studentNum: studentNum
-        },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+        if (response.data.code === "SU") {
+          setEventData(response.data);
+        } else {
+          console.error("데이터 수신 실패:", response.data.message);
         }
-      });
-
-      if (res.data.exists) {
-        if (res.data.status === "APPROVED") {
-          setApplicationStatus("approved"); // 승인됨
-        } else if (res.data.status === "PENDING") {
-          setApplicationStatus("pending"); // 신청 중
-        }
-      } else {
-        setApplicationStatus("none"); // 없음 (신청 안함 또는 반려됨)
+      } catch (error) {
+        console.error("이벤트 불러오기 실패", error);
       }
-    } catch (error) {
-      console.error("신청 상태 확인 오류:", error);
-      setApplicationStatus("none");
-    }
-  };
+    };
 
-  fetchEvent();
-  checkApplicationStatus();
-}, [eventCode]);
+    // 신청 상태 확인 (GET 방식)
+    const checkApplicationStatus = async () => {
+      try {
+        const studentNum = localStorage.getItem("studentNum");
+        const res = await axios.get(`${API_BASE_URL}/student/application-status`, {
+          params: {
+            eventCode: Number(eventCode),
+            studentNum: studentNum
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        });
+
+        if (res.data.exists) {
+          setApplicationStatus(res.data.approved ? "approved" : "pending");
+        } else {
+          setApplicationStatus("none");
+        }
+      } catch (error) {
+        console.error("신청 상태 확인 오류:", error);
+        setApplicationStatus("none");
+      }
+    };
+
+    fetchEvent();
+    checkApplicationStatus();
+  }, [eventCode]);
 
 
   const prevImage = () => {
@@ -101,15 +97,15 @@ function EventDetail() {
     return <div className="container">이벤트 정보를 불러오는 중...</div>;
   }
   // 신청 가능 여부 판단 함수
-const isApplicationPeriod = () => {
-  if (!eventData?.surveyStartDate || !eventData?.surveyEndDate) return false;
+  const isApplicationPeriod = () => {
+    if (!eventData?.surveyStartDate || !eventData?.surveyEndDate) return false;
 
-  const now = new Date();
-  const start = new Date(eventData.surveyStartDate);
-  const end = new Date(eventData.surveyEndDate);
+    const now = new Date();
+    const start = new Date(eventData.surveyStartDate);
+    const end = new Date(eventData.surveyEndDate);
 
-  return now >= start && now <= end;
-};
+    return now >= start && now <= end;
+  };
 
   return (
     <div className="container">
