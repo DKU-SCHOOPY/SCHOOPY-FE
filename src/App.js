@@ -19,6 +19,7 @@ import Alarm from "./pages/Alarm";
 import CreatePost from "./pages/CreatePost";
 import CreateForm from "./pages/CreateForm";
 import AddSchedule from "./pages/AddSchedule";
+import EditEvent from "./pages/EditEvent";
 
 import KakaoCallback from "./pages/KakaoCallback";
 import NaverCallback from "./pages/NaverCallback";
@@ -63,7 +64,7 @@ function Layout() {
   <Route path="/select" element={<Select />} />
   <Route path="/login" element={<Login />} />
   <Route path="/join" element={<Join />} />
-
+  <Route path="/events/edit/:eventCode" element={<EditEvent/>}/>
   <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
   <Route path="/formlist" element={<ProtectedRoute><FormList /></ProtectedRoute>} />
   <Route path="/calendar" element={<ProtectedRoute><Calendar /></ProtectedRoute>} />

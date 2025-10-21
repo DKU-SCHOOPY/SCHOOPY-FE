@@ -9,11 +9,7 @@ export default function EditEvent() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     eventName: "",
-    department: "",
     eventDescription: "",
-    maxParticipant: 0,
-    eventStartDate: "",
-    eventEndDate: "",
   });
 
   useEffect(() => {
@@ -22,9 +18,13 @@ export default function EditEvent() {
         const res = await axios.get(`${API_BASE_URL}/events/${eventCode}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-        if (res.data) setFormData(res.data);
+        if (res.data) setFormData({
+          eventName: res.data.eventName || "",
+          eventDescription: res.data.eventDescription || ""
+        });
       } catch (err) {
-        console.error("데이터 불러오기 실패", err);
+        console.error(err);
+        alert("행사 정보를 불러오는 데 실패했습니다.");
       }
     }
     fetchEvent();
@@ -38,40 +38,31 @@ export default function EditEvent() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`${API_BASE_URL}/events/${eventCode}`, formData, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      await axios.post(`${API_BASE_URL}/event/council/update-event`, {
+        eventCode: Number(eventCode),
+        ...formData
+      }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       alert("수정 완료!");
       navigate("/"); // 홈으로 이동
     } catch (err) {
-      console.error("수정 실패", err);
+      console.error(err);
       alert("수정에 실패했습니다.");
     }
   };
 
   return (
-    <div className="edit-container">
-      <h1>게시물 수정</h1>
-      <form onSubmit={handleSubmit} className="edit-form">
+    <div className="container">
+      <h1 className="event-title">행사 수정</h1>
+      <form onSubmit={handleSubmit}>
         <label>행사명</label>
-        <input name="eventName" value={formData.eventName} onChange={handleChange} />
-
-        <label>주최</label>
-        <input name="department" value={formData.department} onChange={handleChange} />
-
+        <input name="eventName" value={formData.eventName} onChange={handleChange} required />
         <label>설명</label>
-        <textarea name="eventDescription" value={formData.eventDescription} onChange={handleChange} />
-
-        <label>모집인원</label>
-        <input type="number" name="maxParticipant" value={formData.maxParticipant} onChange={handleChange} />
-
-        <label>행사 시작일</label>
-        <input type="date" name="eventStartDate" value={formData.eventStartDate} onChange={handleChange} />
-
-        <label>행사 종료일</label>
-        <input type="date" name="eventEndDate" value={formData.eventEndDate} onChange={handleChange} />
-
-        <button type="submit">수정 완료</button>
+        <textarea name="eventDescription" value={formData.eventDescription} onChange={handleChange} required />
+        <div className="button-group">
+          <button type="submit" className="big-button">수정 완료</button>
+        </div>
       </form>
     </div>
   );

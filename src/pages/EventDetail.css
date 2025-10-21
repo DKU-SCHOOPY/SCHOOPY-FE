@@ -233,3 +233,27 @@
     padding: 12px 18px;
   }
 }
+
+/* ========== 버튼 그룹 ========== */
+.button-group {
+  display: flex;
+  justify-content: center; 
+  gap: 12px; 
+  margin-top: 24px;
+}
+
+.button-group .big-button {
+  flex: 1;
+  max-width: 160px;
+}
+
+/* 삭제 버튼 */
+.button-group .delete-button {
+  flex: 1;
+  max-width: 160px;
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+}
+
+.button-group .delete-button:hover {
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
+}
