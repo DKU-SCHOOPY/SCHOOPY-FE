@@ -7,26 +7,30 @@ import './EditEvent.css';
 export default function EditEvent() {
   const { eventCode } = useParams();
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     eventName: "",
     eventDescription: "",
   });
 
   useEffect(() => {
-    async function fetchEvent() {
+    const fetchEvent = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/events/${eventCode}`, {
+        const res = await axios.get(`${API_BASE_URL}/event/council/get-event/${eventCode}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-        if (res.data) setFormData({
-          eventName: res.data.eventName || "",
-          eventDescription: res.data.eventDescription || ""
-        });
+
+        if (res.data) {
+          setFormData({
+            eventName: res.data.eventName || "",
+            eventDescription: res.data.eventDescription || ""
+          });
+        }
       } catch (err) {
         console.error(err);
         alert("행사 정보를 불러오는 데 실패했습니다.");
       }
-    }
+    };
     fetchEvent();
   }, [eventCode]);
 
@@ -44,8 +48,9 @@ export default function EditEvent() {
       }, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
+
       alert("수정 완료!");
-      navigate(`/eventdetail/${eventCode}`); // 수정 후 상세 페이지로 이동
+      navigate(`/eventdetail/${eventCode}`);
     } catch (err) {
       console.error(err);
       alert("수정에 실패했습니다.");
@@ -57,9 +62,19 @@ export default function EditEvent() {
       <h1 className="event-title">행사 수정</h1>
       <form onSubmit={handleSubmit}>
         <label>행사명</label>
-        <input name="eventName" value={formData.eventName} onChange={handleChange} required />
+        <input
+          name="eventName"
+          value={formData.eventName}
+          onChange={handleChange}
+          required
+        />
         <label>설명</label>
-        <textarea name="eventDescription" value={formData.eventDescription} onChange={handleChange} required />
+        <textarea
+          name="eventDescription"
+          value={formData.eventDescription}
+          onChange={handleChange}
+          required
+        />
         <div className="button-group">
           <button type="submit" className="big-button">수정 완료</button>
         </div>

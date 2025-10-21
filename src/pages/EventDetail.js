@@ -31,19 +31,22 @@ function EventDetail() {
       }
     };
 
-  
+
     const checkApplicationStatus = async () => {
       try {
         const studentNum = localStorage.getItem("studentNum");
-        const res = await axios.post(`${API_BASE_URL}/student/application-status`, {
-          params: {
+        const res = await axios.post(
+          `${API_BASE_URL}/student/application-status`,
+          {
             eventCode: Number(eventCode),
             studentNum: studentNum
           },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
           }
-        });
+        );
 
         if (res.data.exists) {
           setApplicationStatus(res.data.approved ? "approved" : "pending");
