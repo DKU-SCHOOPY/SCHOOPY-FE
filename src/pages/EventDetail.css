@@ -211,11 +211,12 @@
 }
 
 .delete-button {
-  background: linear-gradient(90deg, #ef4444, #dc2626);
+  background-color: #e74c3c;
+  color: white;
+  margin-top: 20px;
 }
-
 .delete-button:hover {
-  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
+  background-color: #c0392b;
 }
 
 /* ========== 반응형 디자인 ========== */

@@ -4,6 +4,8 @@ import axios from "axios";
 import "./EventDetail.css";
 import Header from "../components/Header";
 import { API_BASE_URL } from "../config";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 function EventDetail() {
   const navigate = useNavigate();
@@ -31,7 +33,6 @@ function EventDetail() {
       }
     };
 
-    // 신청 상태 확인 (GET 방식)
     const checkApplicationStatus = async () => {
       try {
         const studentNum = localStorage.getItem("studentNum");
@@ -60,7 +61,6 @@ function EventDetail() {
     checkApplicationStatus();
   }, [eventCode]);
 
-
   const prevImage = () => {
     if (!eventData || eventData.eventImages.length === 0) return;
     setCurrentIndex((prev) =>
@@ -75,19 +75,46 @@ function EventDetail() {
     );
   };
 
-  if (!eventData) {
-    return <div className="container">이벤트 정보를 불러오는 중...</div>;
-  }
-  // 신청 가능 여부 판단 함수
   const isApplicationPeriod = () => {
     if (!eventData?.surveyStartDate || !eventData?.surveyEndDate) return false;
-
     const now = new Date();
     const start = new Date(eventData.surveyStartDate);
     const end = new Date(eventData.surveyEndDate);
-
     return now >= start && now <= end;
   };
+
+  const handleDelete = async () => {
+    confirmAlert({
+      title: '행사 삭제',
+      message: '정말로 이 행사를 삭제하시겠습니까? 관련 신청/응답/폼/질문도 모두 삭제됩니다.',
+      buttons: [
+        {
+          label: '예',
+          onClick: async () => {
+            try {
+              await axios.delete(`${API_BASE_URL}/event/council/delete-event/${eventData.eventCode}`, {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+              });
+              alert("행사가 성공적으로 삭제되었습니다.");
+              navigate(-1);
+            } catch (error) {
+              console.error("행사 삭제 실패:", error);
+              alert("삭제에 실패했습니다.");
+            }
+          }
+        },
+        {
+          label: '아니오'
+        }
+      ]
+    });
+  };
+
+  if (!eventData) {
+    return <div className="container">이벤트 정보를 불러오는 중...</div>;
+  }
 
   return (
     <div className="container">
@@ -153,13 +180,11 @@ function EventDetail() {
               🎉 행사 신청 승인되었습니다. 신청해주셔서 감사합니다.
             </div>
           )}
-
           {applicationStatus === "pending" && (
             <div className="status-message info">
               ⏳ 이미 신청하셨습니다. 관리자 승인을 기다리고 있습니다.
             </div>
           )}
-
           {applicationStatus === "none" && (
             <>
               {isApplicationPeriod() ? (
@@ -177,6 +202,16 @@ function EventDetail() {
             </>
           )}
         </>
+      )}
+
+      {/* 삭제 버튼: COUNCIL 또는 ADMIN만 */}
+      {(role === "COUNCIL" || role === "ADMIN") && (
+        <button
+          className="big-button delete-button"
+          onClick={handleDelete}
+        >
+          행사 삭제
+        </button>
       )}
     </div>
   );
