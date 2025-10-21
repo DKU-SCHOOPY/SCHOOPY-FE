@@ -16,6 +16,7 @@ export default function ExcelDownload({ eventCode }) {
     gender: "성별",
     phoneNum: "전화번호",
     councilPee: "학생회비납부",
+    enrolled: "재학상태",
   };
 
   useEffect(() => {
@@ -59,6 +60,8 @@ export default function ExcelDownload({ eventCode }) {
               : item.gender;
         } else if (header === "councilPee") {
           row[colName] = item.councilPee ? "O" : "X";
+        } else if (header == "enrolled") {
+          row[colName] = item.enrolled ? "재학생":"휴학생";
         } else {
           row[colName] = item[header];
         }
