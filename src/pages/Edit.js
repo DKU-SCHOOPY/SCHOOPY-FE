@@ -142,7 +142,7 @@ function Edit() {
       case "과학생회비 납부 여부":
         return (
           <div className="edit-text">
-            현재 <b>{departmentCouncilPee === false ? "납부" : "미납부"}</b> 상태입니다. 변경하시겠습니까?
+            현재 <b>{departmentCouncilPee === true ? "납부" : "미납부"}</b> 상태입니다. 변경하시겠습니까?
           </div>
         );
 

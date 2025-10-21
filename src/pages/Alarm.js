@@ -188,38 +188,38 @@ export default function Alarm() {
         )}
       </div>
 
-      {/* ✅ 팝업 */}
       {selectedNotice && (
-        <div className="popup-overlay">
-          <div className="popup">
-            <div className="popup-title">{selectedNotice.title}</div>
-            <div className="popup-sender">보낸 사람: {selectedNotice.sender}</div>
-            <div className="popup-message">{selectedNotice.message}</div>
+  <div className="popup-overlay">
+    <div className="popup">
+      <div className="popup-title">{selectedNotice.title}</div>
+      <div className="popup-sender">보낸 사람: {selectedNotice.sender}</div>
+      <div className="popup-message">{selectedNotice.message}</div>
 
-            {selectedNotice.type === "ERequest" ||
-            selectedNotice.type === "CRequest" ? (
-              <div className="popup-buttons">
-                <button
-                  className="approve-btn"
-                  onClick={() => handleDecision(true)}
-                >
-                  승인
-                </button>
-                <button
-                  className="reject-btn"
-                  onClick={() => handleDecision(false)}
-                >
-                  반려
-                </button>
-              </div>
-            ) : (
-              <button className="popup-close" onClick={handleClosePopup}>
-                확인
-              </button>
-            )}
-          </div>
+      {/* ✅ type에 따라 버튼 분기 */}
+      {selectedNotice.type === "ERequest" || selectedNotice.type === "CRequest" ? (
+        <div className="popup-buttons">
+          <button
+            className="approve-btn"
+            onClick={() => handleDecision(true, selectedNotice)}
+          >
+            승인
+          </button>
+          <button
+            className="reject-btn"
+            onClick={() => handleDecision(false, selectedNotice)}
+          >
+            반려
+          </button>
         </div>
+      ) : (
+        <button className="popup-close" onClick={handleClosePopup}>
+          확인
+        </button>
       )}
+    </div>
+  </div>
+)}
+
     </div>
   );
 }
