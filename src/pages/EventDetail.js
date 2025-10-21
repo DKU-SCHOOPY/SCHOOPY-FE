@@ -31,14 +31,13 @@ function EventDetail() {
       }
     };
 
-    // 신청 상태 확인 (GET 방식)
     const checkApplicationStatus = async () => {
       try {
         const studentNum = localStorage.getItem("studentNum");
         const res = await axios.get(`${API_BASE_URL}/student/application-status`, {
           params: {
             eventCode: Number(eventCode),
-            studentNum: studentNum
+            studentNum: Number(studentNum)
           },
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -145,7 +144,7 @@ function EventDetail() {
         </div>
       )}
 
-      {/* 신청하기 버튼: STUDENT만 */}
+      {/* 신청하기 버튼*/}
       {eventData.maxParticipant > 0 && role === "STUDENT" && (
         <>
           {applicationStatus === "approved" && (
