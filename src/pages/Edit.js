@@ -52,14 +52,14 @@ function Edit() {
       } else if (field === "총학생회비 납부 여부") {
         response = await axios.post(`${API_BASE_URL}/mypage/student/change-council-pee`, {
           studentNum,
-          sw: true, 
+          SW: true, 
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
       } else if (field === "과학생회비 납부 여부") {
         response = await axios.post(`${API_BASE_URL}/mypage/student/change-council-pee`, {
           studentNum,
-          sw: false, 
+          SW: false, 
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
@@ -135,14 +135,14 @@ function Edit() {
       case "총학생회비 납부 여부":
         return (
           <div className="edit-text">
-            현재 <b>{councilPee === "납부" ? "납부" : "미납부"}</b> 상태입니다. 변경하시겠습니까?
+            현재 <b>{councilPee === true ? "납부" : "미납부"}</b> 상태입니다. 변경하시겠습니까?
           </div>
         );
 
       case "과학생회비 납부 여부":
         return (
           <div className="edit-text">
-            현재 <b>{departmentCouncilPee === "납부" ? "납부" : "미납부"}</b> 상태입니다. 변경하시겠습니까?
+            현재 <b>{departmentCouncilPee === false ? "납부" : "미납부"}</b> 상태입니다. 변경하시겠습니까?
           </div>
         );
 
