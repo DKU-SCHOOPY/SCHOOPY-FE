@@ -196,8 +196,8 @@ select.input:focus {
 /* === 뒤로가기 버튼 === */
 .back-button {
   padding: 12px 24px;
-  background-color: #6a5af9;
-  color: white;
+  background-color: white;
+  color: black;
   border: none;
   border-radius: 10px;
   font-size: 1rem;
@@ -207,5 +207,5 @@ select.input:focus {
 }
 
 .back-button:hover {
-  background-color: #5848d9;
+  background-color: white;
 }
