@@ -178,8 +178,37 @@ function EventDetail() {
           )}
         </>
       )}
+      {/* 학생회 버튼 */}
+      {role === "STUDENT_COUNCIL" && (
+        <div className="admin-buttons">
+          <button
+            className="big-button edit"
+            onClick={() => navigate(`/edit-event/${eventData.eventCode}`)}
+          >
+            수정
+          </button>
+          <button
+            className="big-button delete"
+            onClick={async () => {
+              if (window.confirm("정말 이 이벤트를 삭제하시겠습니까?")) {
+                try {
+                  await axios.delete(`${API_BASE_URL}/home/delete-event/${eventData.eventCode}`, {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+                  });
+                  alert("이벤트가 삭제되었습니다.");
+                  navigate("/"); // 목록 페이지로 이동
+                } catch (err) {
+                  console.error(err);
+                  alert("삭제 중 오류가 발생했습니다.");
+                }
+              }
+            }}
+          >
+            삭제
+          </button>
+        </div>
+      )}
     </div>
   );
 }
-
 export default EventDetail;
