@@ -16,21 +16,21 @@
     color: #1e1e1e;
 }
 
-label {
+/* label {
     display: block;
     margin-top: 12px;
     margin-bottom: 6px;
     font-weight: 600;
-}
+} */
 
-input,
+/* input,
 textarea {
     width: 100%;
     padding: 8px 12px;
     border-radius: 8px;
     border: 1px solid #ccc;
     font-size: 15px;
-}
+} */
 
 .button-group {
     display: flex;
@@ -39,7 +39,7 @@ textarea {
     justify-content: center;
 }
 
-.big-button {
+/* .big-button {
     padding: 12px 20px;
     font-size: 16px;
     font-weight: 600;
@@ -55,7 +55,7 @@ textarea {
 .big-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
+} */
 
 .delete-button {
     background: linear-gradient(90deg, #ef4444, #dc2626);

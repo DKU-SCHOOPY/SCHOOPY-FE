@@ -17,8 +17,8 @@
 .info-row {
   display: flex;
   justify-content: space-between;
-  margin: 18px 0;
-  font-size: 16px;
+  margin: 12px 0;
+  font-size: 12px;
 }
 
 .my-label {
