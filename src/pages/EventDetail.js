@@ -183,15 +183,15 @@ function EventDetail() {
       )}
       {/* 학생회 버튼 */}
       {eventData.maxParticipant > 0 && role === "COUNCIL" && (
-        <div className="admin-buttons">
+        <div className="button-group">
           <button
-            className="big-button edit"
+            className="big-button edit-button"
             onClick={() => navigate(`/events/edit/${eventData.eventCode}`)}
           >
             수정
           </button>
           <button
-            className="big-button delete"
+            className="big-button delete-button"
             onClick={async () => {
               if (window.confirm("정말 이 이벤트를 삭제하시겠습니까?")) {
                 try {
@@ -199,7 +199,7 @@ function EventDetail() {
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
                   });
                   alert("이벤트가 삭제되었습니다.");
-                  navigate("/"); // 목록 페이지로 이동
+                  navigate("/");
                 } catch (err) {
                   console.error(err);
                   alert("삭제 중 오류가 발생했습니다.");
@@ -211,6 +211,7 @@ function EventDetail() {
           </button>
         </div>
       )}
+
     </div>
   );
 }
