@@ -127,21 +127,21 @@ function Edit() {
 
       case "재학여부":
         return (
-          <div className="status-text">
+          <div className="edit-text">
             현재 <b>{enrolled ? "재학" : "휴학"}</b> 상태입니다. 변경하시겠습니까?
           </div>
         );
 
       case "총학생회비 납부 여부":
         return (
-          <div className="status-text">
+          <div className="edit-text">
             현재 <b>{councilPee === "납부" ? "납부" : "미납부"}</b> 상태입니다. 변경하시겠습니까?
           </div>
         );
 
       case "과학생회비 납부 여부":
         return (
-          <div className="status-text">
+          <div className="edit-text">
             현재 <b>{departmentCouncilPee === "납부" ? "납부" : "미납부"}</b> 상태입니다. 변경하시겠습니까?
           </div>
         );

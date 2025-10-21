@@ -4,6 +4,13 @@
   flex-direction: column;
 }
 
+.edit-text {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #333;
+  align-items: center;
+}
+
 .toggle-group {
   display: flex;
   gap: 10px;
@@ -24,7 +31,7 @@
 }
 
 .toggle-btn.selected {
-  background-color: #6a5af9;
+  background-color: #6a5af93a;
   color: white;
   border-color: #6a5af9;
 }
