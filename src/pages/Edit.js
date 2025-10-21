@@ -3,22 +3,28 @@ import axios from 'axios';
 import './Edit.css';
 import Header from "../components/Header";
 import { API_BASE_URL } from "../config";
+import { useLocation } from 'react-router-dom';
 
 function Edit() {
+  const location = useLocation();
+  const {
+    department,
+    councilPee, // ✅ 총학생회비
+    departmentCouncilPee, // ✅ 과학생회비
+    enrolled, // ✅ 재학여부
+  } = location.state || {};
+
   const [field, setField] = useState('');
   const [newValue, setNewValue] = useState('');
-
-  // 🔹 드롭다운 상태 추가
   const [open, setOpen] = useState(false);
   const [selectedDept, setSelectedDept] = useState('');
   const [fieldOpen, setFieldOpen] = useState(false);
-
-
   const studentNum = localStorage.getItem('studentNum');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("제출 이벤트 발생!");
+
     try {
       let response;
       console.log("axios 요청 직전");
@@ -26,7 +32,7 @@ function Edit() {
       if (field === "학과") {
         response = await axios.post(`${API_BASE_URL}/mypage/student/change-dept`, {
           studentNum,
-          department: selectedDept, // ✅ newValue 대신 selectedDept 사용
+          department: selectedDept,
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
@@ -39,13 +45,21 @@ function Edit() {
         });
       } else if (field === "재학여부") {
         response = await axios.post(`${API_BASE_URL}/mypage/change-enroll`, {
-          studentNum
+          studentNum,
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
-      } else if (field === "학생회비납부여부") {
+      } else if (field === "총학생회비 납부 여부") {
         response = await axios.post(`${API_BASE_URL}/mypage/change-council-pee`, {
-          studentNum
+          studentNum,
+          sw: true, 
+        }, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        });
+      } else if (field === "과학생회비 납부 여부") {
+        response = await axios.post(`${API_BASE_URL}/mypage/change-council-pee`, {
+          studentNum,
+          sw: false, 
         }, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
@@ -66,7 +80,7 @@ function Edit() {
     }
   };
 
-  // 🔹 조건별 입력 UI
+  // 🔹 항목별 입력 영역 렌더링
   const renderInputField = () => {
     switch (field) {
       case "학과":
@@ -113,41 +127,22 @@ function Edit() {
 
       case "재학여부":
         return (
-          <div className="toggle-group">
-            <button
-              type="button"
-              className={`toggle-btn ${newValue === "재학생" ? "selected" : ""}`}
-              onClick={() => setNewValue("재학생")}
-            >
-              재학생
-            </button>
-            <button
-              type="button"
-              className={`toggle-btn ${newValue === "휴학생" ? "selected" : ""}`}
-              onClick={() => setNewValue("휴학생")}
-            >
-              휴학생
-            </button>
+          <div className="status-text">
+            현재 <b>{enrolled ? "재학" : "휴학"}</b> 상태입니다. 변경하시겠습니까?
           </div>
         );
 
-      case "학생회비납부여부":
+      case "총학생회비 납부 여부":
         return (
-          <div className="toggle-group">
-            <button
-              type="button"
-              className={`toggle-btn ${newValue === "납부" ? "selected" : ""}`}
-              onClick={() => setNewValue("납부")}
-            >
-              납부
-            </button>
-            <button
-              type="button"
-              className={`toggle-btn ${newValue === "미납부" ? "selected" : ""}`}
-              onClick={() => setNewValue("미납부")}
-            >
-              미납부
-            </button>
+          <div className="status-text">
+            현재 <b>{councilPee === "납부" ? "납부" : "미납부"}</b> 상태입니다. 변경하시겠습니까?
+          </div>
+        );
+
+      case "과학생회비 납부 여부":
+        return (
+          <div className="status-text">
+            현재 <b>{departmentCouncilPee === "납부" ? "납부" : "미납부"}</b> 상태입니다. 변경하시겠습니까?
           </div>
         );
 
@@ -182,7 +177,7 @@ function Edit() {
 
           {fieldOpen && (
             <div className="dropdown-menu">
-              {["학과", "전화번호", "재학여부", "학생회비납부여부"].map((option) => (
+              {["학과", "전화번호", "재학여부", "총학생회비 납부 여부", "과학생회비 납부 여부"].map((option) => (
                 <div
                   key={option}
                   className={`dropdown-item ${field === option ? "selected" : ""}`}
@@ -204,7 +199,7 @@ function Edit() {
         {renderInputField()}
 
         <button className="big-button" type="submit">
-          제출하기
+          변경 제출하기
         </button>
       </form>
     </div>

@@ -117,7 +117,10 @@ const Mypage = () => {
         onClick={() =>
           localStorage.getItem("role") === "COUNCIL"
             ? navigate("/councilfee")
-            : navigate("/edit")
+            : navigate("/edit", {
+          state: { department: userInfo.department, councilPee: userInfo.councilPee,
+    departmentCouncilPee: userInfo.departmentCouncilPee, enrolled: userInfo.enrolled },
+        })
         }
       >
         {localStorage.getItem("role") === "COUNCIL"
