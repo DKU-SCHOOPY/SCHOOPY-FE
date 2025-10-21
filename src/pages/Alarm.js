@@ -105,9 +105,9 @@ export default function Alarm() {
       let url = "";
       let body = { noticeId: id, accept };
 
-      if (type === "ERequest") {
+      if (type === "Erequest") {
         url = `${API_BASE_URL}/notice/council/Erequest`;
-      } else if (type === "CRequest") {
+      } else if (type === "Crequest") {
         url = `${API_BASE_URL}/notice/council/Crequest`;
         body.SW = "SW";
       } else return;
@@ -174,7 +174,7 @@ export default function Alarm() {
               onClick={() => handleNotificationClick(noti.id)}
             >
               {/* 🔹 type에 따라 아이콘 변경 */}
-              {noti.type === "ERequest" || noti.type === "CRequest" ? (
+              {noti.type === "Erequest" || noti.type === "Crequest" ? (
                 <FiInfo size={20} className="alarm-icon info" />
               ) : (
                 <FiCheck size={20} className="alarm-icon check" />
@@ -196,7 +196,7 @@ export default function Alarm() {
       <div className="popup-message">{selectedNotice.message}</div>
 
       {/* ✅ type에 따라 버튼 분기 */}
-      {selectedNotice.type === "ERequest" || selectedNotice.type === "CRequest" ? (
+      {selectedNotice.type === "Erequest" || selectedNotice.type === "Crequest" ? (
         <div className="popup-buttons">
           <button
             className="approve-btn"
