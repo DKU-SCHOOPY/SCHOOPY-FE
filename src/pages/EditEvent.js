@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
-import './EditEvent.css';
+import "./EditEvent.css";
 
 export default function EditEvent() {
   const { eventCode } = useParams();
@@ -16,17 +16,26 @@ export default function EditEvent() {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        // POST 방식으로 행사 정보 조회
-        const res = await axios.post(`${API_BASE_URL}/event/council/get-event`, {
-          eventCode: Number(eventCode)
-        }, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        });
+        const res = await axios.post(
+          `${API_BASE_URL}/event/council/get-event`,
+          { eventCode: Number(eventCode) },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
 
-        if (res.data) {
+        if (res.data && res.data.eventName && res.data.eventDescription) {
           setFormData({
-            eventName: res.data.eventName || "",
-            eventDescription: res.data.eventDescription || ""
+            eventName: res.data.eventName,
+            eventDescription: res.data.eventDescription,
+          });
+        } else if (res.data.data) {
+          setFormData({
+            eventName: res.data.data.eventName || "",
+            eventDescription: res.data.data.eventDescription || "",
           });
         }
       } catch (err) {
@@ -40,18 +49,27 @@ export default function EditEvent() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      await axios.post(`${API_BASE_URL}/event/council/update-event`, {
-        eventCode: Number(eventCode),
-        ...formData
-      }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      await axios.post(
+        `${API_BASE_URL}/event/council/update-event`,
+        {
+          eventCode: Number(eventCode),
+          eventName: formData.eventName,
+          eventDescription: formData.eventDescription,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       alert("수정 완료!");
       navigate(`/eventdetail/${eventCode}`);
@@ -72,6 +90,7 @@ export default function EditEvent() {
           onChange={handleChange}
           required
         />
+
         <label>설명</label>
         <textarea
           name="eventDescription"
@@ -79,8 +98,11 @@ export default function EditEvent() {
           onChange={handleChange}
           required
         />
+
         <div className="button-group">
-          <button type="submit" className="big-button">수정 완료</button>
+          <button type="submit" className="big-button">
+            수정 완료
+          </button>
         </div>
       </form>
     </div>
