@@ -45,7 +45,7 @@ export default function EditEvent() {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       alert("수정 완료!");
-      navigate("/"); // 홈으로 이동
+      navigate(`/eventdetail/${eventCode}`); // 수정 후 상세 페이지로 이동
     } catch (err) {
       console.error(err);
       alert("수정에 실패했습니다.");
