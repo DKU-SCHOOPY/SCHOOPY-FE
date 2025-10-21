@@ -183,7 +183,7 @@ function EventDetail() {
       )}
       {/* 학생회 버튼 */}
       {eventData.maxParticipant > 0 && role === "COUNCIL" && (
-        <div className="button-group">
+        <div>
           <button
             className="big-button edit-button"
             onClick={() => navigate(`/events/edit/${eventData.eventCode}`)}

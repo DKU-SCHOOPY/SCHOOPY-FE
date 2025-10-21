@@ -87,7 +87,7 @@
   color: #222;
 }
 
-/* ========== 행사 설명 ========== */
+
 .event-description p {
   margin-bottom: 20px;
   line-height: 1.6;
@@ -95,7 +95,7 @@
   color: #333;
 }
 
-/* ========== 이미지 캐러셀 ========== */
+
 .carousel {
   position: relative;
   width: 100%;
@@ -117,14 +117,12 @@
   transform: scale(1.02);
 }
 
-/* 버튼 숨김 기본값 */
 .carousel-btn {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
 
-/* 마우스 올렸을 때만 보이도록 */
 .carousel:hover .carousel-btn {
   opacity: 1;
   pointer-events: auto;
@@ -188,7 +186,7 @@
 }
 
 /* ========== 버튼 스타일 ========== */
-/* .big-button {
+.big-button {
   display: block;
   width: 100%;
   max-width: 320px;
@@ -208,62 +206,23 @@
 .big-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3);
-} */
+} 
 
-.delete-button {
-  background-color: #e74c3c;
-  color: white;
-  margin-top: 20px;
-}
-.delete-button:hover {
-  background-color: #c0392b;
-}
-
-/* ========== 반응형 디자인 ========== */
-@media (max-width: 480px) {
-  .event-title {
-    font-size: 22px;
-  }
-
-  .event-info-container-vertical {
-    padding: 12px 14px;
-  }
-
-  .big-button {
-    font-size: 15px;
-    padding: 12px 18px;
-  }
-}
-
-/* ========== 버튼 그룹 ========== */
-.button-group {
-  display: flex;
-  justify-content: center; 
-  gap: 12px; 
-  margin-top: 24px;
-}
-
-.button-group .big-button {
-  flex: 1;
-  max-width: 160px;
-}
-/* 수정 버튼 색상 */
-.button-group .big-button.edit-button {
+.big-button.edit-button {
   background: linear-gradient(90deg, #3b82f6, #2563eb); 
   color: #fff;
 }
 
-.button-group .big-button.edit-button:hover {
+.big-button.edit-button:hover {
   box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
 }
 
-/* 삭제 버튼 */
-.button-group .delete-button {
+.delete-button {
   flex: 1;
   max-width: 160px;
   background: linear-gradient(90deg, #ef4444, #dc2626);
 }
 
-.button-group .delete-button:hover {
+.delete-button:hover {
   box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
 }
