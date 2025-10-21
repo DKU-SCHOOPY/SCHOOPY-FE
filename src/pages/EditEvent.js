@@ -16,8 +16,11 @@ export default function EditEvent() {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/event/council/get-event/${eventCode}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        // POST 방식으로 행사 정보 조회
+        const res = await axios.post(`${API_BASE_URL}/event/council/get-event`, {
+          eventCode: Number(eventCode)
+        }, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
 
         if (res.data) {
@@ -31,6 +34,7 @@ export default function EditEvent() {
         alert("행사 정보를 불러오는 데 실패했습니다.");
       }
     };
+
     fetchEvent();
   }, [eventCode]);
 
