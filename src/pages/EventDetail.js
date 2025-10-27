@@ -167,7 +167,7 @@ function EventDetail() {
             <>
               {isApplicationPeriod() ? (
                 <button
-                  className="big-button"
+                  className="event-big-button"
                   onClick={() => navigate(`/formquest/${eventData.eventCode}`)}
                 >
                   신청하기
@@ -185,13 +185,13 @@ function EventDetail() {
       {eventData.maxParticipant > 0 && role === "COUNCIL" && (
         <div>
           <button
-            className="big-button edit-button"
+            className="event-big-button edit-button"
             onClick={() => navigate(`/events/edit/${eventData.eventCode}`)}
           >
             수정
           </button>
           <button
-            className="big-button delete-button"
+            className="event-big-button delete-button"
             onClick={async () => {
               if (window.confirm("정말 이 이벤트를 삭제하시겠습니까?")) {
                 try {

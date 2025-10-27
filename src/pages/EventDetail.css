@@ -186,7 +186,7 @@
 }
 
 /* ========== 버튼 스타일 ========== */
-.big-button {
+.event-big-button {
   display: block;
   width: 100%;
   max-width: 320px;
@@ -203,25 +203,25 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.big-button:hover {
+.event-big-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3);
 } 
 
-.big-button.edit-button {
+.event-big-button.edit-button {
   background: linear-gradient(90deg, #3b82f6, #2563eb); 
   color: #fff;
 }
 
-.big-button.edit-button:hover {
+.event-big-button.edit-button:hover {
   box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
 }
 
-.big-button.delete-button {
+.event-big-button.delete-button {
   background: linear-gradient(90deg,  #ef4444, #dc2626); 
   color: #fff;
 }
 
-.big-button.delete-button:hover {
+.event-big-button.delete-button:hover {
   box-shadow: 0 6px 16px  rgba(239, 68, 68, 0.35);
 }

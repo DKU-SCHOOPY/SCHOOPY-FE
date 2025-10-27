@@ -199,7 +199,7 @@ function Edit() {
         {renderInputField()}
 
         <button className="big-button" type="submit">
-          변경 제출하기
+          변경 요청하기
         </button>
       </form>
     </div>
