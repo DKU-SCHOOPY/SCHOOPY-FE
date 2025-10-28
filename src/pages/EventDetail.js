@@ -167,7 +167,7 @@ function EventDetail() {
             <>
               {isApplicationPeriod() ? (
                 <button
-                  className="event-big-button"
+                  className="big-button"
                   onClick={() => navigate(`/formquest/${eventData.eventCode}`)}
                 >
                   신청하기
