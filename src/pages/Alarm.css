@@ -13,7 +13,7 @@
   position: relative; /* 아이콘 절대 위치 기준 */
   width: 100%;
   display: flex;
-  align-items: center; /* 아이콘과 텍스트 세로 가운데 */
+  align-items: flex-start; /* 여러 줄일 경우 위쪽 기준 정렬 */
   gap: 12px;
   background: #fff;
   padding: 14px 16px;
@@ -23,6 +23,8 @@
   font-size: 14px;
   transition: background 0.3s;
   cursor: pointer;
+  box-sizing: border-box;
+  overflow: hidden; /* item을 벗어나지 않게 */
 }
 
 .alarm-item.read {
@@ -31,37 +33,39 @@
   color: #b1b1b1;
 }
 
-.alarm-header {
-  display: flex;
-  align-items: center;
-  gap: 6px; /* 아이콘과 제목 간격 */
-  margin-bottom: 4px;
-}
-
 .alarm-icon {
   position: absolute;
-  color: #202020;
-  flex-shrink: 0; /* 아이콘 크기 고정 */
   top: 14px;
   left: 12px;
+  color: #202020;
+  flex-shrink: 0; /* 아이콘 크기 고정 */
 }
+
 .alarm-content {
   display: flex;
   flex-direction: column;
-  margin-left: 26px;
+  margin-left: 28px; /* 아이콘 영역만큼 여백 */
+  flex: 1; /* 남은 공간 전부 차지 */
+  min-width: 0; /* text-overflow 작동을 위해 필수 */
+  overflow: hidden;
 }
 
 .alarm-title {
   font-weight: bold;
+  font-size: 14px;
   margin-bottom: 4px;
   color: #000000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .alarm-message {
-  overflow: hidden;            /* 넘치는 텍스트 숨기기 */
-  white-space: nowrap;         /* 한 줄로 표시 */
-  text-overflow: ellipsis;     /* 넘치는 부분에 ... 표시 */
-  display: inline-block;              /* text-overflow 적용되려면 block 또는 inline-block이어야 함 */
+  font-size: 12px;
+  color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 

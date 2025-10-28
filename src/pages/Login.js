@@ -90,7 +90,7 @@ function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button className="login-forgot">Forgot Password?</button>
+          {/* <button className="login-forgot">Forgot Password?</button> */}
 
         <button className="login-button" onClick={handleLogin}>로그인</button>
         <button  type="button"  className="join-button"  onClick={() => navigate("/join")}>회원가입</button>

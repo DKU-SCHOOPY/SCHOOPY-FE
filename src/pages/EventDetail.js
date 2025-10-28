@@ -199,7 +199,7 @@ function EventDetail() {
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
                   });
                   alert("이벤트가 삭제되었습니다.");
-                  navigate("/");
+                  navigate("/home");
                 } catch (err) {
                   console.error(err);
                   alert("삭제 중 오류가 발생했습니다.");

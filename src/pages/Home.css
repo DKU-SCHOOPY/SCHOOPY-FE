@@ -78,7 +78,7 @@
 }
 
 .home-event-title {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 700;
   color: #222;
   margin: 4px;
@@ -103,7 +103,7 @@
   font-size: 14px;
   line-height: 1.4em;
   transition: all 0.2s ease;
-  
+  margin-left: 4px; 
 }
 
 .home-event-desc.expanded {
