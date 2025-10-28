@@ -142,8 +142,10 @@ function FormPage() {
       });
       alert("🎉 행사 신청 되었습니다. 신청해주셔서 감사합니다.");
       setApplicationStatus("completed"); 
+      navigate("/home");
     } catch (err) {
       alert("🎉 행사 신청 되었습니다. 신청해주셔서 감사합니다.");
+      navigate("/home");
       /*"신청 중 오류: " + (err.response?.data?.message || err.message);*/
     }
   };
