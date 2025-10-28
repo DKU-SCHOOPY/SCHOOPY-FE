@@ -39,7 +39,7 @@ function Join() {
       `${API_BASE_URL}/auth/email-certification`,
       { studentNum }
     );
-    alert(`✅ 발송 완료(스팸메일함도 확인해주세요)`);
+    alert(`✅ ${studentNum}@dankook.ac.kr 학교 메일로 인증번호 발송 완료. (스팸메일함도 확인해주세요)`);
   } catch (error) {
     const message = error?.response?.data?.message || "네트워크 오류";
     alert(`❗ ${message}`);
