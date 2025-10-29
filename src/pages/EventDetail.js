@@ -81,14 +81,19 @@ function EventDetail() {
   if (!eventData) {
     return <div className="container">이벤트 정보를 불러오는 중...</div>;
   }
-  // 신청 가능 여부 판단 함수
-  const isApplicationPeriod = () => {
+
+  const parseLocalDate = (dateStr) => {
+    const [year, month, day] = dateStr.split("-").map(Number);
+    return new Date(year, month - 1, day);
+  };
+
+ const isApplicationPeriod = () => {
     if (!eventData?.surveyStartDate || !eventData?.surveyEndDate) return false;
 
     const now = new Date();
-    const start = new Date(eventData.surveyStartDate);
-    const end = new Date(eventData.surveyEndDate);
-    end.setHours(23, 59, 59, 999); //종료 시간을 23시59분59초
+    const start = parseLocalDate(eventData.surveyStartDate);
+    const end = parseLocalDate(eventData.surveyEndDate);
+    end.setHours(23, 59, 59, 999);//종료 시간을 23시59분59초
     return now >= start && now <= end;
   };
 
