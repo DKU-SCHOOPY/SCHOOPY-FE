@@ -155,6 +155,7 @@ function FormPage() {
     const now = new Date();
     const start = new Date(form.surveyStartDate);
     const end = new Date(form.surveyEndDate);
+    end.setDate(end.getDate() +1); //하루 더한 방식
     return now >= start && now <= end;
   })();
 

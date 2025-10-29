@@ -88,7 +88,7 @@ function EventDetail() {
     const now = new Date();
     const start = new Date(eventData.surveyStartDate);
     const end = new Date(eventData.surveyEndDate);
-
+    end.setHours(23, 59, 59, 999); //종료 시간을 23시59분59초
     return now >= start && now <= end;
   };
 
