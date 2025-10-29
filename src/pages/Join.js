@@ -13,7 +13,7 @@ function Join() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
-  const [department, setDepartment] = useState("software");
+  const [department, setDepartment] = useState("");
   const [gender, setGender] = useState("");
   const [birthDay, setBirthDay] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
@@ -26,9 +26,9 @@ function Join() {
       `${API_BASE_URL}/auth/email-check`,
       { studentNum }
     );
-    alert(`✅ ${response.data.message}`);
+    alert(`✅ 사용 가능한 학번입니다.`);
   } catch (error) {
-    const message = error?.response?.data?.message || "네트워크 오류";
+    const message = error?.response?.data?.message || "학번 중복 확인 오류";
     alert(`❗ ${message}`);
   }
 };
@@ -39,7 +39,7 @@ function Join() {
       `${API_BASE_URL}/auth/email-certification`,
       { studentNum }
     );
-    alert(`✅ 발송완료 ( 스팸메일함도 확인해주세요 )`);
+    alert(`✅ ${studentNum}@dankook.ac.kr 학교 메일로 인증번호 발송 완료. (스팸메일함도 확인해주세요)`);
   } catch (error) {
     const message = error?.response?.data?.message || "네트워크 오류";
     alert(`❗ ${message}`);
@@ -52,10 +52,10 @@ function Join() {
       `${API_BASE_URL}/auth/check-certification`,
       { studentNum, certificationNumber }
     );
-    alert(`✅ ${response.data.message}`);
+    alert(`✅ 인증 완료`);
     
   } catch (error) {
-    const message = error?.response?.data?.message || "네트워크 오류";
+    const message = error?.response?.data?.message || "인증 오류";
     alert(`❗ ${message}`);
   }
 };
@@ -79,10 +79,20 @@ function Join() {
         phoneNum,
       }
     );
-    alert(`✅ ${response.data.message}`);
+    alert(`✅ 회원가입 성공! 로그인 페이지로 이동합니다.`);
     navigate("/login");
   } catch (error) {
-    const message = error?.response?.data?.message || "네트워크 오류";
+    const code = error?.response?.data?.code;
+    const serverMessage = error?.response?.data?.message;
+
+    // 🔹 IR 코드 처리
+    if (code === "IR") {
+      alert("❗ 양식이 올바르지 않습니다. 학번:숫자8자리, 비밀번호:영문+숫자+특수문자 8~20자리");
+      return;
+    }
+
+    // 🔹 그 외 기본 처리
+    const message = serverMessage || "네트워크 오류";
     alert(`❗ ${message}`);
   }
 };
@@ -92,8 +102,22 @@ function Join() {
       <h2 className="page-title">회원가입</h2>
 
       <div className="input-row">
-        <input className="textarea" placeholder="학번" value={studentNum} onChange={(e) => setStudentNum(e.target.value)} />
-        <button className="join-outline-btn" onClick={handleEmailCheck}>중복확인하기</button>
+        <input
+          className="textarea"
+          placeholder="학번"
+          value={studentNum}
+          inputMode="numeric"
+          pattern="[0-9]*"
+          maxLength="8"
+          onChange={(e) => {
+            // 🔹 숫자만 남기고, 8자리까지만 허용
+            const onlyNums = e.target.value.replace(/[^0-9]/g, "").slice(0, 8);
+            setStudentNum(onlyNums);
+          }}
+        />
+        <button className="join-outline-btn" onClick={handleEmailCheck}>
+          중복확인하기
+        </button>
       </div>
 
       <div className="input-row">
@@ -112,7 +136,7 @@ function Join() {
       </div>
 
       <div className="input-row">
-        <input className="textarea" placeholder="비밀번호 영문+숫자 12~18자리" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input className="textarea" placeholder="비밀번호 영문+숫자+특수문자 8~20자리" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
 
       <div className="input-row"> {/* <-- CSS에서 position: relative 설정 필요 */}

@@ -8,12 +8,12 @@
     width: 100%;
   }
 
-  /* .input-row .textarea,
+  .input-row .textarea,
   .input-row .dropdown {
     margin-bottom: 0;
     flex: 1;
     min-width: 140px;
-  }  */
+  } 
   
   .join-outline-btn {
     flex: 1;

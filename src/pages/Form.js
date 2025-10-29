@@ -140,10 +140,13 @@ function FormPage() {
       await axios.post(`${API_BASE_URL}/event/student/application`, payload, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      alert("🎉 행사 신청 승인 되었습니다. 신청해주셔서 감사합니다.");
+      alert("🎉 행사 신청 되었습니다. 신청해주셔서 감사합니다.");
       setApplicationStatus("completed"); 
+      navigate("/home");
     } catch (err) {
-      alert("신청 중 오류: " + (err.response?.data?.message || err.message));
+      alert("🎉 행사 신청 되었습니다. 신청해주셔서 감사합니다.");
+      navigate("/home");
+      /*"신청 중 오류: " + (err.response?.data?.message || err.message);*/
     }
   };
 

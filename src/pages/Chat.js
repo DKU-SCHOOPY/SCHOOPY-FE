@@ -73,8 +73,8 @@ function ChatRoomList() {
         {filteredChats.map((chat) =>
           role === "COUNCIL" ? (
             <Link
-              key={chat.counterpartId}
-              to={`/chat/room/${chat.counterpartId}`}
+              key={chat.roomId}
+              to={`/chat/room/${chat.roomId}`}
               state={{
                 otherUserId: chat.counterpartId,
                 otherUserName: chat.counterpartName,
@@ -90,8 +90,8 @@ function ChatRoomList() {
             </Link>
           ) : (
             <Link
-              key={chat.presidentStudentNum}
-              to={`/chat/room/${chat.presidentStudentNum}`}
+              key={chat.roomId}
+              to={`/chat/room/${chat.roomId}`}
               state={{
                 otherUserId: chat.presidentStudentNum,
                 otherUserName: chat.department,

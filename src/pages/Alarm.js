@@ -98,37 +98,37 @@ export default function Alarm() {
   };
 
   const handleDecision = async (accept) => {
-    if (!selectedNotice) return;
-    const { id, type } = selectedNotice;
+  if (!selectedNotice) return;
+  const { id, type } = selectedNotice;
 
-    try {
-      let url = "";
-      let body = { noticeId: id, accept };
+  try {
+    let url = "";
+    const body = { noticeId: id, accept }; // ✅ SW 제거
 
-      if (type === "Erequest") {
-        url = `${API_BASE_URL}/notice/council/Erequest`;
-      } else if (type === "Crequest") {
-        url = `${API_BASE_URL}/notice/council/Crequest`;
-        body.SW = "SW";
-      } else return;
+    if (type === "Erequest") {
+      url = `${API_BASE_URL}/notice/council/Erequest`;
+    } else if (type === "Crequest") {
+      url = `${API_BASE_URL}/notice/council/Crequest`;
+    } else return;
 
-      await axios.post(url, body, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+    await axios.post(url, body, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
 
-      alert(`요청이 ${accept ? "승인" : "반려"}되었습니다.`);
+    alert(`요청이 ${accept ? "승인" : "반려"}되었습니다.`);
 
-      setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-      );
-      setSelectedNotice(null);
-    } catch (err) {
-      console.error("승인/반려 요청 실패", err);
-      alert("처리 중 오류가 발생했습니다.");
-    }
-  };
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+    );
+    setSelectedNotice(null);
+  } catch (err) {
+    console.error("승인/반려 요청 실패", err);
+    alert("처리 중 오류가 발생했습니다.");
+  }
+};
+
 
   const handleClosePopup = async () => {
     if (!selectedNotice) return;
