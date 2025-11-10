@@ -1,22 +1,31 @@
+//socket.js
 let socket = null;
 
 export function connectSocket(myId, targetId) {
   const token = localStorage.getItem("token");
-  socket = new WebSocket(
-    `wss://api.schoopy.co.kr/ws/chat/${myId}/${targetId}?token=${token}`
+  const socket = new WebSocket(
+    `wss://api.schoopy.co.kr/ws/chat/${myId}/${targetId}`
   );
+  socket.onopen = () => {
+    console.log("웹소켓 연결됨");
+  };
 
-  socket.onopen = () => console.log("웹소켓 연결됨");
   socket.onclose = () => {
     console.log("웹소켓 연결 끊김");
     socket = null;
   };
-  socket.onerror = (err) => console.error("웹소켓 오류", err);
+
+  socket.onerror = (err) => {
+    console.error("웹소켓 오류", err);
+  };
 
   return socket;
-}
+};
 
-export const socketFactory = (url) => () => new WebSocket(url);
+export const socketFactory = (url) => {
+  return () => new WebSocket(url); // 꼭 함수 리턴
+};
+
 
 export const getSocket = () => socket;
 
