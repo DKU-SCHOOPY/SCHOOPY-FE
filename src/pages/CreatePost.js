@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import "./CreatePost.css";
 
 const VALID_DEPARTMENTS = [
-  "SW융합대학학생회",
+  "SW융합대학",
   "소프트웨어학과",
   "컴퓨터공학과",
   "통계데이터사이언스학과",
