@@ -93,7 +93,6 @@ function EventDetail() {
     const now = new Date();
     const start = parseLocalDate(eventData.surveyStartDate);
     const end = parseLocalDate(eventData.surveyEndDate);
-    end.setHours(23, 59, 59, 999);//종료 시간을 23시59분59초
     return now >= start && now <= end;
   };
 
@@ -188,15 +187,15 @@ function EventDetail() {
       )}
       {/* 학생회 버튼 */}
       {eventData.maxParticipant > 0 && role === "COUNCIL" && (
-        <div>
+         <div className="event-actions">
           <button
-            className="event-big-button edit-button"
+            className="event-action-button edit"
             onClick={() => navigate(`/events/edit/${eventData.eventCode}`)}
           >
             수정
           </button>
-          <button
-            className="event-big-button delete-button"
+           <button
+            className="event-action-button delete"
             onClick={async () => {
               if (window.confirm("정말 이 이벤트를 삭제하시겠습니까?")) {
                 try {

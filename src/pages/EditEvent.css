@@ -1,3 +1,5 @@
+/* EditEvent.css - EditEvent 컴포넌트에 맞춘 스타일 */
+
 /* === 전체 컨테이너 === */
 .edit-event-container {
   max-width: 720px;
@@ -14,7 +16,7 @@
 .edit-event-container h2 {
   font-size: 22px;
   font-weight: 700;
-  margin: 0 0 20px;
+  margin: 0 0 18px;
   color: #1e1e1e;
   text-align: left;
 }
@@ -24,6 +26,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  text-align: left;
 }
 
 /* 각 입력 그룹 */
@@ -33,10 +36,13 @@
 }
 
 /* 라벨 */
-.form-group label {
+.form-group label,
+.edit-event-form label {
   font-weight: 600;
   color: #4f46e5;
+  /* #6200ee 대체톤 */
   margin-bottom: 8px;
+  display: block;
   font-size: 0.95rem;
 }
 
@@ -62,52 +68,42 @@
   outline: none;
 }
 
-/* 버튼 그룹 */
-.button-group {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 8px;
-}
-
-/* 버튼 공통 */
-.btn {
-  padding: 9px 16px;
+/* 저장 버튼 (오른쪽에 작게) */
+.save-button {
+  align-self: flex-end;
+  /* 오른쪽 정렬 */
+  padding: 8px 16px;
   font-size: 0.95rem;
   font-weight: 700;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: all 0.15s ease;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-}
-
-/* primary (수정) */
-.btn.primary {
   background: linear-gradient(90deg, #3b82f6, #2563eb);
   color: #fff;
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.15);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
 }
-.btn.primary:hover {
+
+/* hover/active */
+.save-button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(59,130,246,0.18);
+  box-shadow: 0 10px 22px rgba(59, 130, 246, 0.18);
 }
-.btn.primary:active {
+
+.save-button:active {
   transform: translateY(0);
   opacity: 0.95;
 }
 
-/* danger (삭제) */
-.btn.danger {
-  background: linear-gradient(90deg, #ef4444, #dc2626);
-  color: #fff;
-}
-.btn.danger:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(239,68,68,0.18);
-}
-.btn.danger:active {
-  transform: translateY(0);
-  opacity: 0.95;
+/* 상태 메시지 유지 (선택사항) */
+.status-message {
+  padding: 14px;
+  border-radius: 10px;
+  margin-top: 12px;
+  font-weight: 500;
+  text-align: center;
+  border: 2px solid;
+  font-size: 0.95rem;
 }
 
 /* 반응형 */
@@ -121,12 +117,9 @@
     font-size: 18px;
   }
 
-  .button-group {
-    flex-direction: column;
-  }
-
-  .btn {
-    width: 100%;
+  .save-button {
+    padding: 8px 12px;
     font-size: 0.9rem;
+    align-self: stretch;
   }
 }
