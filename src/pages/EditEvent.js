@@ -20,7 +20,6 @@ export default function EditEvent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const requestBody = {
         eventCode: Number(eventCode),
@@ -39,6 +38,19 @@ export default function EditEvent() {
     } catch (error) {
       console.error("행사 수정 실패:", error);
       alert("행사 수정 중 오류가 발생했습니다.");
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!window.confirm("정말 이 행사를 삭제하시겠습니까?")) return;
+
+    try {
+      await axios.delete(`${API_BASE_URL}/event/council/delete/${eventCode}`);
+      alert("행사가 삭제되었습니다.");
+      navigate(`/`);
+    } catch (error) {
+      console.error("삭제 실패:", error);
+      alert("삭제 중 오류가 발생했습니다.");
     }
   };
 
@@ -70,9 +82,10 @@ export default function EditEvent() {
           />
         </div>
 
-        <button type="submit" className="save-button">
-          수정 완료
-        </button>
+        <div className="button-group">
+          <button type="submit" className="btn primary">수정 완료</button>
+          <button type="button" onClick={handleDelete} className="btn danger">삭제</button>
+        </div>
       </form>
     </div>
   );
