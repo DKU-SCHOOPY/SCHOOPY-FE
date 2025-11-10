@@ -188,29 +188,25 @@ function EventDetail() {
       )}
       {/* 학생회 수정 삭제 버튼 */}
        {eventData.maxParticipant > 0 && role === "COUNCIL" && (
-        <div className="burger-menu">
+        <div className="burger-menu-header">
           <button className="burger-btn">≡</button>
           <div className="burger-dropdown">
             <button
-              className="dropdown-item"
+              className="dropdown-item edit"
               onClick={() => navigate(`/events/edit/${eventData.eventCode}`)}
             >
               수정
             </button>
             <button
-              className="dropdown-item"
+              className="dropdown-item delete"
               onClick={async () => {
-                if (
-                  window.confirm("정말 이 이벤트를 삭제하시겠습니까?")
-                ) {
+                if (window.confirm("정말 이 이벤트를 삭제하시겠습니까?")) {
                   try {
                     await axios.delete(
                       `${API_BASE_URL}/event/council/delete-event/${eventData.eventCode}`,
                       {
                         headers: {
-                          Authorization: `Bearer ${localStorage.getItem(
-                            "token"
-                          )}`,
+                          Authorization: `Bearer ${localStorage.getItem("token")}`,
                         },
                       }
                     );

@@ -228,10 +228,10 @@ const handleQrImageUpload = (type, e) => {
       const submitData = new FormData();
       submitData.append("eventName", formData.eventName);
       submitData.append("department", formData.department);
-      submitData.append("surveyStartDate", formData.surveyStartDate.toISOString().slice(0, 10));
-      submitData.append("surveyEndDate", formData.surveyEndDate.toISOString().slice(0, 10));
-      submitData.append("eventStartDate", formData.eventStartDate.toISOString().slice(0, 10));
-      submitData.append("eventEndDate", formData.eventEndDate.toISOString().slice(0, 10));
+      submitData.append("surveyStartDate", formData.surveyStartDate.toLocaleDateString("sv-SE"));
+      submitData.append("surveyEndDate", formData.surveyEndDate.toLocaleDateString("sv-SE"));
+      submitData.append("eventStartDate", formData.eventStartDate.toLocaleDateString("sv-SE"));
+      submitData.append("eventEndDate", formData.eventEndDate.toLocaleDateString("sv-SE"));
       submitData.append("maxParticipants", formData.maxParticipants);
       submitData.append("currentParticipants", "0");
       submitData.append("eventDescription", formData.eventDescription);
