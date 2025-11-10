@@ -95,7 +95,7 @@ export default function FormPage() {
     }
   };
 
-  return ( 
+  return (
     <div className="container">
       <Header title="게시물 생성" showBack />
 
@@ -128,7 +128,7 @@ export default function FormPage() {
 
         {deptOpen && (
           <div className="dropdown-menu">
-            {["SW융합대학학생회","소프트웨어학과","컴퓨터공학과","통계데이터사이언스학과","사이버보안학과"].map((dept) => (
+            {["SW융합대학", "소프트웨어학과", "컴퓨터공학과", "통계데이터사이언스학과", "사이버보안학과"].map((dept) => (
               <div
                 key={dept}
                 className={`dropdown-item ${department === dept ? "selected" : ""}`}
