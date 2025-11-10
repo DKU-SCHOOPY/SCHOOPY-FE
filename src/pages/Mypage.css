@@ -83,6 +83,7 @@
   width: 150px; /* 필요에 따라 조정 */
   height: auto;
   cursor: pointer;
+  
 }
 
 .kakaolink.disabled,
@@ -90,6 +91,7 @@
   pointer-events: none;   /* 클릭 막기 */
   opacity: 0.5;           /* 회색처럼 보이게 */
   cursor: not-allowed;    /* 마우스 커서도 X */
+  display: block; /* 이미지 주변 공백 제거 */
 }
 
 .logout-button {
