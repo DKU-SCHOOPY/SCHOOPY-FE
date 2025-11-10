@@ -87,7 +87,7 @@ function EventDetail() {
     return new Date(year, month - 1, day);
   };
 
- const isApplicationPeriod = () => {
+  const isApplicationPeriod = () => {
     if (!eventData?.surveyStartDate || !eventData?.surveyEndDate) return false;
 
     const now = new Date();
@@ -186,38 +186,50 @@ function EventDetail() {
           )}
         </>
       )}
-      {/* 학생회 버튼 */}
-      {eventData.maxParticipant > 0 && role === "COUNCIL" && (
-        <div>
-          <button
-            className="event-big-button edit-button"
-            onClick={() => navigate(`/events/edit/${eventData.eventCode}`)}
-          >
-            수정
-          </button>
-          <button
-            className="event-big-button delete-button"
-            onClick={async () => {
-              if (window.confirm("정말 이 이벤트를 삭제하시겠습니까?")) {
-                try {
-                  await axios.delete(`${API_BASE_URL}/event/council/delete-event/${eventData.eventCode}`, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-                  });
-                  alert("이벤트가 삭제되었습니다.");
-                  navigate("/home");
-                } catch (err) {
-                  console.error(err);
-                  alert("삭제 중 오류가 발생했습니다.");
+      {/* 학생회 수정 삭제 버튼 */}
+       {eventData.maxParticipant > 0 && role === "COUNCIL" && (
+        <div className="burger-menu">
+          <button className="burger-btn">≡</button>
+          <div className="burger-dropdown">
+            <button
+              className="dropdown-item"
+              onClick={() => navigate(`/events/edit/${eventData.eventCode}`)}
+            >
+              수정
+            </button>
+            <button
+              className="dropdown-item"
+              onClick={async () => {
+                if (
+                  window.confirm("정말 이 이벤트를 삭제하시겠습니까?")
+                ) {
+                  try {
+                    await axios.delete(
+                      `${API_BASE_URL}/event/council/delete-event/${eventData.eventCode}`,
+                      {
+                        headers: {
+                          Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                          )}`,
+                        },
+                      }
+                    );
+                    alert("이벤트가 삭제되었습니다.");
+                    navigate("/home");
+                  } catch (err) {
+                    console.error(err);
+                    alert("삭제 중 오류가 발생했습니다.");
+                  }
                 }
-              }
-            }}
-          >
-            삭제
-          </button>
+              }}
+            >
+              삭제
+            </button>
+          </div>
         </div>
       )}
-
     </div>
   );
 }
+
 export default EventDetail;
