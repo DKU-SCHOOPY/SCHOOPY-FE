@@ -186,9 +186,9 @@
 }
 
 .burger-menu-header {
-  position: absolute;
-  top: 16px;      
-  right: 16px;     
+  position: fixed;
+  top: 16px;
+  right: 16px;
   display: flex;
   align-items: center;
   z-index: 1000;
@@ -210,7 +210,7 @@
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 6px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   flex-direction: column;
   min-width: 100px;
   overflow: hidden;
