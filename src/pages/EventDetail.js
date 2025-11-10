@@ -187,7 +187,7 @@ function EventDetail() {
         </>
       )}
       {/* 학생회 수정 삭제 버튼 */}
-      if(role === "COUNCIL") {(
+      {role === "COUNCIL" && (
         <div className="burger-menu-header">
           <button className="burger-btn">≡</button>
           <div className="burger-dropdown">
