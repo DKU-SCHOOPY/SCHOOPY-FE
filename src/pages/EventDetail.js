@@ -82,18 +82,20 @@ function EventDetail() {
     return <div className="container">이벤트 정보를 불러오는 중...</div>;
   }
 
-  const parseLocalDate = (dateStr) => {
-    const [year, month, day] = dateStr.split("-").map(Number);
-    return new Date(year, month - 1, day);
-  };
+   const toNumberDate = (dateStr) => Number(dateStr.replace(/-/g, ""));
 
- const isApplicationPeriod = () => {
+  const isApplicationPeriod = () => {
     if (!eventData?.surveyStartDate || !eventData?.surveyEndDate) return false;
 
     const now = new Date();
-    const start = parseLocalDate(eventData.surveyStartDate);
-    const end = parseLocalDate(eventData.surveyEndDate);
-    return now >= start && now <= end;
+    const nowNum = Number(
+      `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`
+    );
+
+    const startNum = toNumberDate(eventData.surveyStartDate);
+    const endNum = toNumberDate(eventData.surveyEndDate);
+
+    return nowNum >= startNum && nowNum <= endNum;
   };
 
   return (
@@ -189,13 +191,13 @@ function EventDetail() {
       {eventData.maxParticipant > 0 && role === "COUNCIL" && (
          <div className="event-actions">
           <button
-            className="event-action-button edit"
+            className="event-big-button edit-button"
             onClick={() => navigate(`/events/edit/${eventData.eventCode}`)}
           >
             수정
           </button>
            <button
-            className="event-action-button delete"
+            className="event-big-button delete-button"
             onClick={async () => {
               if (window.confirm("정말 이 이벤트를 삭제하시겠습니까?")) {
                 try {

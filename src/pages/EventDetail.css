@@ -187,7 +187,7 @@
 
 /* ========== 버튼 스타일 ========== */
 .event-big-button {
-  display: inline-block; /* 나란히 배치 가능 */
+  display: inline-block;
   width: 48%;
   margin: 10px 1%;
   padding: 14px 22px;
@@ -207,9 +207,9 @@
 }
 
 .event-big-button.edit-button {
-  background: linear-gradient(90deg, #3b82f6, #2563eb); /* 파랑 */
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
 }
 
 .event-big-button.delete-button {
-  background: linear-gradient(90deg, #ef4444, #dc2626); /* 빨강 */
+  background: linear-gradient(90deg, #ef4444, #dc2626);
 }
