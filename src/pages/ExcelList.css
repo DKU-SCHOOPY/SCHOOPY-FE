@@ -40,7 +40,8 @@
 }
 
 .excel-controls button:disabled {
-    opacity: 0.5;
+    pointer-events: none;   /* 클릭 막기 */
+    opacity: 0.5;           /* 회색처럼 보이게 */
     cursor: not-allowed;
 }
 
