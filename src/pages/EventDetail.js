@@ -104,11 +104,6 @@ function EventDetail() {
       <h1 className="event-title">{eventData.eventName}</h1>
 
       <div className="department-profile">
-        <img
-          src={`/images/departments/${eventData.department}.png`}
-          alt={`${eventData.department} 로고`}
-          className="department-image"
-        />
         <span className="department-name">{eventData.department}</span>
       </div>
 
