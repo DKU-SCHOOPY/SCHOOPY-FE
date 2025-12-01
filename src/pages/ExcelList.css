@@ -40,9 +40,9 @@
 }
 
 .excel-controls button:disabled {
-    pointer-events: none;   /* 클릭 막기 */
-    opacity: 0.5;           /* 회색처럼 보이게 */
-    cursor: not-allowed;
+  pointer-events: none;   /* 클릭 막기 */
+  opacity: 0.5;           /* 회색처럼 보이게 */
+  cursor: not-allowed;    /* 마우스 커서도 X */
 }
 
 .excel-table {

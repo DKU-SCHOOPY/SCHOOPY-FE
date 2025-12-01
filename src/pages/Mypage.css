@@ -78,11 +78,34 @@
   margin-top: 20px;
 }
 
+
+.kakaolink,
+.naverlink {
+  width: 100%;             /* 버튼 전체 너비 */
+  height: 25px;           /* 버튼 높이 */
+  display: flex;          /* 이미지와 내부 여백을 정렬 */
+  justify-content: center; /* 이미지 중앙 정렬 */
+  align-items: center;     
+  text-decoration: none;
+  box-sizing: border-box;
+  border-radius: 6px;
+}
+
+.kakaolink {
+  background-color: #fee500; /* 예: 카카오 버튼 배경 */
+}
+
+.naverlink {
+  background-color: #03c75a; /* 예: 네이버 버튼 배경 */
+}
+
 .kakaolink img,
 .naverlink img {
-  width: 150px; /* 필요에 따라 조정 */
-  height: auto;
-  cursor: pointer;
+  width: auto;
+  height: 100%; /* 버튼 높이에 맞춤 */
+  object-fit: contain; /* 이미지 비율 유지 */
+  flex-shrink: 0; /* 이미지가 줄어들지 않도록 설정 */
+  max-width: 100%;
 }
 
 .kakaolink.disabled,
