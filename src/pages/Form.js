@@ -180,7 +180,7 @@ function FormPage() {
 
       {applicationStatus === "none" ? (
         <>
-          <p className="form-description">아래 항목을 작성하여 신청해 주세요.</p>
+          {/* <p className="form-description">아래 항목을 작성하여 신청해 주세요.</p> */}
           <form className="form" onSubmit={handleSubmit}>
             {form.questions.map((q, idx) => (
               <div className="form-group" key={q.questionId}>
