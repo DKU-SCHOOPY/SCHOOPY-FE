@@ -80,7 +80,7 @@
 
 .kakaolinkbtn,
 .naverlinkbtn {
-  width: 150px;             /* 버튼 전체 너비 */
+  width: 100px;             /* 버튼 전체 너비 */
   height: auto;           /* 버튼 높이 */
   display: flex;          /* 이미지와 내부 여백을 정렬 */
   justify-content: center; /* 이미지 중앙 정렬 */
