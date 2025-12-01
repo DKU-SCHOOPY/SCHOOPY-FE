@@ -76,6 +76,8 @@
   justify-content: center;
   gap: 20px; /* 버튼 사이 간격 */
   margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 
@@ -89,8 +91,6 @@
   text-decoration: none;
   box-sizing: border-box;
   border-radius: 6px;
-  margin-left: 20px;
-  margin-right: 20px;
 }
 
 .kakaolink {
