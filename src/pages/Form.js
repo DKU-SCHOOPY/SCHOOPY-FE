@@ -248,7 +248,7 @@ function FormPage() {
                     )
                   ) : (
                     <input
-                      className="input"
+                      className="textarea"
                       type="text"
                       value={answers[q.questionId] || ""}
                       onChange={(e) => handleAnswerChange(q.questionId, e.target.value)}
