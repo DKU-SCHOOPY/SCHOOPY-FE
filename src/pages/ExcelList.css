@@ -40,7 +40,7 @@
 }
 
 .excel-controls button:disabled {
-    background: #aaa;
+    opacity: 0.5;
     cursor: not-allowed;
 }
 
