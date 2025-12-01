@@ -78,18 +78,37 @@
   margin-top: 20px;
 }
 
-.kakaolink img,
-.naverlink img {
-  width: 150px; /* 필요에 따라 조정 */
-  height: auto;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
+.kakaolinkbtn,
+.naverlinkbtn {
+  width: 150px;             /* 버튼 전체 너비 */
+  height: auto;           /* 버튼 높이 */
+  display: flex;          /* 이미지와 내부 여백을 정렬 */
+  justify-content: center; /* 이미지 중앙 정렬 */
   align-items: center;
+  text-decoration: none;
+  box-sizing: border-box;
+  border-radius: 6px;
 }
 
-.kakaolink.disabled img,
-.naverlink.disabled img {
+.kakaolinkbtn img,
+.naverlinkbtn img {
+  width: auto;
+  height: 100%; /* 버튼 높이에 맞춤 */
+  object-fit: contain; /* 이미지 비율 유지 */
+  flex-shrink: 0; /* 이미지가 줄어들지 않도록 설정 */
+  max-width: 100%;
+}
+
+.kakaolinkbtn {
+  background-color: #fee500; /* 예: 카카오 버튼 배경 */
+}
+
+.naverlinkbtn {
+  background-color: #03c75a; /* 예: 네이버 버튼 배경 */
+}
+
+.kakaolinkbtn.disabled,
+.naverlinkbtn.disabled {
   pointer-events: none;   /* 클릭 막기 */
   opacity: 0.5;           /* 회색처럼 보이게 */
   cursor: not-allowed;    /* 마우스 커서도 X */
