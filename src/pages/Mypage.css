@@ -82,13 +82,15 @@
 .kakaolink,
 .naverlink {
   width: 100%;             /* 버튼 전체 너비 */
-  height: 25px;           /* 버튼 높이 */
+  height: 30px;           /* 버튼 높이 */
   display: flex;          /* 이미지와 내부 여백을 정렬 */
   justify-content: center; /* 이미지 중앙 정렬 */
   align-items: center;     
   text-decoration: none;
   box-sizing: border-box;
   border-radius: 6px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .kakaolink {
