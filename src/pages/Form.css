@@ -136,13 +136,13 @@ select.input:focus {
 }
 
 /* 비활성화 상태 */
-.payment-button:disabled {
+/* .payment-button:disabled {
   background: #e0e0e0;
   color: #aaa;
   border-color: #e0e0e0;
   cursor: not-allowed;
   opacity: 0.7;
-}
+} */
 
 /* === 상태 메시지 === */
 .status-message {
