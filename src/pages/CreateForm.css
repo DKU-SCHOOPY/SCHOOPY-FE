@@ -78,7 +78,7 @@ input[type="number"]:focus,
 /* ===== 2x2 날짜 그리드 ===== */
 .date-grid {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
   box-sizing: border-box;
 }
@@ -87,7 +87,7 @@ input[type="number"]:focus,
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   min-width: 0;
   box-sizing: border-box;
 }
