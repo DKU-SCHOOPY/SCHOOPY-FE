@@ -116,7 +116,7 @@ input[type="number"]:focus,
 .cf-dropdown-selected {
   min-width: 70px;
   white-space: nowrap;
-  padding: 4px 8px;
+  padding: 5px 8px;
   border: 1px solid #6a5af9;
   border-radius: 6px;
   background: white;
@@ -258,7 +258,8 @@ input[type="number"]:focus,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 4px;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 
 .question-controls {
@@ -302,7 +303,7 @@ input[type="number"]:focus,
   color: #6a5af9;
   border: 1px solid #6a5af9;
   border-radius: 6px;
-  padding: 6px 13px;
+  padding: 6px 14px;
   font-size: 13px;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
