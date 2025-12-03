@@ -42,6 +42,7 @@ input[type="number"],
   transition: border 0.2s;
   height: 32px;
   box-sizing: border-box;
+  background: #fff
 }
 
 .question-option-input:focus,
@@ -113,7 +114,7 @@ input[type="number"]:focus,
 .cf-dropdown-selected {
   min-width: 70px;
   white-space: nowrap;
-  padding: 4px 6px;
+  padding: 4px 8px;
   border: 1px solid #6a5af9;
   border-radius: 6px;
   background: white;
@@ -136,7 +137,7 @@ input[type="number"]:focus,
   top: 100%;
   left: 0;
   width: 100%;
-  min-width: 70px;
+  min-width: 60px;
   background: white;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
@@ -147,7 +148,7 @@ input[type="number"]:focus,
 .cf-dropdown-item {
   padding: 6px 8px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .cf-dropdown-item:hover {
@@ -290,7 +291,7 @@ input[type="number"]:focus,
   color: #444;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .question-action-btn {
@@ -298,7 +299,7 @@ input[type="number"]:focus,
   color: #6a5af9;
   border: 1px solid #6a5af9;
   border-radius: 6px;
-  padding: 10px 10px;
+  padding: 10px 6px;
   font-size: 13px;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
@@ -394,7 +395,7 @@ input[type="number"]:focus,
 .question-card-header {
   display: flex;
   align-items: center;
-  gap: 0;
+  gap: 4px;
 }
 
 .question-number {
@@ -406,14 +407,15 @@ input[type="number"]:focus,
   margin-left: 24px;
 }
 
-.question-delete-btn,
-.option-delete-btn {
+.question-delete-btn {
   font-size: 13px;
   padding: 6px 6px;
   border-radius: 6px;
   border: 1px solid #e74c3c;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
+  background: #fff;
+
 }
 
 .add-option-btn {
