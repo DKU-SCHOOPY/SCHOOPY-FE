@@ -44,7 +44,7 @@ const KakaoCallback = () => {
       } catch (error) {
         console.error("카카오 로그인 오류:", error);
         alert(
-          "카카오 계정이 학번 계정과 연동되지 않았습니다.\n회원가입 후 소셜로그인 연동을 해주세요."
+          "카카오 계정이 기존존 계정과 연동되지 않았습니다.\n회원가입 후 소셜로그인 연동을 해주세요."
         );
         navigate("/join");
       } finally {

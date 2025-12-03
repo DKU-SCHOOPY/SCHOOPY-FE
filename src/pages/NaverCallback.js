@@ -45,7 +45,7 @@ function NaverCallback() {
         }
       } catch (err) {
         console.error("네이버 로그인 처리 실패:", err);
-        alert("네이버 계정이 학번 계정과 연동되지 않았습니다.\n회원가입 후 소셜로그인 연동을 해주세요.");
+        alert("네이버 계정이 기존 계정과 연동되지 않았습니다.\n회원가입 후 소셜로그인 연동을 해주세요.");
         navigate("/join");
       }
     };

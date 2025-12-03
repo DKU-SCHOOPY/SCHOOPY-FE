@@ -291,44 +291,46 @@ const handleQrImageUpload = (type, e) => {
         <div className="question-section">
           <div className="question-add-row">
             <h3 className="question-section-title">질문</h3>
-            <div className="dropdown">
-              <div
-                className="dropdown-selected"
-                onClick={() => setQuestionTypeOpen(!questionTypeOpen)}
-              >
-                {newQuestionType === QUESTION_TYPES.SUBJECTIVE
-                  ? "주관식"
-                  : newQuestionType === QUESTION_TYPES.OBJECTIVE
-                    ? "객관식"
-                    : "선택하세요"}
-                <span className="arrow">{questionTypeOpen ? "▲" : "▼"}</span>
+            <div className="question-controls">
+              <div className="dropdown">
+                <div
+                  className="dropdown-selected"
+                  onClick={() => setQuestionTypeOpen(!questionTypeOpen)}
+                >
+                  {newQuestionType === QUESTION_TYPES.SUBJECTIVE
+                    ? "주관식"
+                    : newQuestionType === QUESTION_TYPES.OBJECTIVE
+                      ? "객관식"
+                      : "선택하세요"}
+                  <span className="arrow">{questionTypeOpen ? "▲" : "▼"}</span>
+                </div>
+
+                {questionTypeOpen && (
+                  <div className="dropdown-menu">
+                    <div
+                      className={`dropdown-item ${newQuestionType === QUESTION_TYPES.SUBJECTIVE ? "selected" : ""}`}
+                      onClick={() => {
+                        setNewQuestionType(QUESTION_TYPES.SUBJECTIVE);
+                        setQuestionTypeOpen(false);
+                      }}
+                    >
+                      주관식
+                    </div>
+                    <div
+                      className={`dropdown-item ${newQuestionType === QUESTION_TYPES.OBJECTIVE ? "selected" : ""}`}
+                      onClick={() => {
+                        setNewQuestionType(QUESTION_TYPES.OBJECTIVE);
+                        setQuestionTypeOpen(false);
+                      }}
+                    >
+                      객관식
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {questionTypeOpen && (
-                <div className="dropdown-menu">
-                  <div
-                    className={`dropdown-item ${newQuestionType === QUESTION_TYPES.SUBJECTIVE ? "selected" : ""}`}
-                    onClick={() => {
-                      setNewQuestionType(QUESTION_TYPES.SUBJECTIVE);
-                      setQuestionTypeOpen(false);
-                    }}
-                  >
-                    주관식
-                  </div>
-                  <div
-                    className={`dropdown-item ${newQuestionType === QUESTION_TYPES.OBJECTIVE ? "selected" : ""}`}
-                    onClick={() => {
-                      setNewQuestionType(QUESTION_TYPES.OBJECTIVE);
-                      setQuestionTypeOpen(false);
-                    }}
-                  >
-                    객관식
-                  </div>
-                </div>
-              )}
+              <button type="button" className="question-action-btn" onClick={handleAddQuestion}>질문추가</button>
             </div>
-
-            <button type="button" className="question-action-btn" onClick={handleAddQuestion}>질문추가</button>
           </div>
           <div>
             {questions.map((q, idx) => (
