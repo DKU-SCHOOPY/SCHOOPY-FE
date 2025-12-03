@@ -1,7 +1,7 @@
 /* CouncilFee.css */
 
 .councilfee-userlist {
-  margin: 0px 1px;
+  margin: 0px;
 }
 
 .userrow {
@@ -76,7 +76,7 @@
 
 /* 검색창 */
 .searchbox {
-  margin: 10px 12px 20px 12px;
+  margin: 10px 12px 10px 12px;
 }
 
 .searchinput {
