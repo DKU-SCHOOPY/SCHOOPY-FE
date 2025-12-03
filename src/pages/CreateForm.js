@@ -289,8 +289,8 @@ const handleQrImageUpload = (type, e) => {
 
         {/* ====== 질문 ====== */}
         <div className="question-section">
-          <h3 className="question-section-title">질문</h3>
           <div className="question-add-row">
+            <h3 className="question-section-title">질문</h3>
             <div className="dropdown">
               <div
                 className="dropdown-selected"
