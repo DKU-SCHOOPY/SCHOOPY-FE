@@ -76,15 +76,17 @@
 
 /* 검색창 */
 .councilfee-searchbox {
-  margin: 10px 12px 10px 12px;
+  margin-bottom: 8px;
 }
 
 .councilfee-searchinput {
   width: 100%;
   padding: 10px 14px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  border: 1.5px solid #e5e5e5;
+  border-radius: 12px;
   font-size: 14px;
+  background: #fafbfc;
+  box-sizing: border-box;
   outline: none;
 }
 
