@@ -375,7 +375,7 @@ const handleQrImageUpload = (type, e) => {
                           <button type="button" className="question-action-btn option-delete-btn" onClick={() => handleDeleteOption(q.id, optIdx)} disabled={q.options.length <= 2}>삭제</button>
                         </div>
                       ))}
-                      <button type="button" className="question-action-btn add-option-btn" onClick={() => handleAddOption(q.id)}>선택지 추가</button>
+                      <button type="button" className="question-option-row" onClick={() => handleAddOption(q.id)}>선택지 추가</button>
                     </div>
                   </div>
                 )}

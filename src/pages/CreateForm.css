@@ -16,7 +16,7 @@
 
 .form-item label {
   margin-bottom: 2px;
-  font-weight: 500;
+  font-weight: 700;
   color: #333;
 }
 
@@ -292,8 +292,6 @@ input[type="number"]:focus,
 .question-label {
   font-size: 14px;
   color: #444;
-  margin-left: 8px;
-  margin-right: 8px;
   display: flex;
   align-items: center;
   gap: 4px;
