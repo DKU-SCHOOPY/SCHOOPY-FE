@@ -40,12 +40,13 @@ function NaverCallback() {
 
         } else {
           // 학번 연동 안 된 경우
-          alert("네이버 계정이 학번 계정과 연동되지 않았습니다.\n회원가입 후 소셜로그인 연동을 해주세요.");          navigate("/login");
+          alert("네이버 계정이 학번 계정과 연동되지 않았습니다.\n회원가입 후 소셜로그인 연동을 해주세요.");
+          navigate("/login");
         }
       } catch (err) {
         console.error("네이버 로그인 처리 실패:", err);
-        alert("네이버 로그인 중 오류가 발생했습니다.");
-        navigate("/login");
+        alert("네이버 계정이 학번 계정과 연동되지 않았습니다.\n회원가입 후 소셜로그인 연동을 해주세요.");
+        navigate("/join");
       }
     };
 
