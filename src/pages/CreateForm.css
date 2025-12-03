@@ -15,7 +15,7 @@
 }
 
 .form-item label {
-  margin-bottom: 0px;
+  margin-bottom: 2px;
   font-weight: 500;
   color: #333;
 }
@@ -124,7 +124,7 @@ input[type="number"]:focus,
   align-items: center;
   font-size: 13px;
   transition: background 0.15s, color 0.15s;
-  margin-top: 12px;
+  margin-top: 13px;
 }
 
 .question-add-row .dropdown-selected:hover {
