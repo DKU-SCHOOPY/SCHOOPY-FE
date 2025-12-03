@@ -342,20 +342,20 @@ const handleQrImageUpload = (type, e) => {
                     placeholder="질문을 입력하세요"
                     value={q.question}
                     onChange={e => handleQuestionChange(q.id, "question", e.target.value)}
-                    className="question-input"
+                    className="question-option-input"
                   />
                   <label className="cf-question-label">
                     <input
                       type="checkbox"
                       checked={q.required}
                       onChange={e => handleQuestionChange(q.id, "required", e.target.checked)}
-                    /> 필수
+                    />필수
                   </label>
                   <button type="button" className="question-delete-btn" onClick={() => handleDeleteQuestion(q.id)}>삭제</button>
                 </div>
                 {q.type === QUESTION_TYPES.OBJECTIVE && (
                   <div className="question-options-container">
-                    <label className="question-label">
+                    <label className="cf-question-label">
                       <input
                         type="checkbox"
                         checked={q.multiple}
