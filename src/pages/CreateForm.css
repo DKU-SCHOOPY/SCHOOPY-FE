@@ -259,6 +259,7 @@ input[type="number"]:focus,
   align-items: center;
   justify-content: space-between;
   margin-bottom: 2px;
+  padding: 4px 6px;
 }
 
 .question-controls {
@@ -272,7 +273,7 @@ input[type="number"]:focus,
   border-radius: 10px;
   box-shadow: 0 1px 4px rgba(106, 90, 249, 0.08);
   border: 1px solid #e0e0e0;
-  padding: 8px 6px;
+  padding: 8px 8px;
   margin-bottom: 6px;
   transition: box-shadow 0.2s;
 }
@@ -299,8 +300,6 @@ input[type="number"]:focus,
 }
 
 .question-action-btn {
-  min-width: 70px;
-  white-space: nowrap;
   background: #fff;
   color: #6a5af9;
   border: 1px solid #6a5af9;
