@@ -75,11 +75,11 @@
 }
 
 /* 검색창 */
-.searchbox {
+.councilfee-searchbox {
   margin: 10px 12px 10px 12px;
 }
 
-.searchinput {
+.councilfee-searchinput {
   width: 100%;
   padding: 10px 14px;
   border: 1px solid #ddd;
@@ -88,7 +88,7 @@
   outline: none;
 }
 
-.searchinput:focus {
+.councilfee-searchinput:focus {
   border-color: #6a5af9;
   box-shadow: 0 0 0 2px rgba(106,90,249,0.1);
 }
