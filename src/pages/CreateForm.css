@@ -264,7 +264,7 @@ input[type="number"]:focus,
 .question-controls {
   display: flex;
   gap: 4px;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .question-card {
