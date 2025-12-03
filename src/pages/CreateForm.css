@@ -286,7 +286,7 @@ input[type="number"]:focus,
   align-items: center;
 }
 
-.question-label {
+.cf-question-label {
   font-size: 14px;
   color: #444;
   display: flex;
@@ -395,7 +395,7 @@ input[type="number"]:focus,
 .question-card-header {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
 .question-number {
@@ -407,7 +407,8 @@ input[type="number"]:focus,
   margin-left: 24px;
 }
 
-.question-delete-btn {
+.question-delete-btn,
+.option-delete-btn {
   font-size: 13px;
   padding: 6px 6px;
   border-radius: 6px;

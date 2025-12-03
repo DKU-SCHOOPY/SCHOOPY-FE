@@ -344,7 +344,7 @@ const handleQrImageUpload = (type, e) => {
                     onChange={e => handleQuestionChange(q.id, "question", e.target.value)}
                     className="question-input"
                   />
-                  <label className="question-label">
+                  <label className="cf-question-label">
                     <input
                       type="checkbox"
                       checked={q.required}
@@ -372,7 +372,7 @@ const handleQrImageUpload = (type, e) => {
                             onChange={e => handleOptionChange(q.id, optIdx, e.target.value)}
                             className="question-option-input"
                           />
-                          <button type="button" className="question-delete-btn" onClick={() => handleDeleteOption(q.id, optIdx)} disabled={q.options.length <= 2}>삭제</button>
+                          <button type="button" className="option-delete-btn" onClick={() => handleDeleteOption(q.id, optIdx)} disabled={q.options.length <= 2}>삭제</button>
                         </div>
                       ))}
                       <button type="button" className="question-option-input" onClick={() => handleAddOption(q.id)}>선택지 추가</button>
