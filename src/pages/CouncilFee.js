@@ -137,7 +137,7 @@ export default function CouncilFee() {
       {loading ? (
         <div className="loading">로딩 중...</div>
       ) : (
-        <div className="userlist">
+        <div className="councilfee-userlist">
           {filteredStudents.length === 0 ? (
             <div className="noapplicants">학생이 없습니다.</div>
           ) : (
