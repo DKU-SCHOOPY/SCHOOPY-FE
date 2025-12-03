@@ -124,7 +124,7 @@ input[type="number"]:focus,
   align-items: center;
   font-size: 13px;
   transition: background 0.15s, color 0.15s;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .question-add-row .dropdown-selected:hover {
