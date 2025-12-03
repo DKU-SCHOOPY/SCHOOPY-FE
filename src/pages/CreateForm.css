@@ -85,7 +85,7 @@ input[type="number"]:focus,
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 6px;
   min-width: 0;
   box-sizing: border-box;
 }
@@ -125,6 +125,7 @@ input[type="number"]:focus,
   align-items: center;
   font-size: 13px;
   transition: background 0.15s, color 0.15s;
+  margin-top: 6px;
 }
 
 .question-add-row .dropdown-selected:hover {
