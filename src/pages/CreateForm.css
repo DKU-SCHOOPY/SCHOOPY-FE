@@ -307,6 +307,7 @@ input[type="number"]:focus,
   border-radius: 6px;
   padding: 6px 6px;
   margin-left: 6px;
+  margin-top: 13px;
   font-size: 13px;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
