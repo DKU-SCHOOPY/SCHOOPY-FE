@@ -240,7 +240,7 @@ input[type="number"]:focus,
 /* ===== 질문 섹션 ===== */
 .question-section {
   margin: 6px 0 8px 0;
-  padding: 6px 10px;
+  padding: 4px 10px;
   background: #f5f5ff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(106, 90, 249, 0.07);
