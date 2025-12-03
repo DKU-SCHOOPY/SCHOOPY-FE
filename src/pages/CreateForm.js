@@ -292,9 +292,9 @@ const handleQrImageUpload = (type, e) => {
           <div className="question-add-row">
             <h3 className="question-section-title">질문</h3>
             <div className="question-controls">
-              <div className="dropdown">
+              <div className="cf-dropdown">
                 <div
-                  className="dropdown-selected"
+                  className="cf-dropdown-selected"
                   onClick={() => setQuestionTypeOpen(!questionTypeOpen)}
                 >
                   {newQuestionType === QUESTION_TYPES.SUBJECTIVE
@@ -306,9 +306,9 @@ const handleQrImageUpload = (type, e) => {
                 </div>
 
                 {questionTypeOpen && (
-                  <div className="dropdown-menu">
+                  <div className="cf-dropdown-menu">
                     <div
-                      className={`dropdown-item ${newQuestionType === QUESTION_TYPES.SUBJECTIVE ? "selected" : ""}`}
+                      className={`cf-dropdown-item ${newQuestionType === QUESTION_TYPES.SUBJECTIVE ? "selected" : ""}`}
                       onClick={() => {
                         setNewQuestionType(QUESTION_TYPES.SUBJECTIVE);
                         setQuestionTypeOpen(false);
@@ -317,7 +317,7 @@ const handleQrImageUpload = (type, e) => {
                       주관식
                     </div>
                     <div
-                      className={`dropdown-item ${newQuestionType === QUESTION_TYPES.OBJECTIVE ? "selected" : ""}`}
+                      className={`cf-dropdown-item ${newQuestionType === QUESTION_TYPES.OBJECTIVE ? "selected" : ""}`}
                       onClick={() => {
                         setNewQuestionType(QUESTION_TYPES.OBJECTIVE);
                         setQuestionTypeOpen(false);
@@ -351,7 +351,7 @@ const handleQrImageUpload = (type, e) => {
                       onChange={e => handleQuestionChange(q.id, "required", e.target.checked)}
                     /> 필수
                   </label>
-                  <button type="button" className="question-action-btn question-delete-btn" onClick={() => handleDeleteQuestion(q.id)}>삭제</button>
+                  <button type="button" className="question-delete-btn" onClick={() => handleDeleteQuestion(q.id)}>삭제</button>
                 </div>
                 {q.type === QUESTION_TYPES.OBJECTIVE && (
                   <div className="question-options-container">
@@ -372,10 +372,10 @@ const handleQrImageUpload = (type, e) => {
                             onChange={e => handleOptionChange(q.id, optIdx, e.target.value)}
                             className="question-option-input"
                           />
-                          <button type="button" className="question-action-btn option-delete-btn" onClick={() => handleDeleteOption(q.id, optIdx)} disabled={q.options.length <= 2}>삭제</button>
+                          <button type="button" className="option-delete-btn" onClick={() => handleDeleteOption(q.id, optIdx)} disabled={q.options.length <= 2}>삭제</button>
                         </div>
                       ))}
-                      <button type="button" className="question-option-row" onClick={() => handleAddOption(q.id)}>선택지 추가</button>
+                      <button type="button" className="question-option-input" onClick={() => handleAddOption(q.id)}>선택지 추가</button>
                     </div>
                   </div>
                 )}
