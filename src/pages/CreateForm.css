@@ -300,6 +300,8 @@ input[type="number"]:focus,
 }
 
 .question-action-btn {
+  width: 70px;
+  height: 28px;
   background: #fff;
   color: #6a5af9;
   border: 1px solid #6a5af9;
