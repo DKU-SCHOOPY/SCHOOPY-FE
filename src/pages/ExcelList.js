@@ -48,5 +48,5 @@ export function exportApplicantsExcel(rows, baseHeaders, questionColumns, eventC
   const ws = XLSX.utils.json_to_sheet(excelData);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "신청자목록");
-  XLSX.writeFile(wb, `event_${eventCode}_신청자목록.xlsx`);
+  XLSX.writeFile(wb, `${res.data.eventName}_신청자목록.xlsx`);
 }
