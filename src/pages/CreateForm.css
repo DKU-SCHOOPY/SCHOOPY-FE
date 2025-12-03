@@ -305,10 +305,8 @@ input[type="number"]:focus,
   color: #6a5af9;
   border: 1px solid #6a5af9;
   border-radius: 6px;
-  padding: 6px 6px;
+  padding: 6px 4px;
   margin-left: 6px;
-  margin-top: 13px;
-  margin-bottom: 12px;
   font-size: 13px;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
