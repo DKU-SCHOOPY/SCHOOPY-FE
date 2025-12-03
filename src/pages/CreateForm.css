@@ -298,13 +298,11 @@ input[type="number"]:focus,
 }
 
 .question-action-btn {
-  width: auto;
-  height: 18px;
   background: #fff;
   color: #6a5af9;
   border: 1px solid #6a5af9;
   border-radius: 6px;
-  padding: 6px 4px;
+  padding: 10px 6px;
   margin-left: 6px;
   font-size: 13px;
   cursor: pointer;
