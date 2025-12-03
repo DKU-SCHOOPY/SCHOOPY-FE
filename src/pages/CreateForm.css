@@ -42,7 +42,8 @@ input[type="number"],
   transition: border 0.2s;
   height: 32px;
   box-sizing: border-box;
-  background: #fff
+  background: #fff;
+  color: #858585;
 }
 
 .question-option-input:focus,
@@ -67,6 +68,7 @@ input[type="number"]:focus,
   outline: none;
   transition: border 0.2s;
   box-sizing: border-box;
+  color: #858585;
 }
 
 .question-input:focus {
@@ -404,15 +406,16 @@ input[type="number"]:focus,
 
 .question-options-container {
   margin-top: 8px;
-  margin-left: 24px;
+  margin-left: 20px;
 }
 
 .question-delete-btn,
 .option-delete-btn {
   font-size: 13px;
+  color: #ffaaa1;
   padding: 6px 6px;
   border-radius: 6px;
-  border: 1px solid #e74c3c;
+  border: 1px solid #ffaaa1;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
   background: #fff;
