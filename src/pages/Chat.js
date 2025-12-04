@@ -9,11 +9,13 @@ import "./Chat.css";
 function formatDateTime(dateString) {
   if (!dateString) return "";
   const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
+  // 한국 시간(UTC+9)으로 변환
+  const koreaTime = new Date(date.toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
+  const year = koreaTime.getFullYear();
+  const month = String(koreaTime.getMonth() + 1).padStart(2, "0");
+  const day = String(koreaTime.getDate()).padStart(2, "0");
+  const hours = String(koreaTime.getHours()).padStart(2, "0");
+  const minutes = String(koreaTime.getMinutes()).padStart(2, "0");
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
@@ -56,17 +58,27 @@ function ChatRoomList() {
   }, []);
 
   // 검색 기준도 role 따라 다르게
-  const filteredChats = chats.filter((chat) => {
-    if (role === "COUNCIL") {
-      return (chat.counterpartName || "")
-        .toLowerCase()
-        .includes((search || "").toLowerCase());
-    } else {
-      return (chat.department || "")
-        .toLowerCase()
-        .includes((search || "").toLowerCase());
-    }
-  });
+  const filteredChats = chats
+    .filter((chat) => {
+      if (role === "COUNCIL") {
+        return (chat.counterpartName || "")
+          .toLowerCase()
+          .includes((search || "").toLowerCase());
+      } else {
+        return (chat.department || "")
+          .toLowerCase()
+          .includes((search || "").toLowerCase());
+      }
+    })
+    .sort((a, b) => {
+      // lastMessageAt이 있는 채팅방을 위로
+      if (!a.lastMessageAt && b.lastMessageAt) return 1;
+      if (a.lastMessageAt && !b.lastMessageAt) return -1;
+      if (!a.lastMessageAt && !b.lastMessageAt) return 0;
+      
+      // 최근 메시지가 있는 방이 위로 (내림차순)
+      return new Date(b.lastMessageAt) - new Date(a.lastMessageAt);
+    });
 
   return (
     <div className="container">
