@@ -10,6 +10,7 @@ function Chatting() {
   const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
+  const isSendingRef = useRef(false); // 중복 전송 방지
 
   // 내 학번
   const myId = String(localStorage.getItem("studentNum") || "").trim();
@@ -36,22 +37,29 @@ function Chatting() {
 
 
   const sendMessage = () => {
-    if (!message.trim()) return;
+    if (!message.trim() || isSendingRef.current) return; // 중복 전송 방지
+
+    isSendingRef.current = true; // 전송 중 플래그 설정
 
     let socket = getSocket();
     if (!socket || socket.readyState !== WebSocket.OPEN) {
       socket = connectSocket(myId, peerId);
-      if (!socket) return;
+      if (!socket) {
+        isSendingRef.current = false;
+        return;
+      }
 
       socket.onopen = () => {
         socket.send(JSON.stringify({ message: message.trim(), receiverId: peerId }));
         setMessage("");
+        isSendingRef.current = false; // 전송 완료
       };
       return;
     }
 
     socket.send(JSON.stringify({ message: message.trim(), receiverId: peerId }));
     setMessage("");
+    isSendingRef.current = false; // 전송 완료
   };
 
 
@@ -131,7 +139,12 @@ function Chatting() {
           placeholder="내용을 입력하세요."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault(); // 기본 동작 방지 (form submit 등)
+              sendMessage();
+            }
+          }}
         />
         <button className="send-button" onClick={sendMessage}>
           ✈
