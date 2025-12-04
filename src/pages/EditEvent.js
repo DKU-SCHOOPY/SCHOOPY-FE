@@ -66,7 +66,7 @@ export default function EditEvent() {
         required
       />
 
-      <button type="button" onClick={handleSubmit} className="form-submit-button">
+      <button type="button" onClick={handleSubmit} className="big-button">
         수정 완료
       </button>
     </div>
