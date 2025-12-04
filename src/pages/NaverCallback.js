@@ -34,7 +34,7 @@ function NaverCallback() {
 
           if (userRole === "COUNCIL") {
             navigate("/select");       
-          } else if (userRole === "STUDENT") {
+          } else {
             navigate("/home");     
           }
 
