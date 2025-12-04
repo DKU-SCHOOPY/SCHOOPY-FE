@@ -5,6 +5,18 @@ import { useNavigate, Link } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import "./Chat.css";
 
+// 한국 시간으로 날짜 포맷팅 (2025-12-04 15:14 형식)
+function formatDateTime(dateString) {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
+
 function ChatRoomList() {
   const [chats, setChats] = useState([]);
   const [search, setSearch] = useState("");
@@ -97,6 +109,9 @@ function ChatRoomList() {
                     <div className="chat-last-message">{chat.lastMessage}</div>
                   )}
                 </div>
+                {chat.lastMessageAt && (
+                  <div className="chat-time">{formatDateTime(chat.lastMessageAt)}</div>
+                )}
               </div>
             </Link>
           ) : (
@@ -117,6 +132,9 @@ function ChatRoomList() {
                     <div className="chat-last-message">{chat.lastMessage}</div>
                   )}
                 </div>
+                {chat.lastMessageAt && (
+                  <div className="chat-time">{formatDateTime(chat.lastMessageAt)}</div>
+                )}
               </div>
             </Link>
           )

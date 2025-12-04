@@ -54,4 +54,16 @@
     color: #888;
     margin-right: 10px;
   }
+
+  .chat-item {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .chat-time {
+    margin-left: auto;
+    font-size: 0.85rem;
+    color: #666;
+  }
   
