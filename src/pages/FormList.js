@@ -27,18 +27,36 @@ const FormList = () => {
   const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
   const navigate = useNavigate();
+  const role = localStorage.getItem("role");
 
   useEffect(() => {
     async function fetchEvents() {
       try {
-        const res = await axios.get(
-          `${API_BASE_URL}/event/student/get-active`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
+        // COUNCIL role인 경우 모든 이벤트를 가져오는 엔드포인트 사용 시도
+        let endpoint = `${API_BASE_URL}/event/student/get-active`;
+        if (role === "COUNCIL") {
+          // COUNCIL용 엔드포인트가 있다면 사용, 없으면 기존 엔드포인트 사용
+          // 서버가 role을 확인해서 모든 이벤트를 반환할 것으로 예상
+          endpoint = `${API_BASE_URL}/event/council/get-all`;
+        }
+
+        const res = await axios.get(endpoint, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
           }
-        );
+        }).catch(async (err) => {
+          // COUNCIL용 엔드포인트가 없으면 기존 엔드포인트로 폴백
+          if (role === "COUNCIL" && err.response?.status === 404) {
+            console.log("COUNCIL용 엔드포인트가 없어 기존 엔드포인트 사용");
+            return await axios.get(`${API_BASE_URL}/event/student/get-active`, {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            });
+          }
+          throw err;
+        });
+
         console.log("Raw API Response:", res.data);
 
         if (!res.data || !Array.isArray(res.data)) {
@@ -75,7 +93,7 @@ const FormList = () => {
     }
 
     fetchEvents();
-  }, []);
+  }, [role]);
 
   const filteredEvents = events.filter(ev =>
     (filter === "전체" || ev.department === filter) &&
