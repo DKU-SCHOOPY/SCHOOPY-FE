@@ -105,13 +105,15 @@ function ChatRoomList() {
                 <FaUserCircle className="chat-avatar" />
                 <div className="chat-info">
                   <div className="chat-name">{chat.counterpartName}</div>
+                </div>
+                <div className="chat-right">
                   {chat.lastMessage && (
                     <div className="chat-last-message">{chat.lastMessage}</div>
                   )}
+                  {chat.lastMessageAt && (
+                    <div className="chat-time">{formatDateTime(chat.lastMessageAt)}</div>
+                  )}
                 </div>
-                {chat.lastMessageAt && (
-                  <div className="chat-time">{formatDateTime(chat.lastMessageAt)}</div>
-                )}
               </div>
             </Link>
           ) : (
@@ -128,13 +130,15 @@ function ChatRoomList() {
                 <FaUserCircle className="chat-avatar" />
                 <div className="chat-info">
                   <div className="chat-name">{chat.department}</div>
+                </div>
+                <div className="chat-right">
                   {chat.lastMessage && (
                     <div className="chat-last-message">{chat.lastMessage}</div>
                   )}
+                  {chat.lastMessageAt && (
+                    <div className="chat-time">{formatDateTime(chat.lastMessageAt)}</div>
+                  )}
                 </div>
-                {chat.lastMessageAt && (
-                  <div className="chat-time">{formatDateTime(chat.lastMessageAt)}</div>
-                )}
               </div>
             </Link>
           )
