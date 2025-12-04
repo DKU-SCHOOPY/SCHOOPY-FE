@@ -40,22 +40,14 @@ function ChatRoomList() {
         },
       })
       .then((res) => {
-        let chatList = [];
         if (role === "COUNCIL" && Array.isArray(res.data)) {
-          chatList = res.data;
+          setChats(res.data);
         } else if (role === "STUDENT" && res.data && Array.isArray(res.data.contacts)) {
-          chatList = res.data.contacts;
+          setChats(res.data.contacts);
         } else {
           console.warn("채팅방 응답이 예상과 다름:", res.data);
           setChats([]);
-          return;
         }
-        
-        // lastMessage와 lastMessageAt이 있는 채팅방만 필터링
-        const filteredChatList = chatList.filter(
-          (chat) => chat.lastMessage && chat.lastMessageAt
-        );
-        setChats(filteredChatList);
       })
       .catch((err) => {
         console.error(err);
