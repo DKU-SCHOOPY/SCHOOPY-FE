@@ -167,7 +167,7 @@ export default function Alarm() {
         {notifications.length === 0 ? (
           <div className="alarm-empty">알림이 없습니다</div>
         ) : (
-          notifications.map((noti) => (
+          [...notifications].sort((a, b) => b.id - a.id).map((noti) => (
             <div
               key={noti.id}
               className={`alarm-item ${noti.read ? "read" : ""}`}

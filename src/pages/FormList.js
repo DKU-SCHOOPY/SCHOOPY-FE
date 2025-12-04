@@ -32,31 +32,15 @@ const FormList = () => {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        // COUNCIL role인 경우 모든 이벤트를 가져오는 엔드포인트 사용 시도
-        let endpoint = `${API_BASE_URL}/event/student/get-active`;
-        if (role === "COUNCIL") {
-          // COUNCIL용 엔드포인트가 있다면 사용, 없으면 기존 엔드포인트 사용
-          // 서버가 role을 확인해서 모든 이벤트를 반환할 것으로 예상
-          endpoint = `${API_BASE_URL}/event/council/get-all`;
-        }
-
-        const res = await axios.get(endpoint, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
+        // 원래 엔드포인트 사용 (서버가 role을 확인해서 COUNCIL인 경우 모든 이벤트 반환)
+        const res = await axios.get(
+          `${API_BASE_URL}/event/student/get-active`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
           }
-        }).catch(async (err) => {
-          // COUNCIL용 엔드포인트가 없으면 기존 엔드포인트로 폴백
-          if (role === "COUNCIL" && err.response?.status === 404) {
-            console.log("COUNCIL용 엔드포인트가 없어 기존 엔드포인트 사용");
-            return await axios.get(`${API_BASE_URL}/event/student/get-active`, {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
-            });
-          }
-          throw err;
-        });
-
+        );
         console.log("Raw API Response:", res.data);
 
         if (!res.data || !Array.isArray(res.data)) {
