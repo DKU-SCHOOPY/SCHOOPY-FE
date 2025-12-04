@@ -1,125 +1,13 @@
-/* EditEvent.css - EditEvent 컴포넌트에 맞춘 스타일 */
+/* EditEvent.css - CreatePost와 동일한 스타일 */
 
-/* === 전체 컨테이너 === */
-.edit-event-container {
-  max-width: 720px;
-  margin: 48px auto;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(16, 24, 40, 0.06);
-  padding: 36px 28px;
-  font-family: 'Pretendard', 'Noto Sans KR', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  color: #222;
-}
-
-/* 제목 */
-.edit-event-container h2 {
-  font-size: 22px;
-  font-weight: 700;
-  margin: 0 0 18px;
-  color: #1e1e1e;
-  text-align: left;
-}
-
-/* form 레이아웃 */
-.edit-event-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  text-align: left;
-}
-
-/* 각 입력 그룹 */
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-/* 라벨 */
-.form-group label,
-.edit-event-form label {
-  font-weight: 600;
-  color: #4f46e5;
-  /* #6200ee 대체톤 */
-  margin-bottom: 8px;
-  display: block;
-  font-size: 0.95rem;
-}
-
-/* 입력 필드 공통 */
-.edit-event-form input[type="text"],
-.edit-event-form textarea {
+.form-submit-button {
   width: 100%;
-  padding: 12px 14px;
-  border: 1.5px solid #6a5af9;
-  border-radius: 12px;
-  font-size: 1rem;
-  background: #fafaff;
-  transition: border 0.18s ease, box-shadow 0.18s ease;
-  box-sizing: border-box;
-  resize: vertical;
-}
-
-/* 포커스 */
-.edit-event-form input[type="text"]:focus,
-.edit-event-form textarea:focus {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 6px rgba(79, 70, 229, 0.06);
-  outline: none;
-}
-
-/* 저장 버튼 (오른쪽에 작게) */
-.save-button {
-  align-self: flex-end;
-  /* 오른쪽 정렬 */
-  padding: 8px 16px;
-  font-size: 0.95rem;
-  font-weight: 700;
+  margin-top: 30px;
+  padding: 15px;
   border: none;
   border-radius: 10px;
+  font-size: 16px;
   cursor: pointer;
-  background: linear-gradient(90deg, #3b82f6, #2563eb);
-  color: #fff;
-  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.15);
-  transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
-}
-
-/* hover/active */
-.save-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(59, 130, 246, 0.18);
-}
-
-.save-button:active {
-  transform: translateY(0);
-  opacity: 0.95;
-}
-
-/* 상태 메시지 유지 (선택사항) */
-.status-message {
-  padding: 14px;
-  border-radius: 10px;
-  margin-top: 12px;
-  font-weight: 500;
-  text-align: center;
-  border: 2px solid;
-  font-size: 0.95rem;
-}
-
-/* 반응형 */
-@media (max-width: 640px) {
-  .edit-event-container {
-    margin: 20px;
-    padding: 20px;
-  }
-
-  .edit-event-container h2 {
-    font-size: 18px;
-  }
-
-  .save-button {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-    align-self: stretch;
-  }
+  background-color: #7b61ff;
+  color: white;
 }

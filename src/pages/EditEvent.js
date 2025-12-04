@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config";
+import Header from "../components/Header";
 import "./EditEvent.css";
 
 export default function EditEvent() {
@@ -18,9 +19,7 @@ export default function EditEvent() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     try {
       const requestBody = {
         eventCode: Number(eventCode),
@@ -43,37 +42,33 @@ export default function EditEvent() {
   };
 
   return (
-    <div className="edit-event-container">
-      <h2>행사 정보 수정</h2>
-      <form onSubmit={handleSubmit} className="edit-event-form">
-        <div className="form-group">
-          <label>행사 이름</label>
-          <input
-            type="text"
-            name="eventName"
-            value={formData.eventName}
-            onChange={handleChange}
-            placeholder="새로운 행사 이름을 입력하세요"
-            required
-          />
-        </div>
+    <div className="container">
+      <Header title="행사 정보 수정" showBack />
 
-        <div className="form-group">
-          <label>행사 설명</label>
-          <textarea
-            name="eventDescription"
-            value={formData.eventDescription}
-            onChange={handleChange}
-            placeholder="새로운 행사 설명을 입력하세요"
-            rows={5}
-            required
-          />
-        </div>
+      <label className="label">게시물 제목</label>
+      <input
+        type="text"
+        className="textarea"
+        name="eventName"
+        value={formData.eventName}
+        onChange={handleChange}
+        placeholder="제목을 입력하세요"
+        required
+      />
 
-        <button type="submit" className="save-button">
-          수정 완료
-        </button>
-      </form>
+      <label className="label">설명</label>
+      <textarea
+        className="longtext"
+        name="eventDescription"
+        value={formData.eventDescription}
+        onChange={handleChange}
+        placeholder="설명을 입력하세요"
+        required
+      />
+
+      <button type="button" onClick={handleSubmit} className="form-submit-button">
+        수정 완료
+      </button>
     </div>
   );
 }
