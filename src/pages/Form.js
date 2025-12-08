@@ -152,6 +152,7 @@ function FormPage() {
 
   const hasRemitQR = !!(form.qr_toss_x || form.qr_kakaopay_x);
 
+  
 
   const isApplicationPeriod = (() => {
     const now = new Date();
@@ -160,6 +161,21 @@ function FormPage() {
     end.setDate(end.getDate() +1); //하루 더한 방식
     return now >= start && now <= end;
   })();
+
+    // 🔽 신청 인원 마감 체크 추가
+  if (form.currentParticipants >= form.maxParticipants) {
+    return (
+      <div className="container">
+        <Header title="행사 신청" showBack />
+        <div className="status-message warning">
+          신청 인원이 충족되어 마감되었습니다.
+        </div>
+        <button className="back-button" onClick={() => navigate("/formlist")}>
+          목록으로 돌아가기
+        </button>
+      </div>
+    );
+  }
 
   if (!isApplicationPeriod)
     return (

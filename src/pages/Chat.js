@@ -5,6 +5,20 @@ import { useNavigate, Link } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import "./Chat.css";
 
+// 한국 시간으로 날짜 포맷팅 (2025-12-04 15:14 형식)
+function formatDateTime(dateString) {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  // 한국 시간(UTC+9)으로 변환
+  const koreaTime = new Date(date.toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
+  const year = koreaTime.getFullYear();
+  const month = String(koreaTime.getMonth() + 1).padStart(2, "0");
+  const day = String(koreaTime.getDate()).padStart(2, "0");
+  const hours = String(koreaTime.getHours()).padStart(2, "0");
+  const minutes = String(koreaTime.getMinutes()).padStart(2, "0");
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
+
 function ChatRoomList() {
   const [chats, setChats] = useState([]);
   const [search, setSearch] = useState("");
@@ -44,17 +58,27 @@ function ChatRoomList() {
   }, []);
 
   // 검색 기준도 role 따라 다르게
-  const filteredChats = chats.filter((chat) => {
-    if (role === "COUNCIL") {
-      return (chat.counterpartName || "")
-        .toLowerCase()
-        .includes((search || "").toLowerCase());
-    } else {
-      return (chat.department || "")
-        .toLowerCase()
-        .includes((search || "").toLowerCase());
-    }
-  });
+  const filteredChats = chats
+    .filter((chat) => {
+      if (role === "COUNCIL") {
+        return (chat.counterpartName || "")
+          .toLowerCase()
+          .includes((search || "").toLowerCase());
+      } else {
+        return (chat.department || "")
+          .toLowerCase()
+          .includes((search || "").toLowerCase());
+      }
+    })
+    .sort((a, b) => {
+      // lastMessageAt이 있는 채팅방을 위로
+      if (!a.lastMessageAt && b.lastMessageAt) return 1;
+      if (a.lastMessageAt && !b.lastMessageAt) return -1;
+      if (!a.lastMessageAt && !b.lastMessageAt) return 0;
+      
+      // 최근 메시지가 있는 방이 위로 (내림차순)
+      return new Date(b.lastMessageAt) - new Date(a.lastMessageAt);
+    });
 
   return (
     <div className="container">
@@ -84,7 +108,15 @@ function ChatRoomList() {
               <div className="chat-item">
                 <FaUserCircle className="chat-avatar" />
                 <div className="chat-info">
-                  <div className="chat-name">{chat.counterpartName}</div>
+                  <div className="chat-name-row">
+                    <div className="chat-name">{chat.counterpartName}</div>
+                    {chat.lastMessageAt && (
+                      <div className="chat-time">{formatDateTime(chat.lastMessageAt)}</div>
+                    )}
+                  </div>
+                  {chat.lastMessage && (
+                    <div className="chat-last-message">{chat.lastMessage}</div>
+                  )}
                 </div>
               </div>
             </Link>
@@ -101,7 +133,15 @@ function ChatRoomList() {
               <div className="chat-item">
                 <FaUserCircle className="chat-avatar" />
                 <div className="chat-info">
-                  <div className="chat-name">{chat.department}</div>
+                  <div className="chat-name-row">
+                    <div className="chat-name">{chat.department}</div>
+                    {chat.lastMessageAt && (
+                      <div className="chat-time">{formatDateTime(chat.lastMessageAt)}</div>
+                    )}
+                  </div>
+                  {chat.lastMessage && (
+                    <div className="chat-last-message">{chat.lastMessage}</div>
+                  )}
                 </div>
               </div>
             </Link>

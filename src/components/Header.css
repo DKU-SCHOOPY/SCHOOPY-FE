@@ -25,11 +25,11 @@
   background: none;
   border: none;
   font-size: 24px;
-  font-weight: 400;
+  font-weight: 600;
   color: black;
   cursor: pointer;
   padding: 1px;
-  margin-left: 1px; /* 살짝 왼쪽 여백 */
+  margin-left: 1px;
 }
 
 /* 오른쪽 버튼 (전체읽음 등) */
@@ -46,6 +46,7 @@
   font-size: 10px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  margin-right: 4px;
 }
 
 .read-all-btn:hover, .exceldown-btn:hover {

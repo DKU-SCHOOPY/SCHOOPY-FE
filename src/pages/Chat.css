@@ -33,6 +33,12 @@
   .chat-info {
     flex: 1;
   }
+
+  .chat-name-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   
   .chat-name {
     /* font-weight: bold; */
@@ -42,6 +48,7 @@
   .chat-last-message {
     font-size: 12px;
     color: gray;
+    margin-top: 2px;
   }
   
   .chat-status {
@@ -53,5 +60,16 @@
     font-size: 40px;
     color: #888;
     margin-right: 10px;
+  }
+  
+  .chat-item {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .chat-time {
+    font-size: 12px;
+    color: gray;
   }
   

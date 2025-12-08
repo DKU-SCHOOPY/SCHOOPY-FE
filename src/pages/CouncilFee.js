@@ -108,9 +108,9 @@ export default function CouncilFee() {
     <div className="container">
       <Header title="학생회비 관리" showBack />
 
-      <div className="searchbox">
+      <div className="councilfee-searchbox">
         <input
-          className="searchinput"
+          className="councilfee-searchinput"
           type="text"
           placeholder="이름/학과/학번 검색"
           value={searchText}
@@ -137,7 +137,7 @@ export default function CouncilFee() {
       {loading ? (
         <div className="loading">로딩 중...</div>
       ) : (
-        <div className="userlist">
+        <div className="councilfee-userlist">
           {filteredStudents.length === 0 ? (
             <div className="noapplicants">학생이 없습니다.</div>
           ) : (
