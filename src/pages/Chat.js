@@ -14,7 +14,7 @@ function ChatRoomList() {
 
   useEffect(() => {
     if (!currentUser || !currentUser.userId) return;
-    const studentId = parseInt(currentUser.userId);
+    const studentId = currentUser.userId; // 문자열로 유지
 
     const url =
       role === "COUNCIL"
